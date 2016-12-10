@@ -7,11 +7,16 @@ TEMPLATE = app
 
 SOURCES += \
     main/main.cpp \
-    main/mainwindows.cpp
+    main/mainwindow.cpp
 
 FORMS += \
-    main/mainwindows.ui
+    main/mainwindow.ui
 
 HEADERS += \
-    main/mainwindows.h
+    main/mainwindow.h
+
+TRANSLATIONS += res/translator/translator_cn.ts
+
+RESOURCES += \
+    res/resource.qrc
 
