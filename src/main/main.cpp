@@ -1,6 +1,7 @@
-#include "main/mainwindows.h"
 #include <QApplication>
 #include <QTranslator>
+
+#include "main/mainwindow.h"
 
 int main(int argc, char *argv[])
 {
@@ -11,7 +12,7 @@ int main(int argc, char *argv[])
     qtTranslator.load(":/lang/translator/translator_cn.qm");
     a.installTranslator(&qtTranslator);
 
-    MainWindows w;
+    MainWindow w;
     w.show();
 
     return a.exec();
