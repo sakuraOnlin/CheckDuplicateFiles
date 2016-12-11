@@ -15,8 +15,19 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+
+private slots:
+    void onSelectDirPath();
+    void onStartCheck();
+    void onExit();
+
+private:
+    void init();
+
+
 private:
     Ui::MainWindow *ui;
+
 };
 
 #endif // MAINWINDOW_H
