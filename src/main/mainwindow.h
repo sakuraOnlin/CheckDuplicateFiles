@@ -22,9 +22,6 @@ private slots:
     void onExit();
 
 private:
-    void init();
-
-private:
     Ui::MainWindow *ui;
 
     MainWindowPrivate *d_ptr;

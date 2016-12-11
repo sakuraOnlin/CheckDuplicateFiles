@@ -15,87 +15,103 @@
     </message>
     <message>
         <location filename="../../main/mainwindow.ui" line="47"/>
+        <location filename="../../main/mainwindow.ui" line="50"/>
         <source>Select Dir</source>
         <translation>选择文件夹…</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="63"/>
+        <location filename="../../main/mainwindow.ui" line="66"/>
         <source>Start Check</source>
         <translation>开始检查</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="72"/>
+        <location filename="../../main/mainwindow.ui" line="92"/>
+        <source>Del a file</source>
+        <translation>删除选定的文件</translation>
+    </message>
+    <message>
+        <location filename="../../main/mainwindow.ui" line="118"/>
+        <source>Del All Files</source>
+        <translation>删除所有重复的文件</translation>
+    </message>
+    <message>
+        <location filename="../../main/mainwindow.ui" line="140"/>
         <source>Calculation options</source>
         <translation>计算选项</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="89"/>
+        <location filename="../../main/mainwindow.ui" line="157"/>
+        <location filename="../../main/mainwindow.ui" line="160"/>
         <source>Version</source>
         <translation>版本</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="99"/>
+        <location filename="../../main/mainwindow.ui" line="170"/>
+        <location filename="../../main/mainwindow.ui" line="173"/>
         <source>Modify Time</source>
         <translation>修改时间</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="109"/>
+        <location filename="../../main/mainwindow.ui" line="183"/>
+        <location filename="../../main/mainwindow.ui" line="186"/>
         <source>Check MD5</source>
         <translation>MD5</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="119"/>
+        <location filename="../../main/mainwindow.ui" line="196"/>
+        <location filename="../../main/mainwindow.ui" line="199"/>
         <source>Check SHA1</source>
         <translation>SHA1</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="126"/>
+        <location filename="../../main/mainwindow.ui" line="206"/>
+        <location filename="../../main/mainwindow.ui" line="209"/>
         <source>Check CRC32</source>
         <translation>CRC32</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="153"/>
+        <location filename="../../main/mainwindow.ui" line="236"/>
         <source>File</source>
         <translation>文件夹</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="160"/>
-        <location filename="../../main/mainwindow.ui" line="198"/>
+        <location filename="../../main/mainwindow.ui" line="243"/>
+        <location filename="../../main/mainwindow.ui" line="281"/>
         <source>help</source>
         <translation>帮助</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="171"/>
+        <location filename="../../main/mainwindow.ui" line="254"/>
         <source>Select Dir Path</source>
         <translation>选择文件夹…</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="174"/>
+        <location filename="../../main/mainwindow.ui" line="257"/>
         <source>Select Dir Path_tooltip</source>
         <translation>选择需要检查是否有重复文件的文件夹</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="177"/>
+        <location filename="../../main/mainwindow.ui" line="260"/>
         <source>Ctrl+F</source>
         <translation>选择需要检查是否有重复文件的文件夹</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="182"/>
+        <location filename="../../main/mainwindow.ui" line="265"/>
         <source>Exit</source>
         <translation>退出程序</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="185"/>
+        <location filename="../../main/mainwindow.ui" line="268"/>
         <source>Exit_tooltip</source>
         <translation>退出当前程序</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="188"/>
+        <location filename="../../main/mainwindow.ui" line="271"/>
         <source>Ctrl+Q</source>
         <translation>退出程序</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="193"/>
+        <location filename="../../main/mainwindow.ui" line="276"/>
         <source>about</source>
         <translation>关于</translation>
     </message>
@@ -119,12 +135,12 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../main/mainwindow.cpp" line="95"/>
+        <location filename="../../main/mainwindow.cpp" line="103"/>
         <source>Start Check</source>
         <translation>开始检查</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.cpp" line="102"/>
+        <location filename="../../main/mainwindow.cpp" line="94"/>
         <source>Stop Check</source>
         <translation>停止检查</translation>
     </message>

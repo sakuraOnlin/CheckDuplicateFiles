@@ -1,5 +1,6 @@
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QFileInfo>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -11,9 +12,10 @@ public:
     MainWindowPrivate(MainWindow *publicFatherPoint)
         :q_ptr(publicFatherPoint) ,m_dirPath(QString()) ,m_isStart(false)
     {
-
+        init();
     }
 
+    void init();
     inline void updateSelectDirPBut();
 
 
@@ -28,8 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
-    init();
+    d_ptr = new MainWindowPrivate(this);
 }
 
 MainWindow::~MainWindow()
@@ -44,7 +45,10 @@ void MainWindow::onSelectDirPath()
                                                       d_ptr->m_dirPath,
                                                       QFileDialog::ShowDirsOnly
                                                       | QFileDialog::DontResolveSymlinks);
-    if(dirPath.isEmpty())
+    if(dirPath.isEmpty()) return;
+
+    QFileInfo isFilePath(dirPath);
+    if(!isFilePath.exists() && !isFilePath.isDir())
     {
         QMessageBox::warning(this, tr("Error!"),
                                          tr("Please select a valid directory!.\n"),
@@ -73,36 +77,41 @@ void MainWindow::onStartCheck()
 
 void MainWindow::onExit()
 {
-
+    qApp->exit();
 }
 
-void MainWindow::init()
+void MainWindowPrivate::init()
 {
-    d_ptr = new MainWindowPrivate(this);
-
-    d_ptr->updateSelectDirPBut();
-
-    ui->pushBut_StartCheck->setEnabled(false);
-
-    connect(ui->pushBut_SelectDir,SIGNAL(clicked()),this,SLOT(onSelectDirPath()) );
-    connect(ui->pushBut_StartCheck,SIGNAL(clicked()),SLOT(onStartCheck()));
-    connect(ui->actionExit,SIGNAL(changed()),this,SLOT(onExit()));
+    updateSelectDirPBut();
+    q_ptr->ui->pushBut_StartCheck->setEnabled(false);
+    QObject::connect(q_ptr->ui->pushBut_SelectDir ,SIGNAL(clicked()) ,q_ptr ,SLOT(onSelectDirPath()) );
+    QObject::connect(q_ptr->ui->pushBut_StartCheck ,SIGNAL(clicked()) ,q_ptr ,SLOT(onStartCheck()));
+    QObject::connect(q_ptr->ui->actionSelect_Dir_Path ,SIGNAL(triggered()) ,q_ptr ,SLOT(onSelectDirPath()));
+    QObject::connect(q_ptr->ui->actionExit ,SIGNAL(triggered()) ,q_ptr ,SLOT(onExit()));
 }
 
 void MainWindowPrivate::updateSelectDirPBut()
 {
-    if(m_isStart)
-    {
-        q_ptr->ui->pushBut_SelectDir->setEnabled(false);
-        q_ptr->ui->lineEdit_ShowDIrPath->setEnabled(false);
-        q_ptr->ui->pushBut_StartCheck->setText(QObject::tr("Stop Check"));
-        m_isStart = false;
-    }
-    else
+    if(!m_isStart)
     {
         q_ptr->ui->pushBut_SelectDir->setEnabled(true);
         q_ptr->ui->lineEdit_ShowDIrPath->setEnabled(true);
+        q_ptr->ui->pushBut_DelFile->setEnabled(false);
+        q_ptr->ui->pushBut_DelAllFiles->setEnabled(false);
         q_ptr->ui->pushBut_StartCheck->setText(QObject::tr("Start Check"));
+        q_ptr->ui->pushBut_StartCheck->setIcon(QIcon(":/img/image/start.png"));
+        q_ptr->ui->pushBut_StartCheck->setIconSize(QSize(24,24));
         m_isStart = true;
+    }
+    else
+    {
+        q_ptr->ui->pushBut_SelectDir->setEnabled(false);
+        q_ptr->ui->lineEdit_ShowDIrPath->setEnabled(false);
+        q_ptr->ui->pushBut_DelFile->setEnabled(true);
+        q_ptr->ui->pushBut_DelAllFiles->setEnabled(true);
+        q_ptr->ui->pushBut_StartCheck->setText(QObject::tr("Stop Check"));
+        q_ptr->ui->pushBut_StartCheck->setIcon(QIcon(":/img/image/stop.png"));
+        q_ptr->ui->pushBut_StartCheck->setIconSize(QSize(24,24));
+        m_isStart = false;
     }
 }
