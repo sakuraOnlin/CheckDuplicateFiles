@@ -22,6 +22,8 @@ private slots:
     void onExit();
     void onDelFile();
     void onDelAllFiles();
+    void onHelp();
+    void onAbout();
 
 private:
     Ui::MainWindow *ui;

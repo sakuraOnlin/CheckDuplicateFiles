@@ -88,6 +88,16 @@ void MainWindow::onDelAllFiles()
 
 }
 
+void MainWindow::onHelp()
+{
+
+}
+
+void MainWindow::onAbout()
+{
+
+}
+
 void MainWindowPrivate::init()
 {
     updateUIButton();
