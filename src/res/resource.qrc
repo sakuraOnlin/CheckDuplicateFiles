@@ -2,4 +2,10 @@
     <qresource prefix="/lang">
         <file>translator/translator_cn.qm</file>
     </qresource>
+    <qresource prefix="/img">
+        <file>image/delFile.png</file>
+        <file>image/start.png</file>
+        <file>image/stop.png</file>
+        <file>image/DelAllFiles.png</file>
+    </qresource>
 </RCC>
