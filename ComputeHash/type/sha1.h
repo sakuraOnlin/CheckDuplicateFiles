@@ -8,18 +8,14 @@
 
 class SHA1 : public Compute
 {
-    Q_OBJECT
 
     static const size_t BLOCK_INTS = 16;  /* number of 32bit integers per SHA1 block */
     static const size_t BLOCK_BYTES = BLOCK_INTS * 4;
 public:
-    explicit SHA1(QObject *parent = 0);
-    ~SHA1();
+    explicit SHA1();
 
     void update(QString &s);
     QString getFinalResult();
-
-public slots:
     void onStop();
 
 private:

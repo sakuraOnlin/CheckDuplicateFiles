@@ -4,21 +4,14 @@
 #include <QObject>
 #include <QString>
 
-class Compute : public QObject
+class Compute
 {
-    Q_OBJECT
-
 public:
-    Compute(QObject *parent =0);
+    Compute();
     virtual ~Compute();
 
     virtual void update(QString &s) =0;
     virtual QString getFinalResult() =0;
-
-private:
-    virtual void final() =0;
-
-public slots:
     virtual void onStop() =0;
 
 };

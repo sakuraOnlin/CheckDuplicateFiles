@@ -1,17 +1,27 @@
 #ifndef CRC32_H
 #define CRC32_H
 
-#include <QObject>
+#include <cstdint>
+#include <iostream>
+#include <string>
+#include <QString>
+#include "compute.h"
 
-class CRC32 : public QObject
+class CRC32 : public Compute
 {
-    Q_OBJECT
 public:
-    explicit CRC32(QObject *parent = 0);
+    explicit CRC32();
+    void update(QString &s);
+    QString getFinalResult();
+    void onStop();
 
-signals:
+private:
+    void reset();
 
-public slots:
+private:
+    bool m_isStart;
+    uint32_t state;
+
 };
 
 #endif // CRC32_H

@@ -3,9 +3,8 @@
 #include <fstream>
 #include "sha1.h"
 
-SHA1::SHA1(QObject *parent)
-    : Compute(parent) ,
-      m_isStart(false)
+SHA1::SHA1()
+    : m_isStart(false)
 {
     reset(m_digest, m_buffer, m_transforms);
 }
