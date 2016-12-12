@@ -20,6 +20,8 @@ private slots:
     void onSelectDirPath();
     void onStartCheck();
     void onExit();
+    void onDelFile();
+    void onDelAllFiles();
 
 private:
     Ui::MainWindow *ui;
