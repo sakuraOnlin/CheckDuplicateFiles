@@ -103,12 +103,14 @@ void MainWindowPrivate::init()
     updateUIButton();
     q_ptr->ui->pushBut_StartCheck->setEnabled(false);
 
-    QObject::connect(q_ptr->ui->pushBut_SelectDir ,SIGNAL(clicked()) ,q_ptr ,SLOT(onSelectDirPath()) );
-    QObject::connect(q_ptr->ui->pushBut_StartCheck ,SIGNAL(clicked()) ,q_ptr ,SLOT(onStartCheck()));
-    QObject::connect(q_ptr->ui->actionSelect_Dir_Path ,SIGNAL(triggered()) ,q_ptr ,SLOT(onSelectDirPath()));
-    QObject::connect(q_ptr->ui->actionExit ,SIGNAL(triggered()) ,q_ptr ,SLOT(onExit()));
-    QObject::connect(q_ptr->ui->pushBut_DelFile ,SIGNAL(clicked()) ,q_ptr ,SLOT(onDelFile()));
-    QObject::connect(q_ptr->ui->pushBut_DelAllFiles ,SIGNAL(clicked()) ,q_ptr ,SLOT(onDelAllFiles()));
+    QObject::connect(q_ptr->ui->pushBut_SelectDir, SIGNAL(clicked()), q_ptr, SLOT(onSelectDirPath()) );
+    QObject::connect(q_ptr->ui->pushBut_StartCheck, SIGNAL(clicked()), q_ptr, SLOT(onStartCheck()));
+    QObject::connect(q_ptr->ui->actionSelect_Dir_Path, SIGNAL(triggered()), q_ptr, SLOT(onSelectDirPath()));
+    QObject::connect(q_ptr->ui->actionExit, SIGNAL(triggered()), q_ptr, SLOT(onExit()));
+    QObject::connect(q_ptr->ui->actionHelp, SIGNAL(triggered()), q_ptr, SLOT(onHelp()));
+    QObject::connect(q_ptr->ui->actionAbout, SIGNAL(triggered()), q_ptr, SLOT(onAbout()));
+    QObject::connect(q_ptr->ui->pushBut_DelFile, SIGNAL(clicked()), q_ptr, SLOT(onDelFile()));
+    QObject::connect(q_ptr->ui->pushBut_DelAllFiles, SIGNAL(clicked()), q_ptr, SLOT(onDelAllFiles()));
 }
 
 void MainWindowPrivate::updateUIButton()

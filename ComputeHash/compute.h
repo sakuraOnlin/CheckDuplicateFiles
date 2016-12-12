@@ -16,7 +16,7 @@ public:
 
 signals:
     void signalFinalResult(QString);
-    void signalProgress(ulong step ,ulong max);
+    void signalProgress(ulong step, ulong max);
 
 public slots:
     virtual void onStop() =0;

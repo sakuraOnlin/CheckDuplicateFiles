@@ -11,7 +11,7 @@ class COMPUTEHASHSHARED_EXPORT ComputeHash : public QObject
     Q_OBJECT
 
 public:
-    ComputeHash(QObject *parent = 0 , util::ComputeType type = util::MD5);
+    ComputeHash(QObject *parent = 0,  util::ComputeType type = util::MD5);
     ~ComputeHash();
 
     bool setComputeHsahFile(QString filePath);
@@ -19,7 +19,7 @@ public:
 
 signals:
     void signalFinalResult(QString result);
-    void signalProgress(ulong step ,ulong max);
+    void signalProgress(ulong step, ulong max);
 
 public slots:
     void onStopCompute();
