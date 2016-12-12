@@ -1,5 +1,5 @@
-#ifndef FACTORY_H
-#define FACTORY_H
+#ifndef COMPUTEFACTORY_H
+#define COMPUTEFACTORY_H
 
 #include "util/util.h"
 #include "compute.h"
@@ -10,4 +10,4 @@ public:
     Factory();
 };
 
-#endif // FACTORY_H
+#endif // COMPUTEFACTORY_H

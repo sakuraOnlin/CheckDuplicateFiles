@@ -1,7 +1,7 @@
 #include <QFileInfo>
 #include <QFile>
 #include "computehash.h"
-#include "factory.h"
+#include "util/computefactory.h"
 #include "compute.h"
 
 class ComputeHashPrivate
@@ -35,6 +35,7 @@ ComputeHash::~ComputeHash()
     delete d_ptr;
 }
 
+//设置好文件路径后就自动开始检查文件指纹
 bool ComputeHash::setComputeHsahFile(QString filePath)
 {
     if(filePath.isEmpty())
