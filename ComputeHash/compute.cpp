@@ -5,3 +5,8 @@ Compute::Compute(QObject *parent)
 {
 
 }
+
+Compute::~Compute()
+{
+
+}

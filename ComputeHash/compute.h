@@ -13,10 +13,10 @@ public:
     virtual ~Compute();
 
     virtual void update(QString &s) =0;
+    virtual QString getFinalResult() =0;
 
-signals:
-    void signalFinalResult(QString);
-    void signalProgress(ulong step, ulong max);
+private:
+    virtual void final() =0;
 
 public slots:
     virtual void onStop() =0;
