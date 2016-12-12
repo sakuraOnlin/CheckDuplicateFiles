@@ -121,7 +121,6 @@ void MainWindowPrivate::updateUIButton()
         q_ptr->ui->lineEdit_ShowDIrPath->setEnabled(false);
         q_ptr->ui->pushBut_DelFile->setEnabled(true);
         q_ptr->ui->pushBut_DelAllFiles->setEnabled(true);
-        q_ptr->ui->pushBut_StartCheck->setText(QObject::tr("Stop Check"));
         q_ptr->ui->pushBut_StartCheck->setIcon(QIcon(":/img/image/stop.png"));
         q_ptr->ui->pushBut_StartCheck->setIconSize(QSize(24,24));
     }
@@ -131,7 +130,6 @@ void MainWindowPrivate::updateUIButton()
         q_ptr->ui->lineEdit_ShowDIrPath->setEnabled(true);
         q_ptr->ui->pushBut_DelFile->setEnabled(false);
         q_ptr->ui->pushBut_DelAllFiles->setEnabled(false);
-        q_ptr->ui->pushBut_StartCheck->setText(QObject::tr("Start Check"));
         q_ptr->ui->pushBut_StartCheck->setIcon(QIcon(":/img/image/start.png"));
         q_ptr->ui->pushBut_StartCheck->setIconSize(QSize(24,24));
     }
