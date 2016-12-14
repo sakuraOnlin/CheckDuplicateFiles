@@ -15,7 +15,7 @@ QString CRC32::getFinalResult()
 
 }
 
-void CRC32::onStop()
+void CRC32::stopCheck()
 {
 
 }

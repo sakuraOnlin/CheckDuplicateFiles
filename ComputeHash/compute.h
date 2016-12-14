@@ -12,7 +12,7 @@ public:
 
     virtual void update(QString &s) =0;
     virtual QString getFinalResult() =0;
-    virtual void onStop() =0;
+    virtual void stopCheck() =0;
 
 };
 

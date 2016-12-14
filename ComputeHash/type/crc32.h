@@ -13,7 +13,7 @@ public:
     explicit CRC32();
     void update(QString &s);
     QString getFinalResult();
-    void onStop();
+    void stopCheck();
 
 private:
     void reset();

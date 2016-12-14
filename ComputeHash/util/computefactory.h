@@ -9,7 +9,7 @@ class Factory
 public:
     Factory();
 
-    static Compute* createCompute(const util::ComputeType type);
+    Compute* createCompute(const util::ComputeType type);
 };
 
 #endif // COMPUTEFACTORY_H

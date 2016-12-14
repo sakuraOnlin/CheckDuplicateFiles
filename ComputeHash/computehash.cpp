@@ -9,19 +9,15 @@ class ComputeHashPrivate
     ComputeHash *q_ptr;
     Q_DECLARE_PUBLIC(ComputeHash)
 public:
-    ComputeHashPrivate(util::ComputeType type)
-        :m_errorStr(QString()),
-         m_isStart(false),
-         m_conputeType(type),
-         m_computeHash(NULL)
-    {
+    ComputeHashPrivate(util::ComputeType type);
 
-    }
+    ~ComputeHashPrivate();
 
     QString m_errorStr;
     bool m_isStart;
     util::ComputeType m_conputeType;
     Compute *m_computeHash;
+    Factory *m_factory;
 };
 
 ComputeHash::ComputeHash(QObject *parent, util::ComputeType type)
@@ -49,7 +45,7 @@ bool ComputeHash::setComputeHsahFile(QString filePath)
 
 
 
-    d_ptr->m_computeHash = Factory::createCompute(d_ptr->m_conputeType);
+    d_ptr->m_computeHash = d_ptr->m_factory->createCompute(d_ptr->m_conputeType);
     if(NULL == d_ptr->m_computeHash)
     {
         //文件指纹模块初始化错误
@@ -71,5 +67,22 @@ void ComputeHash::onStopCompute()
         return;
     //因停止检查，文件指纹效验失败
     d_ptr->m_errorStr = tr("Failed to check the file for fingerprint verification!");
-    d_ptr->m_computeHash->onStop();
+    d_ptr->m_computeHash->stopCheck();
+}
+
+ComputeHashPrivate::ComputeHashPrivate(util::ComputeType type)
+    :m_errorStr(QString()),
+     m_isStart(false),
+     m_conputeType(type),
+     m_computeHash(NULL),
+     m_factory(new Factory)
+{
+
+}
+
+ComputeHashPrivate::~ComputeHashPrivate()
+{
+    if(NULL != m_computeHash)
+        delete m_computeHash;
+    delete m_factory;
 }

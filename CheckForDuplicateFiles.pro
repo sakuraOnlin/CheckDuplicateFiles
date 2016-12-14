@@ -1,5 +1,6 @@
 TEMPLATE = subdirs
 CONFIG += ordered
 
-SUBDIRS += src \
-    ComputeHash
+SUBDIRS += ComputeHash \
+        src
+
