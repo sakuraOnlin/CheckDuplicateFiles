@@ -7,5 +7,6 @@
         <file>image/start.png</file>
         <file>image/stop.png</file>
         <file>image/DelAllFiles.png</file>
+        <file>image/file_search.png</file>
     </qresource>
 </RCC>

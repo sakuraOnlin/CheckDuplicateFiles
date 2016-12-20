@@ -19,6 +19,10 @@
   <property name="windowTitle">
    <string>CheckForDuplicateFiles</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../res/resource.qrc">
+    <normaloff>:/img/image/file_search.png</normaloff>:/img/image/file_search.png</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="0">
