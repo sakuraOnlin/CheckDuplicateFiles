@@ -4,12 +4,11 @@
 #include "util/util.h"
 #include "compute.h"
 
-class Factory
+class COMPUTEHASHSHARED_EXPORT Factory
 {
 public:
-    Factory();
-
-    Compute* createCompute(const util::ComputeType type);
+    virtual ~Factory();
+    virtual Compute* createCompute(const util::ComputeType type);
 };
 
 #endif // COMPUTEFACTORY_H

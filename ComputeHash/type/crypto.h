@@ -21,11 +21,12 @@ public:
             delete m_crypto;
     }
 
-    void update(QString &s)
+    void update(QString &s ,QString oldComputeStr)
     {
         if(NULL == m_crypto)
             return;
 
+        Q_UNUSED(oldComputeStr)
         QByteArray byteAdta(s.toUtf8());
         m_crypto->addData(byteAdta);
     }

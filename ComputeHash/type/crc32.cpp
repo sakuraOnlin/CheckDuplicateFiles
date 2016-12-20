@@ -5,7 +5,7 @@ CRC32::CRC32()
 
 }
 
-void CRC32::update(QString &s)
+void CRC32::update(QString &s, QString oldComputeStr)
 {
 
 }

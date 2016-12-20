@@ -5,6 +5,7 @@
 #include "computehash_global.h"
 #include "util/util.h"
 
+class Factory;
 class ComputeHashPrivate;
 class COMPUTEHASHSHARED_EXPORT ComputeHash : public QObject
 {
@@ -16,6 +17,8 @@ public:
 
     bool setComputeHsahFile(QString filePath);
     QString getError();
+
+    void setUserFactore(Factory *userFacrory);
 
 signals:
     void signalFinalResult(QString result);

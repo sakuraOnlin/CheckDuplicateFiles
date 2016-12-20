@@ -11,7 +11,7 @@ class CRC32 : public Compute
 {
 public:
     explicit CRC32();
-    void update(QString &s);
+    void update(QString &s ,QString oldComputeStr);
     QString getFinalResult();
     void stopCheck();
 

@@ -10,7 +10,7 @@ public:
     Compute();
     virtual ~Compute();
 
-    virtual void update(QString &s) =0;
+    virtual void update(QString &s ,QString oldComputeStr) =0;
     virtual QString getFinalResult() =0;
     virtual void stopCheck() =0;
 
