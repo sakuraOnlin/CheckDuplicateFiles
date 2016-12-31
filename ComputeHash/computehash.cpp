@@ -106,7 +106,6 @@ bool ComputeHashPrivate::startCheck(QString filePath)
         return false;
     }
 
-
     QFile file(filePath);
     if(!file.open(QIODevice::ReadOnly))
     {

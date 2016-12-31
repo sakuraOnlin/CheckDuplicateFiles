@@ -21,13 +21,13 @@ public:
             delete m_crypto;
     }
 
-    void update(QString &s ,QString oldComputeStr)
+    void update(QString &data ,QString oldComputeHash)
     {
         if(NULL == m_crypto)
             return;
 
-        Q_UNUSED(oldComputeStr)
-        QByteArray byteAdta(s.toUtf8());
+        Q_UNUSED(oldComputeHash)
+        QByteArray byteAdta(data.toUtf8());
         m_crypto->addData(byteAdta);
     }
 
@@ -40,6 +40,11 @@ public:
     }
 
     void stopCheck(){}
+
+    void reset()
+    {
+        m_crypto->reset();
+    }
 
 private:
     QCryptographicHash *m_crypto;

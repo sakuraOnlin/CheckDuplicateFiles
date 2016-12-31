@@ -11,16 +11,20 @@ class CRC32 : public Compute
 {
 public:
     explicit CRC32();
-    void update(QString &s ,QString oldComputeStr);
+    void update(QString &data ,QString oldComputeHash = QString());
     QString getFinalResult();
     void stopCheck();
+    void reset();
 
 private:
-    void reset();
+    void initCRC32Table();
+    inline unsigned long reflect(unsigned long ref, char ch);
 
 private:
     bool m_isStart;
     uint32_t state;
+    unsigned long m_crc32Str;
+    unsigned long crc32_table[256];
 
 };
 

@@ -9,7 +9,7 @@ QT       -= gui
 TARGET = ComputeHash
 TEMPLATE = lib
 
-DEFINES += COMPUTEHASH_LIBRARY
+DEFINES += COMPUTEHASH_LIBRARY _DEBUG
 
 SOURCES += computehash.cpp \
     compute.cpp \

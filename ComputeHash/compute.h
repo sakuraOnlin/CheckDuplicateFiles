@@ -10,9 +10,10 @@ public:
     Compute();
     virtual ~Compute();
 
-    virtual void update(QString &s ,QString oldComputeStr) =0;
+    virtual void update(QString &data ,QString oldComputeHash = QString()) =0;
     virtual QString getFinalResult() =0;
     virtual void stopCheck() =0;
+    virtual void reset() =0;
 
 };
 
