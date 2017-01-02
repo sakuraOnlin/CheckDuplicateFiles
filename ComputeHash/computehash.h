@@ -21,8 +21,7 @@ public:
     void setUserFactore(Factory *userFacrory);
 
 signals:
-    void signalFinalResult(QString result);
-    void signalProgress(ulong step, ulong max);
+    void signalFinalResult(util::computeResult result);
 
 public slots:
     void onStopCompute();

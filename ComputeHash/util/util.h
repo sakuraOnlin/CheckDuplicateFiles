@@ -18,22 +18,26 @@ public:
 
     enum ResultMessageType
     {
-        RESULT_OK           ,
-        RESULT_WASRRING     ,
-        RESULT_ERROR
+        CheckIng    ,
+        CheckOver   ,
+        Warring     ,
+        CheckError
     };
 
-    struct result
+    struct computeResult
     {
         ResultMessageType   resultMessageType;
         ComputeType         computeHashType;
+        qint64              fileSize;
+        qint64              computeProgress;
         QString             resultStr;
         QString             filePath;
-    }computeResult;
+    };
 
     struct factoryCreateResult
     {
         Compute             *creatorComputr;
+        ComputeType         computeHashType;
         QString             creatorErrStr;
     };
 

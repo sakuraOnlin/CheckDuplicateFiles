@@ -32,14 +32,13 @@ public:
             delete m_crypto;
     }
 
-    void update(QString &data ,QString oldComputeHash)
+    void update(QByteArray &data ,QString oldComputeHash)
     {
         if(NULL == m_crypto)
             return;
 
         Q_UNUSED(oldComputeHash)
-        QByteArray byteAdta(data.toUtf8());
-        m_crypto->addData(byteAdta);
+        m_crypto->addData(data);
     }
 
     QString getFinalResult()

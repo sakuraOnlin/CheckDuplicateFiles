@@ -8,12 +8,12 @@ CRC32::CRC32()
     reset();
 }
 
-void CRC32::update(QString &data, QString oldComputeHash)
+void CRC32::update(QByteArray &data, QString oldComputeHash)
 {
     Q_UNUSED(oldComputeHash)
 
     int len = data.length();
-    char *stdChar = (char*)data.toStdString().c_str();
+    char *stdChar = data.data();
     unsigned char* buffer = (unsigned char *)stdChar;
     while(len--)
         m_crc32Str = (m_crc32Str >> 8) ^ crc32_table[(m_crc32Str & 0xFF) ^ *buffer++];

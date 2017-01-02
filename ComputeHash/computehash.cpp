@@ -106,13 +106,6 @@ bool ComputeHashPrivate::startCheck(QString filePath)
     }
 
     //TODO: 此处需要开始线程化检查文件。线程里的检查模块来自 m_computeList　链表里的每个节点
-//    QFile file(filePath);
-//    if(!file.open(QIODevice::ReadOnly))
-//    {
-//        m_errorStr = QObject::tr("File open errors!");
-//        return false;
-//    }
-//    QDataStream dataStream(&file);
 
     return true;
 }

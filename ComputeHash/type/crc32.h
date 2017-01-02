@@ -11,7 +11,7 @@ class CRC32 : public Compute
 {
 public:
     explicit CRC32();
-    void update(QString &data ,QString oldComputeHash = QString());
+    void update(QByteArray &data ,QString oldComputeHash = QString());
     QString getFinalResult();
     void reset();
     util::ComputeType getType();
