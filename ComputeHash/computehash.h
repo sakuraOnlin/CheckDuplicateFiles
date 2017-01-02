@@ -12,7 +12,7 @@ class COMPUTEHASHSHARED_EXPORT ComputeHash : public QObject
     Q_OBJECT
 
 public:
-    ComputeHash(QObject *parent = 0,  util::ComputeType type = util::MD5);
+    ComputeHash(util::ComputeType type = util::MD5 ,QObject *parent = 0);
     ~ComputeHash();
 
     bool setComputeHsahFile(QString filePath);

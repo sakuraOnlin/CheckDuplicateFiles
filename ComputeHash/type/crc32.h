@@ -13,8 +13,8 @@ public:
     explicit CRC32();
     void update(QString &data ,QString oldComputeHash = QString());
     QString getFinalResult();
-    void stopCheck();
     void reset();
+    util::ComputeType getType();
 
 private:
     void initCRC32Table();

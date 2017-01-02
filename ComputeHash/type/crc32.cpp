@@ -23,20 +23,21 @@ QString CRC32::getFinalResult()
 {
 #ifdef _DEBUG
     qDebug() << "getFinalResult " ;
-    qDebug("%x",(m_crc32Str^0xffffffff)) ;
+    qDebug("%x" ,(m_crc32Str ^ 0xffffffff)) ;
 #endif
     // Exclusive OR the result with the beginning value.
-    return QString::number((m_crc32Str^0xffffffff));
-}
-
-void CRC32::stopCheck()
-{
+    return QString::number( (m_crc32Str ^ 0xffffffff));
 }
 
 void CRC32::reset()
 {
     m_crc32Str = 0xffffffff;
     initCRC32Table();
+}
+
+util::ComputeType CRC32::getType()
+{
+    return util::CRC32;
 }
 
 void CRC32::initCRC32Table()

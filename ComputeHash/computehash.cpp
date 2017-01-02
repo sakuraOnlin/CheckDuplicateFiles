@@ -1,10 +1,12 @@
 #include <QObject>
+#include <QList>
 #include <QFileInfo>
-#include <QFile>
-#include <QDataStream>
-#include "computehash.h"
-#include "util/computefactory.h"
+#include <QThread>
+
 #include "compute.h"
+#include "computehash.h"
+#include "threadreadfile.h"
+#include "util/computefactory.h"
 
 class ComputeHashPrivate
 {
@@ -19,11 +21,12 @@ public:
     QString m_errorStr;
     bool m_isStart;
     util::ComputeType m_conputeType;
-    Compute *m_computeHash;
+    QList<util::factoryCreateResult> m_computeList;
     Factory *m_factory;
+    QThread m_readFileThread;
 };
 
-ComputeHash::ComputeHash(QObject *parent, util::ComputeType type)
+ComputeHash::ComputeHash(util::ComputeType type, QObject *parent)
     :QObject(parent)
 {
     d_ptr = new ComputeHashPrivate(type);
@@ -72,18 +75,15 @@ void ComputeHash::setUserFactore(Factory *userFacrory)
 
 void ComputeHash::onStopCompute()
 {
-    if(NULL == d_ptr->m_computeHash)
-        return;
+    //TODO: 此处需要停止线程
     //因停止检查，文件指纹效验失败
     d_ptr->m_errorStr = tr("Failed to check the file for fingerprint verification!");
-    d_ptr->m_computeHash->stopCheck();
 }
 
 ComputeHashPrivate::ComputeHashPrivate(util::ComputeType type)
     :m_errorStr(QString()),
      m_isStart(false),
      m_conputeType(type),
-     m_computeHash(NULL),
      m_factory(new Factory)
 {
 
@@ -91,29 +91,28 @@ ComputeHashPrivate::ComputeHashPrivate(util::ComputeType type)
 
 ComputeHashPrivate::~ComputeHashPrivate()
 {
-    if(NULL != m_computeHash)
-        delete m_computeHash;
+    //TODO: 此处需要删除线程链表
     delete m_factory;
 }
 
 bool ComputeHashPrivate::startCheck(QString filePath)
 {
-    m_computeHash = m_factory->createCompute(m_conputeType);
-    if(NULL == m_computeHash)
+    m_computeList = m_factory->createCompute(m_conputeType);
+    if(0 == m_computeList.length())
     {
         //文件指纹模块初始化错误
         m_errorStr = QObject::tr("Check for module initialization errors!");
         return false;
     }
 
-    QFile file(filePath);
-    if(!file.open(QIODevice::ReadOnly))
-    {
-        m_errorStr = QObject::tr("File open errors!");
-        return false;
-    }
-
-    QDataStream dataStream(&file);
+    //TODO: 此处需要开始线程化检查文件。线程里的检查模块来自 m_computeList　链表里的每个节点
+//    QFile file(filePath);
+//    if(!file.open(QIODevice::ReadOnly))
+//    {
+//        m_errorStr = QObject::tr("File open errors!");
+//        return false;
+//    }
+//    QDataStream dataStream(&file);
 
     return true;
 }

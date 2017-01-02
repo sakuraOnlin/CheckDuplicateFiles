@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QString>
+#include "util/util.h"
 
 class Compute
 {
@@ -12,8 +13,8 @@ public:
 
     virtual void update(QString &data ,QString oldComputeHash = QString()) =0;
     virtual QString getFinalResult() =0;
-    virtual void stopCheck() =0;
     virtual void reset() =0;
+    virtual util::ComputeType getType() =0;
 
 };
 

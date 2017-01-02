@@ -13,6 +13,17 @@ public:
     explicit Crypto (T type)
         :m_crypto(new QCryptographicHash(type) )
     {
+        switch (type)
+        {
+        case QCryptographicHash::Sha1:
+            m_hashType = util::SHA1;
+            break;
+        case QCryptographicHash::Md5:
+            m_hashType = util::MD5;
+        default:
+            m_hashType = util::NOTYPE;
+            break;
+        }
     }
 
     ~Crypto()
@@ -39,15 +50,19 @@ public:
         return QString(m_crypto->result());
     }
 
-    void stopCheck(){}
-
     void reset()
     {
         m_crypto->reset();
     }
 
+    util::ComputeType getType()
+    {
+        return m_hashType;
+    }
+
 private:
     QCryptographicHash *m_crypto;
+    util::ComputeType m_hashType;
 };
 
 #endif // CRYPTO_H

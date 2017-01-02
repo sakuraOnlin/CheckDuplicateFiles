@@ -15,7 +15,8 @@ SOURCES += computehash.cpp \
     compute.cpp \
     util/util.cpp \
     util/computefactory.cpp \
-    type/crc32.cpp
+    type/crc32.cpp \
+    threadreadfile.cpp
 
 HEADERS += computehash.h\
         computehash_global.h \
@@ -23,7 +24,8 @@ HEADERS += computehash.h\
     util/util.h \
     util/computefactory.h \
     type/crc32.h \
-    type/crypto.h
+    type/crypto.h \
+    threadreadfile.h
 
 unix {
     target.path = /usr/lib
