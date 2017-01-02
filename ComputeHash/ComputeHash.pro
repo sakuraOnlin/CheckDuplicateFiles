@@ -1,9 +1,3 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2016-12-12T19:06:56
-#
-#-------------------------------------------------
-
 QT       -= gui
 
 TARGET = ComputeHash
@@ -26,6 +20,8 @@ HEADERS += computehash.h\
     type/crc32.h \
     type/crypto.h \
     threadreadfile.h
+
+TRANSLATIONS += res/translator/computeHash_cn.ts
 
 unix {
     target.path = /usr/lib

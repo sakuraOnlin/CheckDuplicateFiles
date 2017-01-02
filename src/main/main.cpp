@@ -12,6 +12,10 @@ int main(int argc, char *argv[])
     qtTranslator.load(":/lang/translator/translator_cn.qm");
     a.installTranslator(&qtTranslator);
 
+    QTranslator computeTranslator;
+    computeTranslator.load(":/lang/translator/computeHash_cn.qm");
+    a.installTranslator(&computeTranslator);
+
     MainWindow w;
     w.show();
 

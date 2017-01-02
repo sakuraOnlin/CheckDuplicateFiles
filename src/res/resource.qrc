@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/lang">
         <file>translator/translator_cn.qm</file>
+        <file>translator/computeHash_cn.qm</file>
     </qresource>
     <qresource prefix="/img">
         <file>image/delFile.png</file>
