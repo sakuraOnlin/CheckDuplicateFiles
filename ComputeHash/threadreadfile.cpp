@@ -24,7 +24,6 @@ void ThreadReadFile::doWork(util::factoryCreateResult computeStruct, QString fil
     {
         emitResult(util::CheckError ,computeStruct.computeHashType ,filePath ,
                    fileSize ,fileProgress ,computeStruct.creatorErrStr);
-        file.close();
         return;
     }
 
@@ -47,6 +46,7 @@ void ThreadReadFile::doWork(util::factoryCreateResult computeStruct, QString fil
     }
 
     //read file atEnd, emit Hash
+    file.close();
     QString computeResultStr(compute->getFinalResult());
     emitResult(util::CheckOver ,compute->getType() ,filePath ,fileSize ,
                fileProgress ,computeResultStr);
