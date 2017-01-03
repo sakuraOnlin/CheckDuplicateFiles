@@ -21,16 +21,16 @@ void CRC32::update(QByteArray &data, QString oldComputeHash)
 
 QString CRC32::getFinalResult()
 {
-#ifdef _DEBUG
-    qDebug() << "getFinalResult " ;
-    qDebug("%x" ,(m_crc32Str ^ 0xffffffff)) ;
-#endif
     // Exclusive OR the result with the beginning value.
-    QString rawStr(QString::number( (m_crc32Str ^ 0xffffffff)));
-    bool conversion = false;
-    qint64 converData = rawStr.toLongLong(&conversion ,16);
-    conversion?rawStr = QString::number(converData) : rawStr;
-    return rawStr;
+    unsigned long resultData = m_crc32Str ^ 0xffffffff;
+
+#ifdef _DEBUG
+    printf(" resultData %X" ,resultData);
+#endif
+    char hexChar[10] = {0};
+    int hexCharLength = sprintf(hexChar , "%X" , resultData);
+    QByteArray byteChar(hexChar ,hexCharLength);
+    return QString(byteChar);
 }
 
 void CRC32::reset()
