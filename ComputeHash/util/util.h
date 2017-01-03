@@ -20,8 +20,8 @@ public:
     {
         CheckIng    ,
         CheckOver   ,
-        Warring     ,
-        CheckError
+        CheckError  ,
+        Warring
     };
 
     struct computeResult

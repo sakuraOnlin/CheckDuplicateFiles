@@ -17,7 +17,7 @@ void ThreadReadFile::doWork(util::factoryCreateResult computeStruct, QString fil
 {
     qint64 fileSize = 0;
     qint64 fileProgress = 0;
-    qint64 loadFileData = 2048;
+    qint64 loadFileData = 0;
 
     Compute *compute = computeStruct.creatorComputr;
     if(NULL == compute)
@@ -35,6 +35,7 @@ void ThreadReadFile::doWork(util::factoryCreateResult computeStruct, QString fil
         return;
     }
     fileSize = file.size();
+    loadFileData = automaticDivision(fileSize);
 
     //start read file data to Compute Hash
     while(!file.atEnd())
@@ -70,4 +71,27 @@ void ThreadReadFile::emitResult(util::ResultMessageType resultType,
     computeResult.filePath = filePath;
     computeResult.resultStr = result;
     emit resultReady( computeResult);
+}
+
+qint64 ThreadReadFile::automaticDivision(qint64 fileSize)
+{
+    qint64 defaultSize = 1024;
+    if(fileSize < defaultSize * (qint64)20)
+    {
+        return fileSize;
+    }
+    else if(fileSize <= defaultSize * 50)
+    {
+        return (fileSize / (qint64)2);
+    }
+    else if(fileSize <= defaultSize *100)
+    {
+        return (fileSize / (qint64)4);
+    }
+    else
+    {
+        return defaultSize * (qint64)20;
+    }
+
+    return defaultSize;
 }

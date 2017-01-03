@@ -15,7 +15,7 @@ void CRC32::update(QByteArray &data, QString oldComputeHash)
     int len = data.length();
     char *stdChar = data.data();
     unsigned char* buffer = (unsigned char *)stdChar;
-    while(len--)
+    for(;len >0 ;len--)
         m_crc32Str = (m_crc32Str >> 8) ^ crc32_table[(m_crc32Str & 0xFF) ^ *buffer++];
 }
 
@@ -26,7 +26,11 @@ QString CRC32::getFinalResult()
     qDebug("%x" ,(m_crc32Str ^ 0xffffffff)) ;
 #endif
     // Exclusive OR the result with the beginning value.
-    return QString::number( (m_crc32Str ^ 0xffffffff));
+    QString rawStr(QString::number( (m_crc32Str ^ 0xffffffff)));
+    bool conversion = false;
+    qint64 converData = rawStr.toLongLong(&conversion ,16);
+    conversion?rawStr = QString::number(converData) : rawStr;
+    return rawStr;
 }
 
 void CRC32::reset()

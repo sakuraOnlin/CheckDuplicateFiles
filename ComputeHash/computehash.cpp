@@ -14,9 +14,7 @@ class ComputeHashPrivate
     Q_DECLARE_PUBLIC(ComputeHash)
 public:
     ComputeHashPrivate(util::ComputeType type);
-
     ~ComputeHashPrivate();
-    bool startCheck(QString filePath);
 
     QString m_errorStr;
     bool m_isStart;
@@ -25,10 +23,10 @@ public:
     Factory *m_factory;
 };
 
-ComputeHash::ComputeHash(util::ComputeType type, QObject *parent)
+ComputeHash::ComputeHash(int type, QObject *parent)
     :QObject(parent)
 {
-    d_ptr = new ComputeHashPrivate(type);
+    d_ptr = new ComputeHashPrivate((util::ComputeType)type);
 }
 
 ComputeHash::~ComputeHash()
@@ -46,7 +44,28 @@ bool ComputeHash::setCheckFilePath(QString filePath)
         return false;
     }
 
-    return d_ptr->startCheck(filePath);
+    QList<util::factoryCreateResult> computeList = d_ptr->m_factory->createCompute(d_ptr->m_conputeType);
+    if(0 == computeList.length())
+    {
+        d_ptr->m_errorStr = QObject::tr("Check for module initialization errors!");
+        return false;
+    }
+
+    for(int i = 0 ; i < computeList.length();i++)
+    {
+        util::factoryCreateResult factoryValue = computeList[i];
+        QThread *thread = new QThread;
+        ThreadReadFile *work = new ThreadReadFile;
+        work->moveToThread(thread);
+        connect( thread ,SIGNAL(finished()) ,work ,SLOT(deleteLater()) );
+        connect( work ,SIGNAL(resultReady(util::computeResult)) ,this ,
+                          SIGNAL(signalFinalResult(util::computeResult)) );
+        thread->start();
+        work->doWork(factoryValue ,filePath);
+        d_ptr->m_readFileThreadList.append(thread);
+    }
+
+    return true;
 }
 
 QString ComputeHash::getError()
@@ -97,30 +116,4 @@ ComputeHashPrivate::~ComputeHashPrivate()
 {
     //TODO: 此处需要删除线程链表
     delete m_factory;
-}
-
-bool ComputeHashPrivate::startCheck(QString filePath)
-{
-    QList<util::factoryCreateResult> computeList = m_factory->createCompute(m_conputeType);
-    if(0 == computeList.length())
-    {
-        m_errorStr = QObject::tr("Check for module initialization errors!");
-        return false;
-    }
-
-    for(int i = 0 ; i < computeList.length();i++)
-    {
-        util::factoryCreateResult factoryValue = computeList[i];
-        QThread *thread = new QThread;
-        ThreadReadFile *work = new ThreadReadFile;
-        work->moveToThread(thread);
-        QObject::connect( thread ,SIGNAL(finished()) ,work ,SLOT(deleteLater()) );
-        QObject::connect( work ,SIGNAL(resultReady(util::computeResult)) ,q_ptr ,
-                          SIGNAL(signalFinalResult(util::computeResult)) );
-        thread->start();
-        work->doWork(factoryValue ,filePath);
-        m_readFileThreadList.append(thread);
-    }
-
-    return true;
 }

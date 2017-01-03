@@ -22,6 +22,7 @@ private:
     inline void emitResult(util::ResultMessageType resultType ,util::ComputeType computeType ,
                     QString filePath ,qint64 fileSize ,qint64 fileProgress ,
                     QString result = QString());
+    inline qint64 automaticDivision(qint64 fileSize);
 
 };
 

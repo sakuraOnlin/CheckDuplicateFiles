@@ -6,6 +6,10 @@
 #include <QByteArray>
 #include "compute.h"
 
+#ifdef _DEBUG
+#include <QDebug>
+#endif
+
 template <typename T>
 class Crypto : public Compute
 {
@@ -20,6 +24,7 @@ public:
             break;
         case QCryptographicHash::Md5:
             m_hashType = util::MD5;
+            break;
         default:
             m_hashType = util::NOTYPE;
             break;
@@ -46,7 +51,11 @@ public:
         if(NULL == m_crypto)
             return QString();
 
-        return QString(m_crypto->result());
+#ifdef _DEBUG
+        QByteArray data(m_crypto->result());
+        qDebug() << "Crypto Result" << data << " , " << data.toHex().toUpper();
+#endif
+        return QString(m_crypto->result().toHex().toUpper());
     }
 
     void reset()
