@@ -21,9 +21,8 @@ public:
     QString m_errorStr;
     bool m_isStart;
     util::ComputeType m_conputeType;
-    QList<util::factoryCreateResult> m_computeList;
+    QList<QThread*> m_readFileThreadList;
     Factory *m_factory;
-    QThread m_readFileThread;
 };
 
 ComputeHash::ComputeHash(util::ComputeType type, QObject *parent)
@@ -37,13 +36,11 @@ ComputeHash::~ComputeHash()
     delete d_ptr;
 }
 
-//设置好文件路径后就自动开始检查文件指纹
-bool ComputeHash::setComputeHsahFile(QString filePath)
+bool ComputeHash::setCheckFilePath(QString filePath)
 {
     QFileInfo fileInfo(filePath);
     if(filePath.isEmpty() && !fileInfo.isFile())
     {
-        //请选择有效的文件进行文件指纹识别！错误地址： + filePath
         d_ptr->m_errorStr = tr("Please select a valid file for file fingerprinting! \n"
                                "Wrong address :") + filePath;
         return false;
@@ -75,16 +72,23 @@ void ComputeHash::setUserFactore(Factory *userFacrory)
 
 void ComputeHash::onStopCompute()
 {
-    //TODO: 此处需要停止线程
     //因停止检查，文件指纹效验失败
+    for(int i = 0 ; i < d_ptr->m_readFileThreadList.length() ;i++)
+    {
+        d_ptr->m_readFileThreadList[i]->quit();
+        d_ptr->m_readFileThreadList[i]->wait(100);
+        delete d_ptr->m_readFileThreadList[i];
+    }
+
+    d_ptr->m_readFileThreadList.clear();
     d_ptr->m_errorStr = tr("Failed to check the file for fingerprint verification!");
 }
 
 ComputeHashPrivate::ComputeHashPrivate(util::ComputeType type)
-    :m_errorStr(QString()),
-     m_isStart(false),
-     m_conputeType(type),
-     m_factory(new Factory)
+    :m_errorStr(QString()) ,
+      m_isStart(false) ,
+      m_conputeType(type) ,
+      m_factory(new Factory)
 {
 
 }
@@ -97,15 +101,26 @@ ComputeHashPrivate::~ComputeHashPrivate()
 
 bool ComputeHashPrivate::startCheck(QString filePath)
 {
-    m_computeList = m_factory->createCompute(m_conputeType);
-    if(0 == m_computeList.length())
+    QList<util::factoryCreateResult> computeList = m_factory->createCompute(m_conputeType);
+    if(0 == computeList.length())
     {
-        //文件指纹模块初始化错误
         m_errorStr = QObject::tr("Check for module initialization errors!");
         return false;
     }
 
-    //TODO: 此处需要开始线程化检查文件。线程里的检查模块来自 m_computeList　链表里的每个节点
+    for(int i = 0 ; i < computeList.length();i++)
+    {
+        util::factoryCreateResult factoryValue = computeList[i];
+        QThread *thread = new QThread;
+        ThreadReadFile *work = new ThreadReadFile;
+        work->moveToThread(thread);
+        QObject::connect( thread ,SIGNAL(finished()) ,work ,SLOT(deleteLater()) );
+        QObject::connect( work ,SIGNAL(resultReady(util::computeResult)) ,q_ptr ,
+                          SIGNAL(signalFinalResult(util::computeResult)) );
+        thread->start();
+        work->doWork(factoryValue ,filePath);
+        m_readFileThreadList.append(thread);
+    }
 
     return true;
 }

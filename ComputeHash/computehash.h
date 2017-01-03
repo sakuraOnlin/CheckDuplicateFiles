@@ -15,7 +15,7 @@ public:
     ComputeHash(util::ComputeType type = util::MD5 ,QObject *parent = 0);
     ~ComputeHash();
 
-    bool setComputeHsahFile(QString filePath);
+    bool setCheckFilePath(QString filePath);
     QString getError();
 
     void setUserFactore(Factory *userFacrory);

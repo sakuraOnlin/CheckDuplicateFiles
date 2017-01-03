@@ -11,44 +11,45 @@
 ThreadReadFile::ThreadReadFile(QObject *parent)
     :QObject(parent)
 {
-    m_fileSize = 0;
-    m_fileProgress = 0;
-    m_loadFileData = 2048;
 }
 
 void ThreadReadFile::doWork(util::factoryCreateResult computeStruct, QString filePath)
 {
-    QFile file(filePath);
-    if(!file.open(QIODevice::ReadOnly))
-    {
-        emitResult(util::CheckError ,computeStruct.computeHashType ,filePath ,
-                   m_fileSize ,m_fileProgress ,tr("File open errors!"));
-        return;
-    }
-    m_fileSize = file.size();
+    qint64 fileSize = 0;
+    qint64 fileProgress = 0;
+    qint64 loadFileData = 2048;
 
     Compute *compute = computeStruct.creatorComputr;
     if(NULL == compute)
     {
         emitResult(util::CheckError ,computeStruct.computeHashType ,filePath ,
-                   m_fileSize ,m_fileProgress ,computeStruct.creatorErrStr);
+                   fileSize ,fileProgress ,computeStruct.creatorErrStr);
         file.close();
         return;
     }
 
+    QFile file(filePath);
+    if(!file.open(QIODevice::ReadOnly))
+    {
+        emitResult(util::CheckError ,computeStruct.computeHashType ,filePath ,
+                   fileSize ,fileProgress ,tr("File open errors!"));
+        return;
+    }
+    fileSize = file.size();
+
     //start read file data to Compute Hash
     while(!file.atEnd())
     {
-        QByteArray readFileRawData = file.read(m_loadFileData);
+        QByteArray readFileRawData = file.read(loadFileData);
         compute->update(readFileRawData);
-        m_fileProgress += m_loadFileData;
-        emitResult(util::CheckIng ,compute->getType() ,filePath ,m_fileSize ,m_fileProgress);
+        fileProgress += loadFileData;
+        emitResult(util::CheckIng ,compute->getType() ,filePath ,fileSize ,fileProgress);
     }
 
     //read file atEnd, emit Hash
     QString computeResultStr(compute->getFinalResult());
-    emitResult(util::CheckOver ,compute->getType() ,filePath ,m_fileSize ,
-               m_fileProgress ,computeResultStr);
+    emitResult(util::CheckOver ,compute->getType() ,filePath ,fileSize ,
+               fileProgress ,computeResultStr);
 
 #ifdef _DEBUG
     qDebug() << "Result Valur :" << filePath + " , util::ComputeType :" +

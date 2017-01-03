@@ -23,11 +23,6 @@ private:
                     QString filePath ,qint64 fileSize ,qint64 fileProgress ,
                     QString result = QString());
 
-private:
-    qint64 m_fileSize;
-    qint64 m_fileProgress;
-    qint64 m_loadFileData;
-
 };
 
 #endif // THREADREADFILE_H
