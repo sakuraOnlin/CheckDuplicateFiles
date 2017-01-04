@@ -8,34 +8,37 @@
 #include <QDebug>
 #endif
 
-ThreadReadFile::ThreadReadFile(QObject *parent)
-    :QObject(parent)
+ThreadReadFile::ThreadReadFile(util::factoryCreateResult result, QString filePath, QObject *parent)
+    :QObject(parent) ,
+      m_result(result) ,
+      m_filePath(filePath)
 {
 }
 
-void ThreadReadFile::doWork(util::factoryCreateResult computeStruct, QString filePath)
+void ThreadReadFile::doWork()
 {
     qint64 fileSize = 0;
     qint64 fileProgress = 0;
     qint64 loadFileData = 0;
 
-    Compute *compute = computeStruct.creatorComputr;
+    Compute *compute = m_result.creatorComputr;
     if(NULL == compute)
     {
-        emitResult(util::CheckError ,computeStruct.computeHashType ,filePath ,
-                   fileSize ,fileProgress ,computeStruct.creatorErrStr);
+        emitResult(util::CheckError ,m_result.computeHashType ,m_filePath ,
+                   fileSize ,fileProgress ,m_result.creatorErrStr);
         return;
     }
 
-    QFile file(filePath);
+    QFile file(m_filePath);
     if(!file.open(QIODevice::ReadOnly))
     {
-        emitResult(util::CheckError ,computeStruct.computeHashType ,filePath ,
+        emitResult(util::CheckError ,m_result.computeHashType ,m_filePath ,
                    fileSize ,fileProgress ,tr("File open errors!"));
         return;
     }
     fileSize = file.size();
     loadFileData = automaticDivision(fileSize);
+    util::ComputeType getType = compute->getType();
 
     //start read file data to Compute Hash
     while(!file.atEnd())
@@ -43,18 +46,18 @@ void ThreadReadFile::doWork(util::factoryCreateResult computeStruct, QString fil
         QByteArray readFileRawData = file.read(loadFileData);
         compute->update(readFileRawData);
         fileProgress += loadFileData;
-        emitResult(util::CheckIng ,compute->getType() ,filePath ,fileSize ,fileProgress);
+        emitResult(util::CheckIng , getType,m_filePath ,fileSize ,fileProgress);
     }
 
     //read file atEnd, emit Hash
     file.close();
     QString computeResultStr(compute->getFinalResult());
-    emitResult(util::CheckOver ,compute->getType() ,filePath ,fileSize ,
+    emitResult(util::CheckOver ,getType ,m_filePath ,fileSize ,
                fileProgress ,computeResultStr);
 
 #ifdef _DEBUG
-    qDebug() << "Result Valur :" << filePath + " , util::ComputeType :" +
-                QString::number((int)compute->getType()) + " , " + computeResultStr;
+    qDebug() << "Result Valur :" << m_filePath + " , util::ComputeType :" +
+                QString::number((int)getType) + " , " + computeResultStr;
 #endif
     delete compute;
 }
@@ -75,22 +78,23 @@ void ThreadReadFile::emitResult(util::ResultMessageType resultType,
 
 qint64 ThreadReadFile::automaticDivision(qint64 fileSize)
 {
-    qint64 defaultSize = 1024;
-    if(fileSize < defaultSize * (qint64)20)
+    qint64 defaultSize = 1024 ; // 1 kb
+    defaultSize *= 1024; // 1MB
+    if(fileSize < defaultSize * (qint64)20) // 20 MB
     {
         return fileSize;
     }
-    else if(fileSize <= defaultSize * 50)
+    else if(fileSize <= defaultSize * 50)   // 50 MB
     {
         return (fileSize / (qint64)2);
     }
-    else if(fileSize <= defaultSize *100)
+    else if(fileSize <= defaultSize *100)   // 100 MB
     {
-        return (fileSize / (qint64)4);
+        return (fileSize / (qint64)3);
     }
-    else
+    else                                    // fileSize > 100 MB
     {
-        return defaultSize * (qint64)20;
+        return defaultSize * (qint64)40;
     }
 
     return defaultSize;

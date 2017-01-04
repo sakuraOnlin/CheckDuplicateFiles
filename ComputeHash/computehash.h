@@ -22,6 +22,7 @@ public:
 
 signals:
     void signalFinalResult(util::computeResult result);
+    void signalStartCheck();
 
 public slots:
     void onStopCompute();

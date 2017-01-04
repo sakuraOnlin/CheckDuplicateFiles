@@ -15,11 +15,13 @@ class ComputeHashPrivate
 public:
     ComputeHashPrivate(util::ComputeType type);
     ~ComputeHashPrivate();
+    inline void stopAndClearThreadList();
 
     QString m_errorStr;
     bool m_isStart;
     util::ComputeType m_conputeType;
-    QList<QThread*> m_readFileThreadList;
+    QList<QThread*>m_readFileThreadList;
+    QThread m_readFileThread;
     Factory *m_factory;
 };
 
@@ -27,6 +29,9 @@ ComputeHash::ComputeHash(int type, QObject *parent)
     :QObject(parent)
 {
     d_ptr = new ComputeHashPrivate((util::ComputeType)type);
+    qRegisterMetaType<util::factoryCreateResult>("util::factoryCreateResult");
+    qRegisterMetaType<util::computeResult>("util::computeResult");
+
 }
 
 ComputeHash::~ComputeHash()
@@ -53,17 +58,18 @@ bool ComputeHash::setCheckFilePath(QString filePath)
 
     for(int i = 0 ; i < computeList.length();i++)
     {
-        util::factoryCreateResult factoryValue = computeList[i];
         QThread *thread = new QThread;
-        ThreadReadFile *work = new ThreadReadFile;
-        work->moveToThread(thread);
+        util::factoryCreateResult factoryValue = computeList[i];
+        ThreadReadFile *work = new ThreadReadFile(factoryValue , filePath);
+        work->moveToThread( thread );
         connect( thread ,SIGNAL(finished()) ,work ,SLOT(deleteLater()) );
         connect( work ,SIGNAL(resultReady(util::computeResult)) ,this ,
                           SIGNAL(signalFinalResult(util::computeResult)) );
+        connect(this ,SIGNAL(signalStartCheck()) , work ,SLOT(doWork()) );
         thread->start();
-        work->doWork(factoryValue ,filePath);
         d_ptr->m_readFileThreadList.append(thread);
     }
+    emit signalStartCheck();
 
     return true;
 }
@@ -91,15 +97,7 @@ void ComputeHash::setUserFactore(Factory *userFacrory)
 
 void ComputeHash::onStopCompute()
 {
-    //因停止检查，文件指纹效验失败
-    for(int i = 0 ; i < d_ptr->m_readFileThreadList.length() ;i++)
-    {
-        d_ptr->m_readFileThreadList[i]->quit();
-        d_ptr->m_readFileThreadList[i]->wait(100);
-        delete d_ptr->m_readFileThreadList[i];
-    }
-
-    d_ptr->m_readFileThreadList.clear();
+    d_ptr->stopAndClearThreadList();
     d_ptr->m_errorStr = tr("Failed to check the file for fingerprint verification!");
 }
 
@@ -114,6 +112,17 @@ ComputeHashPrivate::ComputeHashPrivate(util::ComputeType type)
 
 ComputeHashPrivate::~ComputeHashPrivate()
 {
-    //TODO: 此处需要删除线程链表
+    stopAndClearThreadList();
     delete m_factory;
+}
+
+void ComputeHashPrivate::stopAndClearThreadList()
+{
+    for(int i = 0 ; i < m_readFileThreadList.length() ; i = 0)
+    {
+        m_readFileThreadList[i]->quit();
+        m_readFileThreadList[i]->wait(100);
+        delete m_readFileThreadList[i];
+        m_readFileThreadList.removeAt(i);
+    }
 }
