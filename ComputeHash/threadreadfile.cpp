@@ -73,7 +73,7 @@ void ThreadReadFile::emitResult(util::ResultMessageType resultType,
     computeResult.computeProgress = fileProgress;
     computeResult.filePath = filePath;
     computeResult.resultStr = result;
-    emit resultReady( computeResult);
+    emit signalResultReady( computeResult);
 }
 
 qint64 ThreadReadFile::automaticDivision(qint64 fileSize)

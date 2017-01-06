@@ -19,7 +19,7 @@ public slots:
     void doWork();
 
 signals:
-    void resultReady(util::computeResult result);
+    void signalResultReady(util::computeResult result);
 
 private:
     inline void emitResult(util::ResultMessageType resultType ,util::ComputeType computeType ,

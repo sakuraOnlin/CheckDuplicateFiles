@@ -63,7 +63,7 @@ bool ComputeHash::setCheckFilePath(QString filePath)
         ThreadReadFile *work = new ThreadReadFile(factoryValue , filePath);
         work->moveToThread( thread );
         connect( thread ,SIGNAL(finished()) ,work ,SLOT(deleteLater()) );
-        connect( work ,SIGNAL(resultReady(util::computeResult)) ,this ,
+        connect( work ,SIGNAL(signalResultReady(util::computeResult)) ,this ,
                           SIGNAL(signalFinalResult(util::computeResult)) );
         connect(this ,SIGNAL(signalStartCheck()) , work ,SLOT(doWork()) );
         thread->start();

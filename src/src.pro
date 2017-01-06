@@ -7,13 +7,15 @@ TEMPLATE = app
 
 SOURCES += \
     main/main.cpp \
-    main/mainwindow.cpp
+    main/mainwindow.cpp \
+    core/threadselectfiles.cpp
 
 FORMS += \
     main/mainwindow.ui
 
 HEADERS += \
-    main/mainwindow.h
+    main/mainwindow.h \
+    core/threadselectfiles.h
 
 TRANSLATIONS += res/translator/translator_cn.ts
 
