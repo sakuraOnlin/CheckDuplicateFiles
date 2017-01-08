@@ -8,14 +8,18 @@ TEMPLATE = app
 SOURCES += \
     main/main.cpp \
     main/mainwindow.cpp \
-    core/threadselectfiles.cpp
+    core/threadselectfiles.cpp \
+    core/itemlistdelegate.cpp \
+    core/util.cpp
 
 FORMS += \
     main/mainwindow.ui
 
 HEADERS += \
     main/mainwindow.h \
-    core/threadselectfiles.h
+    core/threadselectfiles.h \
+    core/itemlistdelegate.h \
+    core/util.h
 
 TRANSLATIONS += res/translator/translator_cn.ts
 
