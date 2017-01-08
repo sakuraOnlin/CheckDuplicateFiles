@@ -25,7 +25,7 @@ void ThreadReadFile::doWork()
     if(NULL == compute)
     {
         emitResult(util::CheckError ,m_result.computeHashType ,m_filePath ,
-                   fileSize ,fileProgress ,m_result.creatorErrStr);
+                   fileSize ,fileProgress ,QString("NoType") ,m_result.creatorErrStr);
         return;
     }
 
@@ -33,7 +33,7 @@ void ThreadReadFile::doWork()
     if(!file.open(QIODevice::ReadOnly))
     {
         emitResult(util::CheckError ,m_result.computeHashType ,m_filePath ,
-                   fileSize ,fileProgress ,tr("File open errors!"));
+                   fileSize ,fileProgress ,compute->getTypeName() ,tr("File open errors!"));
         return;
     }
     fileSize = file.size();
@@ -46,25 +46,27 @@ void ThreadReadFile::doWork()
         QByteArray readFileRawData = file.read(loadFileData);
         compute->update(readFileRawData);
         fileProgress += loadFileData;
-        emitResult(util::CheckIng , getType,m_filePath ,fileSize ,fileProgress);
+        emitResult(util::CheckIng , getType,m_filePath ,fileSize ,
+                   fileProgress ,compute->getTypeName());
     }
 
     //read file atEnd, emit Hash
     file.close();
     QString computeResultStr(compute->getFinalResult());
     emitResult(util::CheckOver ,getType ,m_filePath ,fileSize ,
-               fileProgress ,computeResultStr);
+               fileProgress ,compute->getTypeName() ,computeResultStr);
 
 #ifdef _DEBUG
     qDebug() << "Result Valur :" << m_filePath + " , util::ComputeType :" +
-                QString::number((int)getType) + " , " + computeResultStr;
+                compute->getTypeName() + QString::number((int)getType) +
+                " , " + computeResultStr;
 #endif
     delete compute;
 }
 
 void ThreadReadFile::emitResult(util::ResultMessageType resultType,
                                 util::ComputeType computeType, QString filePath,
-                                qint64 fileSize, qint64 fileProgress, QString result)
+                                qint64 fileSize, qint64 fileProgress, QString typeName, QString result)
 {
     util::computeResult computeResult;
     computeResult.resultMessageType = resultType;
@@ -73,6 +75,7 @@ void ThreadReadFile::emitResult(util::ResultMessageType resultType,
     computeResult.computeProgress = fileProgress;
     computeResult.filePath = filePath;
     computeResult.resultStr = result;
+    computeResult.checkTypeName = typeName;
     emit signalResultReady( computeResult);
 }
 

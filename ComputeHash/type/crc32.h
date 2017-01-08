@@ -15,6 +15,7 @@ public:
     QString getFinalResult();
     void reset();
     util::ComputeType getType();
+    QString getTypeName();
 
 private:
     void initCRC32Table();

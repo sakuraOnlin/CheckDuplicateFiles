@@ -44,6 +44,11 @@ util::ComputeType CRC32::getType()
     return util::CRC32;
 }
 
+QString CRC32::getTypeName()
+{
+    return QString("CRC32");
+}
+
 void CRC32::initCRC32Table()
 {
     // This is the official polynomial used by CRC-32 in PKZip, WinZip and Ethernet.

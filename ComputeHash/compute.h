@@ -16,6 +16,7 @@ public:
     virtual QString getFinalResult() =0;
     virtual void reset() =0;
     virtual util::ComputeType getType() =0;
+    virtual QString getTypeName() =0;
 
 };
 

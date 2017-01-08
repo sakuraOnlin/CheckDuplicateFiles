@@ -21,12 +21,15 @@ public:
         {
         case QCryptographicHash::Sha1:
             m_hashType = util::SHA1;
+            m_typeName = "SHA1";
             break;
         case QCryptographicHash::Md5:
             m_hashType = util::MD5;
+            m_typeName = "MD5";
             break;
         default:
             m_hashType = util::NOTYPE;
+            m_typeName = "NoType";
             break;
         }
     }
@@ -67,10 +70,15 @@ public:
     {
         return m_hashType;
     }
+    QString getTypeName()
+    {
+        return m_typeName;
+    }
 
 private:
     QCryptographicHash *m_crypto;
     util::ComputeType m_hashType;
+    QString m_typeName;
 };
 
 #endif // CRYPTO_H

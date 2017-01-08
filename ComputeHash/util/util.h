@@ -32,6 +32,7 @@ public:
         qint64              computeProgress;
         QString             resultStr;
         QString             filePath;
+        QString             checkTypeName;
     };
 
     struct factoryCreateResult
