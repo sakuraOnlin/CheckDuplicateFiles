@@ -40,7 +40,7 @@ public:
             delete m_crypto;
     }
 
-    void update(QByteArray &data ,QString oldComputeHash)
+    void update(QByteArray &data, QString oldComputeHash)
     {
         if(NULL == m_crypto)
             return;
@@ -56,7 +56,7 @@ public:
 
 #ifdef _DEBUG
         QByteArray data(m_crypto->result());
-        qDebug() << "Crypto Result" << data << " , " << data.toHex().toUpper();
+        qDebug() << "Crypto Result" << data << ",  " << data.toHex().toUpper();
 #endif
         return QString(m_crypto->result().toHex().toUpper());
     }

@@ -12,7 +12,7 @@ class COMPUTEHASHSHARED_EXPORT ComputeHash : public QObject
     Q_OBJECT
 
 public:
-    ComputeHash(int ComputeType = 1 ,QObject *parent = 0);
+    ComputeHash(int ComputeType = 1, QObject *parent = 0);
     ~ComputeHash();
 
     bool setCheckFilePath(QString filePath);

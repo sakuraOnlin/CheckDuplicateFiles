@@ -60,12 +60,12 @@ bool ComputeHash::setCheckFilePath(QString filePath)
     {
         QThread *thread = new QThread;
         util::factoryCreateResult factoryValue = computeList[i];
-        ThreadReadFile *work = new ThreadReadFile(factoryValue , filePath);
+        ThreadReadFile *work = new ThreadReadFile(factoryValue,  filePath);
         work->moveToThread( thread );
-        connect( thread ,SIGNAL(finished()) ,work ,SLOT(deleteLater()) );
-        connect( work ,SIGNAL(signalResultReady(util::computeResult)) ,this ,
+        connect( thread, SIGNAL(finished()), work, SLOT(deleteLater()) );
+        connect( work, SIGNAL(signalResultReady(util::computeResult)), this, 
                           SIGNAL(signalFinalResult(util::computeResult)) );
-        connect(this ,SIGNAL(signalStartCheck()) , work ,SLOT(doWork()) );
+        connect(this, SIGNAL(signalStartCheck()),  work, SLOT(doWork()) );
         thread->start();
         d_ptr->m_readFileThreadList.append(thread);
     }
@@ -102,9 +102,9 @@ void ComputeHash::onStopCompute()
 }
 
 ComputeHashPrivate::ComputeHashPrivate(util::ComputeType type)
-    :m_errorStr(QString()) ,
-      m_isStart(false) ,
-      m_conputeType(type) ,
+    :m_errorStr(QString()), 
+      m_isStart(false), 
+      m_conputeType(type), 
       m_factory(new Factory)
 {
 

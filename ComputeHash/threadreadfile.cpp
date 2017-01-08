@@ -9,8 +9,8 @@
 #endif
 
 ThreadReadFile::ThreadReadFile(util::factoryCreateResult result, QString filePath, QObject *parent)
-    :QObject(parent) ,
-      m_result(result) ,
+    :QObject(parent), 
+      m_result(result), 
       m_filePath(filePath)
 {
 }
@@ -24,16 +24,16 @@ void ThreadReadFile::doWork()
     Compute *compute = m_result.creatorComputr;
     if(NULL == compute)
     {
-        emitResult(util::CheckError ,m_result.computeHashType ,m_filePath ,
-                   fileSize ,fileProgress ,QString("NoType") ,m_result.creatorErrStr);
+        emitResult(util::CheckError, m_result.computeHashType, m_filePath, 
+                   fileSize, fileProgress, QString("NoType"), m_result.creatorErrStr);
         return;
     }
 
     QFile file(m_filePath);
     if(!file.open(QIODevice::ReadOnly))
     {
-        emitResult(util::CheckError ,m_result.computeHashType ,m_filePath ,
-                   fileSize ,fileProgress ,compute->getTypeName() ,tr("File open errors!"));
+        emitResult(util::CheckError, m_result.computeHashType, m_filePath, 
+                   fileSize, fileProgress, compute->getTypeName(), tr("File open errors!"));
         return;
     }
     fileSize = file.size();
@@ -46,20 +46,20 @@ void ThreadReadFile::doWork()
         QByteArray readFileRawData = file.read(loadFileData);
         compute->update(readFileRawData);
         fileProgress += loadFileData;
-        emitResult(util::CheckIng , getType,m_filePath ,fileSize ,
-                   fileProgress ,compute->getTypeName());
+        emitResult(util::CheckIng,  getType,m_filePath, fileSize, 
+                   fileProgress, compute->getTypeName());
     }
 
     //read file atEnd, emit Hash
     file.close();
     QString computeResultStr(compute->getFinalResult());
-    emitResult(util::CheckOver ,getType ,m_filePath ,fileSize ,
-               fileProgress ,compute->getTypeName() ,computeResultStr);
+    emitResult(util::CheckOver, getType, m_filePath, fileSize, 
+               fileProgress, compute->getTypeName(), computeResultStr);
 
 #ifdef _DEBUG
-    qDebug() << "Result Valur :" << m_filePath + " , util::ComputeType :" +
+    qDebug() << "Result Valur :" << m_filePath + ",  util::ComputeType :" +
                 compute->getTypeName() + QString::number((int)getType) +
-                " , " + computeResultStr;
+                ",  " + computeResultStr;
 #endif
     delete compute;
 }

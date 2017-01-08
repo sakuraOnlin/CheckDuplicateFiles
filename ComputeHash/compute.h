@@ -12,7 +12,7 @@ public:
     Compute();
     virtual ~Compute();
 
-    virtual void update(QByteArray &data ,QString oldComputeHash = QString()) =0;
+    virtual void update(QByteArray &data, QString oldComputeHash = QString()) =0;
     virtual QString getFinalResult() =0;
     virtual void reset() =0;
     virtual util::ComputeType getType() =0;

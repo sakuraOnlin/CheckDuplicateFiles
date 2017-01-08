@@ -25,11 +25,11 @@ QString CRC32::getFinalResult()
     unsigned long resultData = m_crc32Str ^ 0xffffffff;
 
 #ifdef _DEBUG
-    printf(" resultData %X" ,resultData);
+    printf(" resultData %X", resultData);
 #endif
     char hexChar[10] = {0};
-    int hexCharLength = sprintf(hexChar , "%X" , resultData);
-    QByteArray byteChar(hexChar ,hexCharLength);
+    int hexCharLength = sprintf(hexChar,  "%X",  resultData);
+    QByteArray byteChar(hexChar, hexCharLength);
     return QString(byteChar);
 }
 

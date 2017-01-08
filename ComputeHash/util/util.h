@@ -18,9 +18,9 @@ public:
 
     enum ResultMessageType
     {
-        CheckIng    ,
-        CheckOver   ,
-        CheckError  ,
+        CheckIng   , 
+        CheckOver  , 
+        CheckError , 
         Warring
     };
 

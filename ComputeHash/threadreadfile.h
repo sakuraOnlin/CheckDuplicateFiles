@@ -12,7 +12,7 @@ class ThreadReadFile : public QObject
 {
     Q_OBJECT
 public:
-    explicit ThreadReadFile(util::factoryCreateResult result ,QString filePath ,
+    explicit ThreadReadFile(util::factoryCreateResult result, QString filePath, 
                             QObject *parent = 0);
 
 public slots:
@@ -22,9 +22,9 @@ signals:
     void signalResultReady(util::computeResult result);
 
 private:
-    inline void emitResult(util::ResultMessageType resultType ,util::ComputeType computeType ,
-                    QString filePath ,qint64 fileSize ,qint64 fileProgress ,
-                    QString typeName =QString("NoType") ,QString result = QString());
+    inline void emitResult(util::ResultMessageType resultType, util::ComputeType computeType, 
+                    QString filePath, qint64 fileSize, qint64 fileProgress, 
+                    QString typeName =QString("NoType"), QString result = QString());
     inline qint64 automaticDivision(qint64 fileSize);
 
 private:
