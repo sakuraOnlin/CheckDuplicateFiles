@@ -7,6 +7,7 @@ ListWidget::ListWidget(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->listWidget->setItemDelegate(&m_dselegate);
+    ui->listWidget->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
 }
 
 ListWidget::~ListWidget()
