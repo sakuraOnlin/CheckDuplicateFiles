@@ -6,13 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>826</width>
     <height>500</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>800</width>
+    <width>826</width>
     <height>500</height>
    </size>
   </property>
@@ -26,7 +26,7 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="0">
-     <layout class="QVBoxLayout" name="verticalLayout">
+     <layout class="QVBoxLayout" name="verticalLayout" stretch="1,1,8">
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
@@ -220,7 +220,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QListWidget" name="computeList"/>
+       <widget class="ListWidget" name="listWidget" native="true"/>
       </item>
      </layout>
     </item>
@@ -231,8 +231,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
-     <height>22</height>
+     <width>826</width>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -286,6 +286,14 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ListWidget</class>
+   <extends>QWidget</extends>
+   <header>main/listwidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../res/resource.qrc"/>
  </resources>

@@ -1,17 +1,16 @@
-#ifndef UTIL_H
-#define UTIL_H
+#ifndef WIDGETUTIL_H
+#define WIDGETUTIL_H
 
 #include <QObject>
-#include "util/util.h"
 
-class util
+class WidgetUtil
 {
 public:
-    util();
+    explicit WidgetUtil();
 
     enum ItemDelegate
     {
-        FileName = Qt::UserRole +100 ,
+        FileName = Qt::UserRole +100,
         FilePath    ,
         FileSize    ,
         FileTime    ,
@@ -21,4 +20,4 @@ public:
     };
 };
 
-#endif // UTIL_H
+#endif // WIDGETUTIL_H

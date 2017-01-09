@@ -9,7 +9,7 @@ class DoWork : public QObject
     Q_OBJECT
 
 public:
-    explicit DoWork(QString dirPath ,QStringList filters,QObject *parent = 0);
+    explicit DoWork(QString dirPath, QStringList filters,QObject *parent = 0);
 
 signals:
     void signalFilePath(QString);

@@ -9,17 +9,20 @@ SOURCES += \
     main/main.cpp \
     main/mainwindow.cpp \
     core/threadselectfiles.cpp \
-    core/itemlistdelegate.cpp \
-    core/util.cpp
+    main/itemlistdelegate.cpp \
+    main/listwidget.cpp \
+    core/widgetUtil.cpp
 
 FORMS += \
-    main/mainwindow.ui
+    main/mainwindow.ui \
+    main/listwidget.ui
 
 HEADERS += \
     main/mainwindow.h \
     core/threadselectfiles.h \
-    core/itemlistdelegate.h \
-    core/util.h
+    main/itemlistdelegate.h \
+    main/listwidget.h \
+    core/widgetUtil.h
 
 TRANSLATIONS += res/translator/translator_cn.ts
 

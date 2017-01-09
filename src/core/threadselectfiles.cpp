@@ -4,9 +4,9 @@
 #include <QDirIterator>
 
 DoWork::DoWork(QString dirPath, QStringList filters, QObject *parent)
-    : QObject(parent) ,
-      m_isStart(true) ,
-      m_dirPath(dirPath) ,
+    : QObject(parent), 
+      m_isStart(true), 
+      m_dirPath(dirPath), 
       m_filters(filters)
 {
 
@@ -41,9 +41,9 @@ void DoWork::onStopSelectFiles()
 }
 
 ThreadSelectFiles::ThreadSelectFiles(QObject *parent)
-    :QObject(parent) ,
-      m_thread(NULL) ,
-      m_dirPath(QString("./")) ,
+    :QObject(parent), 
+      m_thread(NULL), 
+      m_dirPath(QString("./")), 
       m_filters(QStringList("*.*"))
 {
 
@@ -65,13 +65,13 @@ void ThreadSelectFiles::onStartSelectFiles()
         onStopSelectFiles();
 
     m_thread = new QThread;
-    DoWork *work = new DoWork(m_dirPath ,m_filters);
+    DoWork *work = new DoWork(m_dirPath, m_filters);
     work->moveToThread(m_thread);
-    connect(m_thread ,SIGNAL(finished()) ,work ,SLOT(deleteLater()) );
-    connect(work ,SIGNAL(objectNameChanged(QString)) ,this ,
+    connect(m_thread, SIGNAL(finished()), work, SLOT(deleteLater()) );
+    connect(work, SIGNAL(objectNameChanged(QString)), this, 
             SIGNAL(objectNameChanged(QString)));
-    connect(this ,SIGNAL(signalStartSelectFiles()) ,work ,SLOT(doWork()) );
-    connect(this ,SIGNAL(signalStopSelectFiles()) ,work ,
+    connect(this, SIGNAL(signalStartSelectFiles()), work, SLOT(doWork()) );
+    connect(this, SIGNAL(signalStopSelectFiles()), work, 
             SLOT(onStopSelectFiles()) );
     m_thread->start();
     emit signalStartSelectFiles();
