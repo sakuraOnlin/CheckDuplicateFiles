@@ -1,6 +1,7 @@
 #include "compute.h"
 
-Compute::Compute()
+Compute::Compute(QObject *parnet)
+    :QObject(parnet)
 {
 
 }

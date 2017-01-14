@@ -1,7 +1,6 @@
 #include <QObject>
 #include <QList>
 #include <QFileInfo>
-#include <QThread>
 
 #include "compute.h"
 #include "computehash.h"
@@ -13,25 +12,98 @@ class ComputeHashPrivate
     ComputeHash *q_ptr;
     Q_DECLARE_PUBLIC(ComputeHash)
 public:
-    ComputeHashPrivate(util::ComputeType type);
+    ComputeHashPrivate(ComputeHash *parent,util::ComputeType type);
     ~ComputeHashPrivate();
-    inline void stopAndClearThreadList();
+    void init();
+    bool setDirPath(QString dirPath);
+    inline bool checkDirValid(QString &dirPath);
+    void setUserFactore(Factory *userFacrory);
+    void onStart();
 
-    QString m_errorStr;
     bool m_isStart;
-    util::ComputeType m_conputeType;
-    QList<QThread*>m_readFileThreadList;
-    QThread m_readFileThread;
     Factory *m_factory;
+    QString m_dirPath;
+    util::ComputeType m_conputeType;
+    ThreadControl m_threadControl;
+    QList<util::factoryCreateResult> m_factoryList;
 };
+
+ComputeHashPrivate::ComputeHashPrivate(ComputeHash *parent, util::ComputeType type)
+    :q_ptr(parent),
+      m_isStart(false),
+      m_factory(new Factory),
+      m_dirPath(QString()),
+      m_conputeType(type)
+{
+    init();
+}
+
+ComputeHashPrivate::~ComputeHashPrivate()
+{
+    delete m_factory;
+}
+
+void ComputeHashPrivate::init()
+{
+    QObject::connect(&m_threadControl, SIGNAL(signalError(QString)),
+                     q_ptr, SIGNAL(signalError(QString)));
+    QObject::connect(&m_threadControl, SIGNAL(signalFinalResult(util::computeResult)),
+                     q_ptr, SIGNAL(signalFinalResult(util::computeResult)));
+    QObject::connect(&m_threadControl, SIGNAL(signalCalculationComplete()),
+                     q_ptr, SIGNAL(signalCalculationComplete()));
+
+}
+
+bool ComputeHashPrivate::setDirPath(QString dirPath)
+{
+    if(!checkDirValid(dirPath))
+        return false;
+
+    m_dirPath = dirPath;
+    return true;
+}
+
+bool ComputeHashPrivate::checkDirValid(QString &dirPath)
+{
+    QFileInfo fileInfo(dirPath);
+    if(dirPath.isEmpty() && !fileInfo.isFile())
+        return false;
+    return true;
+}
+
+void ComputeHashPrivate::setUserFactore(Factory *userFacrory)
+{
+    if(NULL == userFacrory)
+        return;
+
+    if(NULL == m_factory)
+    {
+        m_factory = userFacrory;
+        return;
+    }
+
+    delete m_factory;
+    m_factory = userFacrory;
+    return;
+}
+
+void ComputeHashPrivate::onStart()
+{
+    if(m_factoryList.isEmpty())
+    {
+        m_factoryList = m_factory->createCompute(m_conputeType);
+        m_threadControl.setDirPath(m_dirPath);
+        m_threadControl.setFactorys(m_factoryList);
+    }
+    m_threadControl.start();
+}
 
 ComputeHash::ComputeHash(int type, QObject *parent)
     :QObject(parent)
 {
-    d_ptr = new ComputeHashPrivate((util::ComputeType)type);
+    d_ptr = new ComputeHashPrivate(this, (util::ComputeType)type);
     qRegisterMetaType<util::factoryCreateResult>("util::factoryCreateResult");
     qRegisterMetaType<util::computeResult>("util::computeResult");
-
 }
 
 ComputeHash::~ComputeHash()
@@ -39,90 +111,28 @@ ComputeHash::~ComputeHash()
     delete d_ptr;
 }
 
-bool ComputeHash::setCheckFilePath(QString filePath)
+bool ComputeHash::setDirPath(QString dirPath)
 {
-    QFileInfo fileInfo(filePath);
-    if(filePath.isEmpty() && !fileInfo.isFile())
-    {
-        d_ptr->m_errorStr = tr("Please select a valid file for file fingerprinting! \n"
-                               "Wrong address :") + filePath;
-        return false;
-    }
-
-    QList<util::factoryCreateResult> computeList = d_ptr->m_factory->createCompute(d_ptr->m_conputeType);
-    if(0 == computeList.length())
-    {
-        d_ptr->m_errorStr = QObject::tr("Check for module initialization errors!");
-        return false;
-    }
-
-    for(int i = 0 ; i < computeList.length();i++)
-    {
-        QThread *thread = new QThread;
-        util::factoryCreateResult factoryValue = computeList[i];
-        ThreadReadFile *work = new ThreadReadFile(factoryValue,  filePath);
-        work->moveToThread( thread );
-        connect( thread, SIGNAL(finished()), work, SLOT(deleteLater()) );
-        connect( work, SIGNAL(signalResultReady(util::computeResult)), this, 
-                          SIGNAL(signalFinalResult(util::computeResult)) );
-        connect(this, SIGNAL(signalStartCheck()),  work, SLOT(doWork()) );
-        thread->start();
-        d_ptr->m_readFileThreadList.append(thread);
-    }
-    emit signalStartCheck();
-
-    return true;
-}
-
-QString ComputeHash::getError()
-{
-    return d_ptr->m_errorStr;
+    return d_ptr->setDirPath(dirPath);
 }
 
 void ComputeHash::setUserFactore(Factory *userFacrory)
 {
-    if(NULL == userFacrory)
-        return;
-
-    if(NULL == d_ptr->m_factory)
-    {
-        d_ptr->m_factory = userFacrory;
-        return;
-    }
-
-    delete d_ptr->m_factory;
-    d_ptr->m_factory = userFacrory;
-    return;
+    d_ptr->setUserFactore(userFacrory);
 }
 
-void ComputeHash::onStopCompute()
+void ComputeHash::onStart()
 {
-    d_ptr->stopAndClearThreadList();
-    d_ptr->m_errorStr = tr("Failed to check the file for fingerprint verification!");
+    d_ptr->onStart();
 }
 
-ComputeHashPrivate::ComputeHashPrivate(util::ComputeType type)
-    :m_errorStr(QString()), 
-      m_isStart(false), 
-      m_conputeType(type), 
-      m_factory(new Factory)
+void ComputeHash::onStop()
 {
-
+    d_ptr->m_threadControl.stop();
+    emit signalError(tr("Failed to check the file for fingerprint verification!"));
 }
 
-ComputeHashPrivate::~ComputeHashPrivate()
+void ComputeHash::onRestore()
 {
-    stopAndClearThreadList();
-    delete m_factory;
-}
-
-void ComputeHashPrivate::stopAndClearThreadList()
-{
-    for(int i = 0 ; i < m_readFileThreadList.length() ; i = 0)
-    {
-        m_readFileThreadList[i]->quit();
-        m_readFileThreadList[i]->wait(100);
-        delete m_readFileThreadList[i];
-        m_readFileThreadList.removeAt(i);
-    }
+    d_ptr->m_threadControl.restore();
 }

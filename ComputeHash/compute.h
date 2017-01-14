@@ -6,10 +6,11 @@
 #include <QByteArray>
 #include "util/util.h"
 
-class Compute
+class Compute : public QObject
 {
+    Q_OBJECT
 public:
-    Compute();
+    explicit Compute(QObject *parnet =0);
     virtual ~Compute();
 
     virtual void update(QByteArray &data, QString oldComputeHash = QString()) =0;

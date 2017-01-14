@@ -5,6 +5,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = CheckForDuplicateFiles
 TEMPLATE = app
 
+DEFINES += _DEBUG
+
 SOURCES += \
     main/main.cpp \
     main/mainwindow.cpp \

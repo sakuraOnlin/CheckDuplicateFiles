@@ -15,6 +15,7 @@ public:
 
 public slots:
     void onGetResult(util::computeResult result);
+    void onCalculationComplete();
 
 private:
     void print(util::computeResult &result);

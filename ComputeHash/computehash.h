@@ -15,17 +15,20 @@ public:
     ComputeHash(int ComputeType = 1, QObject *parent = 0);
     ~ComputeHash();
 
-    bool setCheckFilePath(QString filePath);
-    QString getError();
-
+    bool setDirPath(QString dirPath);
     void setUserFactore(Factory *userFacrory);
 
 signals:
     void signalFinalResult(util::computeResult result);
-    void signalStartCheck();
+    void signalError(QString errStr);
+    void signalCalculationComplete();
 
 public slots:
-    void onStopCompute();
+    void onStart();
+    void onStop();
+    void onRestore();
+
+private slots:
 
 private:
     ComputeHashPrivate *d_ptr;

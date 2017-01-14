@@ -36,6 +36,9 @@ public:
 
     ~Crypto()
     {
+#ifdef _DEBUG
+        qDebug() << "~Crypto() " << this;
+#endif
         if(NULL != m_crypto)
             delete m_crypto;
     }
@@ -54,10 +57,6 @@ public:
         if(NULL == m_crypto)
             return QString();
 
-#ifdef _DEBUG
-        QByteArray data(m_crypto->result());
-        qDebug() << "Crypto Result" << data << ",  " << data.toHex().toUpper();
-#endif
         return QString(m_crypto->result().toHex().toUpper());
     }
 

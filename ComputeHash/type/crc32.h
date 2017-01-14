@@ -11,6 +11,7 @@ class CRC32 : public Compute
 {
 public:
     explicit CRC32();
+    virtual ~CRC32();
     void update(QByteArray &data, QString oldComputeHash = QString());
     QString getFinalResult();
     void reset();

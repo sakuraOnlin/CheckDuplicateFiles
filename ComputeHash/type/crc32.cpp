@@ -8,6 +8,13 @@ CRC32::CRC32()
     reset();
 }
 
+CRC32::~CRC32()
+{
+#ifdef _DEBUG
+    qDebug() << "~CRC32() " << this;
+#endif
+}
+
 void CRC32::update(QByteArray &data, QString oldComputeHash)
 {
     Q_UNUSED(oldComputeHash)
@@ -24,11 +31,8 @@ QString CRC32::getFinalResult()
     // Exclusive OR the result with the beginning value.
     unsigned long resultData = m_crc32Str ^ 0xffffffff;
 
-#ifdef _DEBUG
-    printf(" resultData %X", resultData);
-#endif
     char hexChar[10] = {0};
-    int hexCharLength = sprintf(hexChar,  "%X",  resultData);
+    int hexCharLength = sprintf(hexChar, "%X", resultData);
     QByteArray byteChar(hexChar, hexCharLength);
     return QString(byteChar);
 }

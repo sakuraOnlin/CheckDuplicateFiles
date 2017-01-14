@@ -1,5 +1,6 @@
 #include <QString>
 #include <QFile>
+#include <QThread>
 
 #include "threadreadfile.h"
 #include "compute.h"
@@ -8,15 +9,27 @@
 #include <QDebug>
 #endif
 
-ThreadReadFile::ThreadReadFile(util::factoryCreateResult result, QString filePath, QObject *parent)
+ThreadReadFile::ThreadReadFile(util::factoryCreateResult result, QObject *parent)
     :QObject(parent), 
       m_result(result), 
-      m_filePath(filePath)
+      m_isWork(false)
 {
 }
 
-void ThreadReadFile::doWork()
+ThreadReadFile::~ThreadReadFile()
 {
+    if(NULL != m_result.creatorComputr)
+    {
+        delete m_result.creatorComputr;
+        m_result.creatorComputr = nullptr;
+    }
+}
+
+void ThreadReadFile::onDoWork(QString filePath)
+{
+    if(filePath.isEmpty())
+        return;
+
     qint64 fileSize = 0;
     qint64 fileProgress = 0;
     qint64 loadFileData = 0;
@@ -24,15 +37,15 @@ void ThreadReadFile::doWork()
     Compute *compute = m_result.creatorComputr;
     if(NULL == compute)
     {
-        emitResult(util::CheckError, m_result.computeHashType, m_filePath, 
+        emitResult(util::CheckError, m_result.computeHashType, filePath,
                    fileSize, fileProgress, QString("NoType"), m_result.creatorErrStr);
         return;
     }
 
-    QFile file(m_filePath);
+    QFile file(filePath);
     if(!file.open(QIODevice::ReadOnly))
     {
-        emitResult(util::CheckError, m_result.computeHashType, m_filePath, 
+        emitResult(util::CheckError, m_result.computeHashType, filePath,
                    fileSize, fileProgress, compute->getTypeName(), tr("File open errors!"));
         return;
     }
@@ -40,28 +53,44 @@ void ThreadReadFile::doWork()
     loadFileData = automaticDivision(fileSize);
     util::ComputeType getType = compute->getType();
 
+    m_isWork = true;
     //start read file data to Compute Hash
-    while(!file.atEnd())
+    while(!file.atEnd() && m_isWork)
     {
         QByteArray readFileRawData = file.read(loadFileData);
         compute->update(readFileRawData);
         fileProgress += loadFileData;
-        emitResult(util::CheckIng,  getType,m_filePath, fileSize, 
+        emitResult(util::CheckIng,  getType,filePath, fileSize,
                    fileProgress, compute->getTypeName());
     }
 
     //read file atEnd, emit Hash
     file.close();
     QString computeResultStr(compute->getFinalResult());
-    emitResult(util::CheckOver, getType, m_filePath, fileSize, 
+    emitResult(util::CheckOver, getType, filePath, fileSize,
                fileProgress, compute->getTypeName(), computeResultStr);
+    emit signalCalculationComplete();
+    compute->reset();
 
 #ifdef _DEBUG
-    qDebug() << "Result Valur :" << m_filePath + ",  util::ComputeType :" +
+    qDebug() << "Result Valur :" << filePath + ",  util::ComputeType :" +
                 compute->getTypeName() + QString::number((int)getType) +
                 ",  " + computeResultStr;
 #endif
-    delete compute;
+}
+
+void ThreadReadFile::onStop()
+{
+    m_isWork = false;
+}
+
+void ThreadReadFile::onRestore()
+{
+    if(NULL != m_result.creatorComputr)
+    {
+        m_result.creatorComputr->reset();
+    }
+    m_isWork = false;
 }
 
 void ThreadReadFile::emitResult(util::ResultMessageType resultType,
@@ -101,4 +130,68 @@ qint64 ThreadReadFile::automaticDivision(qint64 fileSize)
     }
 
     return defaultSize;
+}
+
+ThreadControl::ThreadControl(QObject *parent)
+    :QObject(parent)
+{
+
+}
+
+ThreadControl::~ThreadControl()
+{
+    //TODO: 删除相关工厂
+    emit signalStop();
+
+    for(int i = 0 ; i < m_readFileThreadList.length() ; i = 0)
+    {
+        m_readFileThreadList[i]->quit();
+        m_readFileThreadList[i]->wait(100);
+        delete m_readFileThreadList[i];
+        m_readFileThreadList.removeAt(i);
+    }
+}
+
+void ThreadControl::setDirPath(QString dirPath)
+{
+    m_dirPath = dirPath;
+}
+
+void ThreadControl::setFactorys(QList<util::factoryCreateResult> &list)
+{
+    m_listFactorys = list;
+}
+
+void ThreadControl::start()
+{
+    //todo:还需要进一步处理
+    if(m_readFileThreadList.isEmpty())
+    {
+        for(int i = 0 ; i < m_listFactorys.length();i++)
+        {
+            QThread *thread = new QThread;
+            util::factoryCreateResult factoryValue = m_listFactorys[i];
+            ThreadReadFile *work = new ThreadReadFile(factoryValue);
+            work->moveToThread( thread );
+            connect( thread, SIGNAL(finished()), work, SLOT(deleteLater()) );
+            connect( work, SIGNAL(signalResultReady(util::computeResult)), this, SIGNAL(signalFinalResult(util::computeResult)) );
+            connect( this, SIGNAL(signalStartCheck(QString) ), work, SLOT(onDoWork(QString)) );
+            connect( this, SIGNAL(signalRestore()), work, SLOT(onRestore()) );
+            connect( this, SIGNAL(signalStop()), work, SLOT(onStop()));
+            thread->start();
+            m_readFileThreadList.append(thread);
+        }
+    }
+
+    emit signalStartCheck(m_dirPath);
+}
+
+void ThreadControl::stop()
+{
+    emit signalStop();
+}
+
+void ThreadControl::restore()
+{
+    emit signalRestore();
 }

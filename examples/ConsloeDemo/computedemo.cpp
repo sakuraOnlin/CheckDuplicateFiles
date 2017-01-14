@@ -6,6 +6,7 @@ ComputeDemo::ComputeDemo(int ComputeType, QString filePath, QObject *parent)
       m_compute(new ComputeHash(ComputeType))
 {
     connect( m_compute, &ComputeHash::signalFinalResult, this, &ComputeDemo::onGetResult );
+    connect(m_compute, &ComputeHash::signalCalculationComplete, this, &ComputeDemo::onCalculationComplete);
     m_compute->setCheckFilePath(filePath);
 }
 
@@ -41,6 +42,11 @@ void ComputeDemo::onGetResult(util::computeResult result)
     default:
         break;
     }
+}
+
+void ComputeDemo::onCalculationComplete()
+{
+    qDebug() << "onCalculationComplete()";
 }
 
 void ComputeDemo::print(util::computeResult &result)
