@@ -30,6 +30,7 @@ void ThreadReadFile::onDoWork(QString filePath)
     if(filePath.isEmpty())
         return;
 
+    qDebug() << "onDoWork(QString filePath) " << filePath;
     qint64 fileSize = 0;
     qint64 fileProgress = 0;
     qint64 loadFileData = 0;
@@ -133,14 +134,14 @@ qint64 ThreadReadFile::automaticDivision(qint64 fileSize)
 }
 
 ThreadControl::ThreadControl(QObject *parent)
-    :QObject(parent)
+    :QObject(parent),
+      m_moduleCOunter(0),
+      m_dirPath(QString())
 {
-
 }
 
 ThreadControl::~ThreadControl()
 {
-    //TODO: 删除相关工厂
     emit signalStop();
 
     for(int i = 0 ; i < m_readFileThreadList.length() ; i = 0)
@@ -164,7 +165,6 @@ void ThreadControl::setFactorys(QList<util::factoryCreateResult> &list)
 
 void ThreadControl::start()
 {
-    //todo:还需要进一步处理
     if(m_readFileThreadList.isEmpty())
     {
         for(int i = 0 ; i < m_listFactorys.length();i++)
@@ -174,8 +174,12 @@ void ThreadControl::start()
             ThreadReadFile *work = new ThreadReadFile(factoryValue);
             work->moveToThread( thread );
             connect( thread, SIGNAL(finished()), work, SLOT(deleteLater()) );
-            connect( work, SIGNAL(signalResultReady(util::computeResult)), this, SIGNAL(signalFinalResult(util::computeResult)) );
-            connect( this, SIGNAL(signalStartCheck(QString) ), work, SLOT(onDoWork(QString)) );
+            connect( work, SIGNAL(signalResultReady(util::computeResult)),
+                     this, SIGNAL(signalFinalResult(util::computeResult)) );
+            connect( work, SIGNAL(signalCalculationComplete()),
+                     this, SLOT(onModuleCounter()) );
+            connect( this, SIGNAL(signalStartCheck(QString) ),
+                     work, SLOT(onDoWork(QString)) );
             connect( this, SIGNAL(signalRestore()), work, SLOT(onRestore()) );
             connect( this, SIGNAL(signalStop()), work, SLOT(onStop()));
             thread->start();
@@ -183,6 +187,7 @@ void ThreadControl::start()
         }
     }
 
+    m_moduleCOunter = m_readFileThreadList.length();
     emit signalStartCheck(m_dirPath);
 }
 
@@ -194,4 +199,11 @@ void ThreadControl::stop()
 void ThreadControl::restore()
 {
     emit signalRestore();
+}
+
+void ThreadControl::onModuleCounter()
+{
+    m_moduleCOunter--;
+    if(m_moduleCOunter <= 0)
+        emit signalCalculationComplete();
 }

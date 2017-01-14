@@ -92,9 +92,9 @@ void ComputeHashPrivate::onStart()
     if(m_factoryList.isEmpty())
     {
         m_factoryList = m_factory->createCompute(m_conputeType);
-        m_threadControl.setDirPath(m_dirPath);
         m_threadControl.setFactorys(m_factoryList);
     }
+    m_threadControl.setDirPath(m_dirPath);
     m_threadControl.start();
 }
 

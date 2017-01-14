@@ -60,7 +60,11 @@ signals:
     void signalRestore();
     void signalStop();
 
+private slots:
+    void onModuleCounter();
+
 private:
+    int m_moduleCOunter;
     QString m_dirPath;
     QList<util::factoryCreateResult> m_listFactorys;
     QList<QThread*> m_readFileThreadList;
