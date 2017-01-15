@@ -64,7 +64,7 @@ private slots:
     void onModuleCounter();
 
 private:
-    int m_moduleCOunter;
+    int m_moduleCounter;
     QString m_dirPath;
     QList<util::factoryCreateResult> m_listFactorys;
     QList<QThread*> m_readFileThreadList;

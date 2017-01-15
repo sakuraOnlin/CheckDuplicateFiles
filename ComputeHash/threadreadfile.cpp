@@ -70,14 +70,14 @@ void ThreadReadFile::onDoWork(QString filePath)
     QString computeResultStr(compute->getFinalResult());
     emitResult(util::CheckOver, getType, filePath, fileSize,
                fileProgress, compute->getTypeName(), computeResultStr);
-    emit signalCalculationComplete();
     compute->reset();
+    emit signalCalculationComplete();
 
-#ifdef _DEBUG
-    qDebug() << "Result Valur :" << filePath + ",  util::ComputeType :" +
-                compute->getTypeName() + QString::number((int)getType) +
-                ",  " + computeResultStr;
-#endif
+//#ifdef _DEBUG
+//    qDebug() << "Result Valur :" << filePath + ",  util::ComputeType :" +
+//                compute->getTypeName() + QString::number((int)getType) +
+//                ",  " + computeResultStr;
+//#endif
 }
 
 void ThreadReadFile::onStop()
@@ -142,15 +142,7 @@ ThreadControl::ThreadControl(QObject *parent)
 
 ThreadControl::~ThreadControl()
 {
-    emit signalStop();
-
-    for(int i = 0 ; i < m_readFileThreadList.length() ; i = 0)
-    {
-        m_readFileThreadList[i]->quit();
-        m_readFileThreadList[i]->wait(100);
-        delete m_readFileThreadList[i];
-        m_readFileThreadList.removeAt(i);
-    }
+    stop();
 }
 
 void ThreadControl::setDirPath(QString dirPath)
@@ -187,13 +179,21 @@ void ThreadControl::start()
         }
     }
 
-    m_moduleCOunter = m_readFileThreadList.length();
+    m_moduleCounter = m_readFileThreadList.length();
     emit signalStartCheck(m_dirPath);
 }
 
 void ThreadControl::stop()
 {
     emit signalStop();
+
+    for(int i = 0 ; i < m_readFileThreadList.length() ; i = 0)
+    {
+        m_readFileThreadList[i]->quit();
+        m_readFileThreadList[i]->wait(300);
+        delete m_readFileThreadList[i];
+        m_readFileThreadList.removeAt(i);
+    }
 }
 
 void ThreadControl::restore()
@@ -203,7 +203,7 @@ void ThreadControl::restore()
 
 void ThreadControl::onModuleCounter()
 {
-    m_moduleCOunter--;
-    if(m_moduleCOunter <= 0)
+    m_moduleCounter--;
+    if(m_moduleCounter <= 0)
         emit signalCalculationComplete();
 }
