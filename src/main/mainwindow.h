@@ -5,6 +5,7 @@
 
 namespace Ui {
 class MainWindow;
+class MainWindowPrivate;
 }
 
 class MainWindowPrivate;
@@ -16,12 +17,16 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+signals:
+    void signalStartCheck();
+    void signalStopCheck();
+    void signalStopSelectFiles();
+
 private slots:
     void onSelectDirPath();
     void onStartCheck();
     void onExit();
     void onDelFile();
-    void onDelAllFiles();
     void onHelp();
     void onAbout();
 

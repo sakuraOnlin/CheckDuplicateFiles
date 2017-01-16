@@ -42,7 +42,7 @@ void DoWork::onStopSelectFiles()
 
 ThreadSelectFiles::ThreadSelectFiles(QObject *parent)
     :QObject(parent), 
-      m_thread(NULL), 
+      m_thread(nullptr), 
       m_dirPath(QString("./")), 
       m_filters(QStringList("*.*"))
 {
@@ -61,7 +61,7 @@ void ThreadSelectFiles::setFilters(QStringList filters)
 
 void ThreadSelectFiles::onStartSelectFiles()
 {
-    if(NULL != m_thread)
+    if(nullptr != m_thread)
         onStopSelectFiles();
 
     m_thread = new QThread;
@@ -80,13 +80,13 @@ void ThreadSelectFiles::onStartSelectFiles()
 
 void ThreadSelectFiles::onStopSelectFiles()
 {
-    if(NULL == m_thread)
+    if(nullptr == m_thread)
         return;
 
     emit signalStopSelectFiles();
     m_thread->quit();
     m_thread->wait(100);
     delete m_thread;
-    m_thread = NULL;
+    m_thread = nullptr;
 }
 

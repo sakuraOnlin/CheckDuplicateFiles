@@ -29,6 +29,9 @@ ItemListDelegate::ItemListDelegate(QObject *parent)
 void ItemListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
                              const QModelIndex &index) const
 {
+    QStyledItemDelegate::paint(painter, option, index);
+//    return;
+
     QRect optRect(option.rect);
     QRect defaultRect(optRect.x() + m_interval, optRect.y() + m_interval,
                       optRect.width() - 10, optRect.height() - 10);
@@ -68,6 +71,11 @@ void ItemListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
     QRect fileTimeRect(fileTimeLabel.x() + m_labelWidthAndInterva,
                        fileTimeLabel.y(), m_rectLabelWidth, m_rectLabelHeight);
 
+    bool isSelected = index.data(WidgetUtil::ItemSelect).toBool();
+    if(isSelected)
+    {
+        //计算进度条或是指纹结果的偏移量
+    }
     //draw FileNameLabel
     painter->save();
     QString testStr(index.data(Qt::DisplayRole).toString());
@@ -89,42 +97,26 @@ void ItemListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
     qApp->style()->drawItemText(painter,fileTimeRect ,Qt::AlignLeft,option.palette
                                 ,true,"2016-12-12");
     painter->restore();
-    qDebug() << "fileNameLabel" << fileNameLabel;
-    qDebug() << "fileNameRect" << fileNameRect;
-    qDebug() << "filePathLabel" << filePathLabel;
-    qDebug() << "filePathRect" << filePathRect;
-    qDebug() << "fileSizeLabel" << fileSizeLabel;
-    qDebug() << "fileSizeRect" << fileSizeRect;
-    qDebug() << "fileTimeLabel" << fileTimeLabel;
-    qDebug() << "fileTimeRect" << fileTimeRect;
 
  }
 
 QSize ItemListDelegate::sizeHint(const QStyleOptionViewItem &option,
                                  const QModelIndex &index) const
 {
-    QSize rectSize(option.rect.size());
-
-    if(option.state & QStyle :: State_Selected)
-    {
-        rectSize.setHeight(155);
-    }
-
-    rectSize.setHeight(64);
-    qDebug() << "no Select";
-    return rectSize;
+    return QStyledItemDelegate::sizeHint(option,index);
 }
 
 bool ItemListDelegate::editorEvent(QEvent *event, QAbstractItemModel *model,
                                    const QStyleOptionViewItem &option,
                                    const QModelIndex &index)
 {
-
+    return QStyledItemDelegate::editorEvent(event, model, option, index);
 }
 
 void ItemListDelegate::paintFileIco(QPainter *painter, const QStyleOptionViewItem &option,
                                     const QModelIndex &index) const
 {
+    //TODO:移动到外部来添加，内部直接绘制
     QFileIconProvider fileIco;
     QIcon ico(fileIco.icon(QFileInfo(index.data(WidgetUtil::FilePath).toString())));
     qApp->style()->drawItemPixmap(painter, QRect(m_pixmapPoint,m_pixmapSize),

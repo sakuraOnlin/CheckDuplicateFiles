@@ -18,7 +18,7 @@ ThreadReadFile::ThreadReadFile(util::factoryCreateResult result, QObject *parent
 
 ThreadReadFile::~ThreadReadFile()
 {
-    if(NULL != m_result.creatorComputr)
+    if(nullptr != m_result.creatorComputr)
     {
         delete m_result.creatorComputr;
         m_result.creatorComputr = nullptr;
@@ -36,7 +36,7 @@ void ThreadReadFile::onDoWork(QString filePath)
     qint64 loadFileData = 0;
 
     Compute *compute = m_result.creatorComputr;
-    if(NULL == compute)
+    if(nullptr == compute)
     {
         emitResult(util::CheckError, m_result.computeHashType, filePath,
                    fileSize, fileProgress, QString("NoType"), m_result.creatorErrStr);
@@ -87,7 +87,7 @@ void ThreadReadFile::onStop()
 
 void ThreadReadFile::onRestore()
 {
-    if(NULL != m_result.creatorComputr)
+    if(nullptr != m_result.creatorComputr)
     {
         m_result.creatorComputr->reset();
     }

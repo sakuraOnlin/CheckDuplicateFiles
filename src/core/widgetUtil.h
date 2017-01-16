@@ -16,7 +16,8 @@ public:
         FileTime    ,
         FIleIco     ,
         CheckType   ,
-        CheckResult
+        CheckResult ,
+        ItemSelect
     };
 };
 

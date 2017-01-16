@@ -73,10 +73,10 @@ bool ComputeHashPrivate::checkDirValid(QString &dirPath)
 
 void ComputeHashPrivate::setUserFactore(Factory *userFacrory)
 {
-    if(NULL == userFacrory)
+    if(nullptr == userFacrory)
         return;
 
-    if(NULL == m_factory)
+    if(nullptr == m_factory)
     {
         m_factory = userFacrory;
         return;

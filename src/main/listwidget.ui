@@ -10,9 +10,6 @@
     <height>357</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>Form</string>
-  </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="leftMargin">
     <number>2</number>
@@ -28,6 +25,9 @@
    </property>
    <item row="0" column="0">
     <widget class="QListWidget" name="listWidget">
+     <property name="editTriggers">
+      <set>QAbstractItemView::SelectedClicked</set>
+     </property>
      <item>
       <property name="text">
        <string>FilePath :</string>
@@ -46,6 +46,10 @@
      <item>
       <property name="text">
        <string>test4</string>
+      </property>
+      <property name="icon">
+       <iconset resource="../res/resource.qrc">
+        <normaloff>:/img/image/stop.png</normaloff>:/img/image/stop.png</iconset>
       </property>
      </item>
      <item>
@@ -67,6 +71,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../res/resource.qrc"/>
+ </resources>
  <connections/>
 </ui>

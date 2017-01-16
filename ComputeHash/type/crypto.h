@@ -39,13 +39,13 @@ public:
 #ifdef _DEBUG
         qDebug() << "~Crypto() " << this;
 #endif
-        if(NULL != m_crypto)
+        if(nullptr != m_crypto)
             delete m_crypto;
     }
 
     void update(QByteArray &data, QString oldComputeHash)
     {
-        if(NULL == m_crypto)
+        if(nullptr == m_crypto)
             return;
 
         Q_UNUSED(oldComputeHash)
@@ -54,7 +54,7 @@ public:
 
     QString getFinalResult()
     {
-        if(NULL == m_crypto)
+        if(nullptr == m_crypto)
             return QString();
 
         return QString(m_crypto->result().toHex().toUpper());
