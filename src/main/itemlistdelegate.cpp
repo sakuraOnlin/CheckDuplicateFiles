@@ -9,6 +9,8 @@
 #include "core/widgetUtil.h"
 #include "util/util.h"
 
+Q_DECLARE_METATYPE(util::ComputeResult)
+Q_DECLARE_METATYPE(util::ResultMessageType)
 
 ItemListDelegate::ItemListDelegate(QObject *parent)
     :QStyledItemDelegate(parent),
@@ -32,14 +34,26 @@ void ItemListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
     QStyledItemDelegate::paint(painter, option, index);
 //    return;
 
+    //Data
+    QFont font(qApp->font());
+    QFontMetrics fontMetrics(font);
+    QString fileName(index.data(WidgetUtil::FileName).toString());
+    QString filePath(index.data(WidgetUtil::FilePath).toString());
+    QString fileSize(index.data(WidgetUtil::FileSize).toString());
+    QString fileTime(index.data(WidgetUtil::FileTime).toString());
+    QPixmap fileIco(index.data(WidgetUtil::FileIco).value<QPixmap>());
+    bool isSelected = index.data(WidgetUtil::ItemSelect).toBool();
+
+    QList<util::ComputeResult> resultList = index.data(WidgetUtil::CheckResult).value<
+            QList<util::ComputeResult> >();
+
     QRect optRect(option.rect);
     QRect defaultRect(optRect.x() + m_interval, optRect.y() + m_interval,
                       optRect.width() - 10, optRect.height() - 10);
-//    paintFileIco(painter, option, index);
 
     int strRectWidth = defaultRect.width() - 48 - m_rectLabelWidth - m_pButWidth - (m_interval * 3);
 
-    QRect fileIcon(defaultRect.x(), defaultRect.y() , 48,48);
+    QRect fileIconRect(defaultRect.x(), defaultRect.y() , 48,48);
 
     QRect pButOpenDirRect(optRect.width() - m_interval - m_pButWidth, m_interval,
                            m_pButWidth, m_pButHeight);
@@ -47,8 +61,8 @@ void ItemListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
     QRect pButOpenDelFileRect(pButOpenDirRect.x(), pButOpenDirRect.y() +
                               m_pButHeight + m_interval, m_pButWidth, m_pButHeight);
 
-    QRect fileNameLabel(fileIcon.x() + fileIcon.width() + m_interval,
-                         fileIcon.y(), m_rectLabelWidth, m_rectLabelHeight);
+    QRect fileNameLabel(fileIconRect.x() + fileIconRect.width() + m_interval,
+                         fileIconRect.y(), m_rectLabelWidth, m_rectLabelHeight);
 
     QRect fileNameRect(fileNameLabel.x() + m_rectLabelWidth + m_interval,
                         fileNameLabel.y(),strRectWidth,m_rectLabelHeight);
@@ -69,9 +83,9 @@ void ItemListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
                         fileSizeRect.y(), m_rectLabelWidth, m_rectLabelHeight);
 
     QRect fileTimeRect(fileTimeLabel.x() + m_labelWidthAndInterva,
-                       fileTimeLabel.y(), m_rectLabelWidth, m_rectLabelHeight);
+                       fileTimeLabel.y(), fontMetrics.size(
+                           Qt::TextSingleLine,fileTime).width(), m_rectLabelHeight);
 
-    bool isSelected = index.data(WidgetUtil::ItemSelect).toBool();
     if(isSelected)
     {
         //计算进度条或是指纹结果的偏移量
@@ -79,23 +93,24 @@ void ItemListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
     //draw FileNameLabel
     painter->save();
     QString testStr(index.data(Qt::DisplayRole).toString());
+    qApp->style()->drawItemPixmap(painter, fileIconRect,
+                                Qt::AlignLeft | Qt::AlignTop,fileIco);
     qApp->style()->drawItemText(painter,fileNameLabel,Qt::AlignLeft,
                                 option.palette,true,"FileName:");
-    //fileNameRect length >> fontMet...Length
     qApp->style()->drawItemText(painter,fileNameRect ,Qt::AlignLeft,option.palette
-                                ,true,testStr + "cccuseesedfsfs.db");
+                                ,true,testStr + fileName);
     qApp->style()->drawItemText(painter,filePathLabel,Qt::AlignLeft,option.palette
                                 ,true,"FilePath:");
     qApp->style()->drawItemText(painter,filePathRect ,Qt::AlignLeft,option.palette
-                                ,true,"/lib/modules/4.4.0-57-generic/build/net/ipv4");
+                                ,true,filePath);
     qApp->style()->drawItemText(painter,fileSizeLabel,Qt::AlignLeft,option.palette
                                 ,true,"FileSize:");
     qApp->style()->drawItemText(painter,fileSizeRect ,Qt::AlignLeft,option.palette
-                                ,true,"10.8G");
+                                ,true,fileSize);
     qApp->style()->drawItemText(painter,fileTimeLabel,Qt::AlignLeft,option.palette
                                 ,true,"FileTime:");
     qApp->style()->drawItemText(painter,fileTimeRect ,Qt::AlignLeft,option.palette
-                                ,true,"2016-12-12");
+                                ,true,fileTime);
     painter->restore();
 
  }
@@ -112,20 +127,3 @@ bool ItemListDelegate::editorEvent(QEvent *event, QAbstractItemModel *model,
 {
     return QStyledItemDelegate::editorEvent(event, model, option, index);
 }
-
-void ItemListDelegate::paintFileIco(QPainter *painter, const QStyleOptionViewItem &option,
-                                    const QModelIndex &index) const
-{
-    //TODO:移动到外部来添加，内部直接绘制
-    QFileIconProvider fileIco;
-    QIcon ico(fileIco.icon(QFileInfo(index.data(WidgetUtil::FilePath).toString())));
-    qApp->style()->drawItemPixmap(painter, QRect(m_pixmapPoint,m_pixmapSize),
-                                  Qt::AlignCenter,ico.pixmap(32, 32));
-}
-
-void ItemListDelegate::paintText(QPainter *painter, QRectF &rect, QString &text) const
-{
-
-}
-
-

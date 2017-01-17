@@ -9,8 +9,8 @@ class MainWindowPrivate
     MainWindow *q_ptr;
     Q_DECLARE_PUBLIC(MainWindow)
 public:
-    MainWindowPrivate(MainWindow *publicFatherPoint)
-        :q_ptr(publicFatherPoint),
+    MainWindowPrivate(MainWindow *publicMsinWindow)
+        :q_ptr(publicMsinWindow),
           m_dirPath(QString()),
           m_isStart(false)
     {
@@ -22,7 +22,6 @@ public:
 
     QString m_dirPath;
     bool m_isStart;
-
 };
 
 
@@ -61,14 +60,22 @@ void MainWindow::onSelectDirPath()
     d_ptr->m_dirPath = dirPath;
     ui->lineEdit_ShowDIrPath->setText(d_ptr->m_dirPath);
     ui->pushBut_StartCheck->setEnabled(true);
+    ui->listWidget->setDirPath(dirPath);
 }
 
 void MainWindow::onStartCheck()
 {
-/*
- * 重写此处的判定规则，并把 m_isStart 单独处理。
-*/
-
+    if(d_ptr->m_isStart)
+    {
+        d_ptr->m_isStart = false;
+        ui->listWidget->onStop();
+    }
+    else
+    {
+        d_ptr->m_isStart = true;
+        ui->listWidget->onStart();
+    }
+    d_ptr->updateUIButton();
 }
 
 void MainWindow::onExit()
@@ -78,14 +85,7 @@ void MainWindow::onExit()
 
 void MainWindow::onDelFile()
 {
-//删除列表框中选定的文件
-
-}
-
-void MainWindow::onDelAllFiles()
-{
-//删除所有的重复文件
-
+    ui->listWidget->onDelFile();
 }
 
 void MainWindow::onHelp()
@@ -110,7 +110,7 @@ void MainWindowPrivate::init()
     QObject::connect(q_ptr->ui->actionHelp, SIGNAL(triggered()), q_ptr, SLOT(onHelp()));
     QObject::connect(q_ptr->ui->actionAbout, SIGNAL(triggered()), q_ptr, SLOT(onAbout()));
     QObject::connect(q_ptr->ui->pushBut_DelFile, SIGNAL(clicked()), q_ptr, SLOT(onDelFile()));
-    QObject::connect(q_ptr->ui->pushBut_DelAllFiles, SIGNAL(clicked()), q_ptr, SLOT(onDelAllFiles()));
+    QObject::connect(q_ptr->ui->pushBut_DelAllFiles, SIGNAL(clicked()), q_ptr, SLOT(onDelFile()));
 }
 
 void MainWindowPrivate::updateUIButton()
@@ -134,4 +134,3 @@ void MainWindowPrivate::updateUIButton()
         q_ptr->ui->pushBut_StartCheck->setIconSize(QSize(24,24));
     }
 }
-

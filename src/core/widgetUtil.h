@@ -14,9 +14,8 @@ public:
         FilePath    ,
         FileSize    ,
         FileTime    ,
-        FIleIco     ,
-        CheckType   ,
-        CheckResult ,
+        FileIco     ,
+        CheckResult   ,       //util::ComputeResult
         ItemSelect
     };
 };

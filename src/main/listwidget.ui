@@ -28,51 +28,10 @@
      <property name="editTriggers">
       <set>QAbstractItemView::SelectedClicked</set>
      </property>
-     <item>
-      <property name="text">
-       <string>FilePath :</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Test2</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Test3</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>test4</string>
-      </property>
-      <property name="icon">
-       <iconset resource="../res/resource.qrc">
-        <normaloff>:/img/image/stop.png</normaloff>:/img/image/stop.png</iconset>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>test5</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>test6</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>test7</string>
-      </property>
-     </item>
     </widget>
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="../res/resource.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

@@ -20,11 +20,6 @@ protected:
                      const QStyleOptionViewItem &option, const QModelIndex &index);
 
 private:
-    inline void paintFileIco(QPainter *painter, const QStyleOptionViewItem &option,
-                      const QModelIndex &index ) const;
-    inline void paintText(QPainter *painter, QRectF &rect, QString &text) const;
-
-private:
     QPoint m_pixmapPoint;
     QSize m_pixmapSize;
     int m_pixmapWidth;

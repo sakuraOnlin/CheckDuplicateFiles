@@ -19,7 +19,7 @@ public:
     void setUserFactore(Factory *userFacrory);
 
 signals:
-    void signalFinalResult(util::computeResult result);
+    void signalFinalResult(util::ComputeResult result);
     void signalError(QString errStr);
     void signalCalculationComplete();
 

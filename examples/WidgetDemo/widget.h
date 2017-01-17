@@ -24,7 +24,7 @@ private slots:
     void onSelectDir();
     void onStart();
     void onCalculationComplete();
-    void onFinalResult(util::computeResult result);
+    void onFinalResult(util::ComputeResult result);
 
 private:
     void init();

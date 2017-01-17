@@ -72,6 +72,7 @@ void ThreadReadFile::onDoWork(QString filePath)
                fileProgress, compute->getTypeName(), computeResultStr);
     compute->reset();
     emit signalCalculationComplete();
+    qDebug() << "onDoWork " << this;
 
 //#ifdef _DEBUG
 //    qDebug() << "Result Valur :" << filePath + ",  util::ComputeType :" +
@@ -98,7 +99,7 @@ void ThreadReadFile::emitResult(util::ResultMessageType resultType,
                                 util::ComputeType computeType, QString filePath,
                                 qint64 fileSize, qint64 fileProgress, QString typeName, QString result)
 {
-    util::computeResult computeResult;
+    util::ComputeResult computeResult;
     computeResult.resultMessageType = resultType;
     computeResult.computeHashType = computeType;
     computeResult.fileSize = fileSize;
@@ -135,9 +136,10 @@ qint64 ThreadReadFile::automaticDivision(qint64 fileSize)
 
 ThreadControl::ThreadControl(QObject *parent)
     :QObject(parent),
-      m_moduleCOunter(0),
+      m_moduleCounter(0),
       m_dirPath(QString())
 {
+    m_count = 0;
 }
 
 ThreadControl::~ThreadControl()
@@ -157,26 +159,25 @@ void ThreadControl::setFactorys(QList<util::factoryCreateResult> &list)
 
 void ThreadControl::start()
 {
-    if(m_readFileThreadList.isEmpty())
+    stop();
+
+    for(int i = 0 ; i < m_listFactorys.length();i++)
     {
-        for(int i = 0 ; i < m_listFactorys.length();i++)
-        {
-            QThread *thread = new QThread;
-            util::factoryCreateResult factoryValue = m_listFactorys[i];
-            ThreadReadFile *work = new ThreadReadFile(factoryValue);
-            work->moveToThread( thread );
-            connect( thread, SIGNAL(finished()), work, SLOT(deleteLater()) );
-            connect( work, SIGNAL(signalResultReady(util::computeResult)),
-                     this, SIGNAL(signalFinalResult(util::computeResult)) );
-            connect( work, SIGNAL(signalCalculationComplete()),
-                     this, SLOT(onModuleCounter()) );
-            connect( this, SIGNAL(signalStartCheck(QString) ),
-                     work, SLOT(onDoWork(QString)) );
-            connect( this, SIGNAL(signalRestore()), work, SLOT(onRestore()) );
-            connect( this, SIGNAL(signalStop()), work, SLOT(onStop()));
-            thread->start();
-            m_readFileThreadList.append(thread);
-        }
+        QThread *thread = new QThread;
+        util::factoryCreateResult factoryValue = m_listFactorys[i];
+        ThreadReadFile *work = new ThreadReadFile(factoryValue);
+        work->moveToThread( thread );
+        connect( thread, SIGNAL(finished()), work, SLOT(deleteLater()) );
+        connect( work, SIGNAL(signalResultReady(util::ComputeResult)),
+                 this, SIGNAL(signalFinalResult(util::ComputeResult)) );
+        connect( work, SIGNAL(signalCalculationComplete()),
+                 this, SLOT(onModuleCounter()) );
+        connect( this, SIGNAL(signalStartCheck(QString) ),
+                 work, SLOT(onDoWork(QString)) );
+        connect( this, SIGNAL(signalRestore()), work, SLOT(onRestore()) );
+        connect( this, SIGNAL(signalStop()), work, SLOT(onStop()));
+        thread->start();
+        m_readFileThreadList.append(thread);
     }
 
     m_moduleCounter = m_readFileThreadList.length();
@@ -206,4 +207,6 @@ void ThreadControl::onModuleCounter()
     m_moduleCounter--;
     if(m_moduleCounter <= 0)
         emit signalCalculationComplete();
+    m_count++;
+    qDebug() << "m_count " << QString::number(m_count);
 }

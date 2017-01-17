@@ -24,7 +24,7 @@ public:
         Warring
     };
 
-    struct computeResult
+    struct ComputeResult
     {
         ResultMessageType   resultMessageType;
         ComputeType         computeHashType;

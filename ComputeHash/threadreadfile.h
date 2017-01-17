@@ -22,7 +22,7 @@ public slots:
     void onRestore();
 
 signals:
-    void signalResultReady(util::computeResult result);
+    void signalResultReady(util::ComputeResult result);
     void signalCalculationComplete();
 
 private:
@@ -53,7 +53,7 @@ public:
     void restore();
 
 signals:
-    void signalFinalResult(util::computeResult result);
+    void signalFinalResult(util::ComputeResult result);
     void signalError(QString errStr);
     void signalCalculationComplete();
     void signalStartCheck(QString dirPath);
@@ -68,6 +68,7 @@ private:
     QString m_dirPath;
     QList<util::factoryCreateResult> m_listFactorys;
     QList<QThread*> m_readFileThreadList;
+    int m_count;
 
 };
 

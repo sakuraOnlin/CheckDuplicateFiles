@@ -47,8 +47,8 @@ void ComputeHashPrivate::init()
 {
     QObject::connect(&m_threadControl, SIGNAL(signalError(QString)),
                      q_ptr, SIGNAL(signalError(QString)));
-    QObject::connect(&m_threadControl, SIGNAL(signalFinalResult(util::computeResult)),
-                     q_ptr, SIGNAL(signalFinalResult(util::computeResult)));
+    QObject::connect(&m_threadControl, SIGNAL(signalFinalResult(util::ComputeResult)),
+                     q_ptr, SIGNAL(signalFinalResult(util::ComputeResult)));
     QObject::connect(&m_threadControl, SIGNAL(signalCalculationComplete()),
                      q_ptr, SIGNAL(signalCalculationComplete()));
 
@@ -89,11 +89,8 @@ void ComputeHashPrivate::setUserFactore(Factory *userFacrory)
 
 void ComputeHashPrivate::onStart()
 {
-    if(m_factoryList.isEmpty())
-    {
-        m_factoryList = m_factory->createCompute(m_conputeType);
-        m_threadControl.setFactorys(m_factoryList);
-    }
+    QList<util::factoryCreateResult> factoryList = m_factory->createCompute(m_conputeType);
+    m_threadControl.setFactorys(factoryList);
     m_threadControl.setDirPath(m_dirPath);
     m_threadControl.start();
 }
@@ -103,7 +100,7 @@ ComputeHash::ComputeHash(int type, QObject *parent)
 {
     d_ptr = new ComputeHashPrivate(this, (util::ComputeType)type);
     qRegisterMetaType<util::factoryCreateResult>("util::factoryCreateResult");
-    qRegisterMetaType<util::computeResult>("util::computeResult");
+    qRegisterMetaType<util::ComputeResult>("util::computeResult");
 }
 
 ComputeHash::~ComputeHash()

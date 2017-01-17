@@ -68,8 +68,8 @@ void ThreadSelectFiles::onStartSelectFiles()
     DoWork *work = new DoWork(m_dirPath, m_filters);
     work->moveToThread(m_thread);
     connect(m_thread, SIGNAL(finished()), work, SLOT(deleteLater()) );
-    connect(work, SIGNAL(objectNameChanged(QString)), this, 
-            SIGNAL(objectNameChanged(QString)));
+    connect(work, SIGNAL(signalFilePath(QString)), this,
+            SIGNAL(signalFilePath(QString)));
     connect(this, SIGNAL(signalStartSelectFiles()), work, SLOT(doWork()) );
     connect(this, SIGNAL(signalStopSelectFiles()), work, 
             SLOT(onStopSelectFiles()) );

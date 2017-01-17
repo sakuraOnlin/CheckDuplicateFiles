@@ -19,16 +19,19 @@ class ListWidget : public QWidget
 public:
     explicit ListWidget(QWidget *parent = 0);
     ~ListWidget();
+    bool setFileFilters(QStringList filters);
     bool setDirPath(QString &dirPath);
     bool operatingStatus();
 
 public slots:
-    bool onStart();
-    bool onStop();
+    void onStart();
+    void onStop();
     void onReceiveFilePath(QString filePath);
     void onUpdateItemData(int role, QString &filePath, QVariant data);
     void onDelFile();
     void onClickItem(QListWidgetItem *item);
+
+private slots:
 
 private:
     Ui::ListWidget *ui;

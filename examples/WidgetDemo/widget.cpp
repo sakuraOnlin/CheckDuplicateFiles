@@ -45,7 +45,7 @@ void Widget::onCalculationComplete()
     ui->pBStart->setEnabled(false);
 }
 
-void Widget::onFinalResult(util::computeResult result)
+void Widget::onFinalResult(util::ComputeResult result)
 {
     switch (result.computeHashType) {
     case util::MD5:
@@ -77,6 +77,6 @@ void Widget::init()
     connect(this, SIGNAL(signalStart()), m_compute, SLOT(onStart()) );
     connect(m_compute, SIGNAL(signalCalculationComplete()), this,
             SLOT(onCalculationComplete()));
-    connect(m_compute, SIGNAL(signalFinalResult(util::computeResult)), this,
-            SLOT(onFinalResult(util::computeResult)));
+    connect(m_compute, SIGNAL(signalFinalResult(util::ComputeResult)), this,
+            SLOT(onFinalResult(util::ComputeResult)));
 }
