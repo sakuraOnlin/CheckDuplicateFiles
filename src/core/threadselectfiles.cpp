@@ -26,12 +26,12 @@ void DoWork::doWork()
     //定义迭代器并设置过滤器
     QDirIterator dir_iterator(m_dirPath, m_filters, QDir::Files | QDir::NoSymLinks,
         QDirIterator::Subdirectories);
-    while(dir_iterator.hasNext() && m_isStart)
+    while(m_isStart && dir_iterator.hasNext())
     {
         dir_iterator.next();
-        QFileInfo file_info = dir_iterator.fileInfo();
-        QString filePath = file_info.absoluteFilePath();
-        emit signalFilePath(filePath);
+        QFileInfo file_info(dir_iterator.fileInfo());
+        QThread::msleep(35);
+        emit signalFilePath(file_info.absoluteFilePath());
     }
 }
 
@@ -85,7 +85,7 @@ void ThreadSelectFiles::onStopSelectFiles()
 
     emit signalStopSelectFiles();
     m_thread->quit();
-    m_thread->wait(100);
+    m_thread->wait(200);
     delete m_thread;
     m_thread = nullptr;
 }

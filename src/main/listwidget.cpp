@@ -1,6 +1,9 @@
+#include <QListWidget>
+#include <QDateTime>
+#include <QVariant>
+
 #ifdef _DEBUG
 #include <QDebug>
-#include <QFileIconProvider>
 #endif
 
 #include "listwidget.h"
@@ -55,6 +58,7 @@ void ListWidgetPrivate::init()
                      q_ptr, SLOT(onClickItem(QListWidgetItem*)));
     QObject::connect(&m_selectFiles, SIGNAL(signalFilePath(QString)), backstageWork,
                      SLOT(doListWidgetAddItem(QString)));
+
 }
 
 void ListWidgetPrivate::onStart()
@@ -99,6 +103,7 @@ ListWidget::ListWidget(QWidget *parent)
 
 ListWidget::~ListWidget()
 {
+    delete d_ptr;
     delete ui;
 }
 
@@ -140,11 +145,6 @@ void ListWidget::onReceiveFilePath(QString filePath)
 
 }
 
-void ListWidget::onUpdateItemData(int role, QString &filePath, QVariant data)
-{
-
-}
-
 void ListWidget::onDelFile()
 {
 
@@ -154,3 +154,4 @@ void ListWidget::onClickItem(QListWidgetItem *item)
 {
     d_ptr->onClickItem(item);
 }
+

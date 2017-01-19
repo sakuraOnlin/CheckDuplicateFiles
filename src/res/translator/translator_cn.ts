@@ -116,17 +116,17 @@
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.cpp" line="46"/>
+        <location filename="../../main/mainwindow.cpp" line="50"/>
         <source>Select Directory</source>
         <translation>选择文件夹</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.cpp" line="55"/>
+        <location filename="../../main/mainwindow.cpp" line="59"/>
         <source>Error!</source>
         <translation>错误!</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.cpp" line="56"/>
+        <location filename="../../main/mainwindow.cpp" line="60"/>
         <source>Please select a valid directory!.
 </source>
         <translation>请选择有效的文件夹!</translation>
@@ -141,6 +141,11 @@
     <message>
         <source>Stop Check</source>
         <translation type="vanished">停止检查</translation>
+    </message>
+    <message>
+        <location filename="../../main/mainwindow.cpp" line="115"/>
+        <source>File Total : %1 , Calculation progress : %2</source>
+        <translation>文件总数： %1 ，效验总数： %2 </translation>
     </message>
 </context>
 </TS>

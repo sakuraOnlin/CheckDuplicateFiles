@@ -14,6 +14,7 @@ class BackstageWork : public QObject
      Q_OBJECT
 public:
     explicit BackstageWork(QObject *parnet = 0);
+    ~BackstageWork();
 
     void setListWidget(QListWidget *listWidget);
     void setFilePath(QStringList &filePathList);

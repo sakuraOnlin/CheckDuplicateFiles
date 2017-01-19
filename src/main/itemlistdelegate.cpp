@@ -28,6 +28,10 @@ ItemListDelegate::ItemListDelegate(QObject *parent)
     m_labelWidthAndInterva = m_rectLabelWidth + m_interval;
 }
 
+ItemListDelegate::~ItemListDelegate()
+{
+}
+
 void ItemListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
                              const QModelIndex &index) const
 {

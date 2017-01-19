@@ -4,14 +4,13 @@
 <context>
     <name>ComputeHash</name>
     <message>
-        <location filename="../../computehash.cpp" line="47"/>
         <source>Please select a valid file for file fingerprinting! 
 Wrong address :</source>
-        <translation>请选择有效的文件进行文件指纹识别！
+        <translation type="vanished">请选择有效的文件进行文件指纹识别！
 错误地址：</translation>
     </message>
     <message>
-        <location filename="../../computehash.cpp" line="80"/>
+        <location filename="../../computehash.cpp" line="129"/>
         <source>Failed to check the file for fingerprint verification!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -19,17 +18,17 @@ Wrong address :</source>
 <context>
     <name>Factory</name>
     <message>
-        <location filename="../../util/computefactory.cpp" line="28"/>
+        <location filename="../../util/computefactory.cpp" line="26"/>
         <source>Error : Factoey Creator Compute SHA1 Error!</source>
         <translation>错误：创建 SHA1 模块失败！</translation>
     </message>
     <message>
-        <location filename="../../util/computefactory.cpp" line="42"/>
+        <location filename="../../util/computefactory.cpp" line="38"/>
         <source>Error : Factoey Creator Compute MD5 Error!</source>
         <translation>错误：创建 MD5 模块失败！</translation>
     </message>
     <message>
-        <location filename="../../util/computefactory.cpp" line="56"/>
+        <location filename="../../util/computefactory.cpp" line="50"/>
         <source>Error : Factoey Creator Compute CRC32 Error!</source>
         <translation>错误：创建 CRC32 模块失败！</translation>
     </message>
@@ -145,15 +144,14 @@ Wrong address :</source>
         <translation type="vanished">停止检查</translation>
     </message>
     <message>
-        <location filename="../../computehash.cpp" line="104"/>
         <source>Check for module initialization errors!</source>
-        <translation>文件指纹模块初始化错误！</translation>
+        <translation type="vanished">文件指纹模块初始化错误！</translation>
     </message>
 </context>
 <context>
     <name>ThreadReadFile</name>
     <message>
-        <location filename="../../threadreadfile.cpp" line="25"/>
+        <location filename="../../threadreadfile.cpp" line="50"/>
         <source>File open errors!</source>
         <translation>文件打开错误！导致无法检查当前文件指纹！</translation>
     </message>

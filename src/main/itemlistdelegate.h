@@ -11,6 +11,7 @@ class ItemListDelegate : public QStyledItemDelegate
     Q_OBJECT
 public:
     explicit ItemListDelegate(QObject *parent = 0);
+    ~ItemListDelegate();
 
     void paint(QPainter *painter, const QStyleOptionViewItem &option,
                const QModelIndex &index) const;

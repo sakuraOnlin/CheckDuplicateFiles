@@ -10,6 +10,10 @@ BackstageWork::BackstageWork(QObject *parnet)
 
 }
 
+BackstageWork::~BackstageWork()
+{
+}
+
 void BackstageWork::setListWidget(QListWidget *listWidget)
 {
     m_listWidget = listWidget;
@@ -36,7 +40,7 @@ void BackstageWork::doListWidgetAddItem(QString filePath)
     if(nullptr == item)
     {
         QListWidgetItem *item = new QListWidgetItem;
-        item->setSizeHint(QSize(m_listWidget->sizeHint().width(), 70));
+        item->setSizeHint(QSize(400, 70));
         item->setData(WidgetUtil::FilePath,filePath);
         QFileInfo fileInfo(filePath);
         QFileIconProvider fileIco;

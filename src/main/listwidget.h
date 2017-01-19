@@ -2,15 +2,13 @@
 #define LISTWIDGET_H
 
 #include <QWidget>
-#include <QVariant>
-#include <QListWidget>
-
 
 namespace Ui {
 class ListWidget;
 class ListWidgetPrivate;
 }
 
+class QListWidgetItem;
 class ListWidgetPrivate;
 class ListWidget : public QWidget
 {

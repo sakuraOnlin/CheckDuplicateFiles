@@ -1,6 +1,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QFileInfo>
+#include <QProgressBar>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -12,7 +13,9 @@ public:
     MainWindowPrivate(MainWindow *publicMsinWindow)
         :q_ptr(publicMsinWindow),
           m_dirPath(QString()),
-          m_isStart(false)
+          m_isStart(false),
+          m_fileTotalLabel(new QLabel),
+          m_calculationProgress(new QProgressBar)
     {
         init();
     }
@@ -22,6 +25,8 @@ public:
 
     QString m_dirPath;
     bool m_isStart;
+    QLabel *m_fileTotalLabel;
+    QProgressBar *m_calculationProgress;
 };
 
 
@@ -98,10 +103,26 @@ void MainWindow::onAbout()
 
 }
 
+void MainWindow::onFileTotal(int fileTotal)
+{
+
+}
+
 void MainWindowPrivate::init()
 {
     updateUIButton();
     q_ptr->ui->pushBut_StartCheck->setEnabled(false);
+    m_fileTotalLabel->setText(QObject::tr("File Total : %1 , Calculation progress : %2").arg("0").arg("0"));
+    q_ptr->ui->statusbar->addPermanentWidget(m_fileTotalLabel);
+    m_calculationProgress->setEnabled(false);
+    m_calculationProgress->setMinimum(0);
+    m_calculationProgress->setMaximum(0);
+    m_calculationProgress->setValue(0);
+    m_calculationProgress->setFormat("%v / %m");
+    m_calculationProgress->setAlignment(Qt::AlignCenter);
+    m_calculationProgress->setMaximumWidth(150);
+    m_calculationProgress->setHidden(true);
+    q_ptr->ui->statusbar->addPermanentWidget(m_calculationProgress);
 
     QObject::connect(q_ptr->ui->pushBut_SelectDir, SIGNAL(clicked()), q_ptr, SLOT(onSelectDirPath()) );
     QObject::connect(q_ptr->ui->pushBut_StartCheck, SIGNAL(clicked()), q_ptr, SLOT(onStartCheck()));
