@@ -29,7 +29,6 @@ signals:
 public slots:
     void onStart();
     void onStop();
-    void onReceiveFilePath(QString filePath);
     void onDelFile();
     void onClickItem(QListWidgetItem *item);
 

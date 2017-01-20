@@ -94,6 +94,7 @@ ListWidget::ListWidget(QWidget *parent)
 
 ListWidget::~ListWidget()
 {
+    qDebug() << "ListWidget::~ListWidget()";
     delete d_ptr;
     delete ui;
 }
@@ -129,11 +130,6 @@ void ListWidget::onStart()
 void ListWidget::onStop()
 {
     d_ptr->onStop();
-}
-
-void ListWidget::onReceiveFilePath(QString filePath)
-{
-
 }
 
 void ListWidget::onDelFile()
