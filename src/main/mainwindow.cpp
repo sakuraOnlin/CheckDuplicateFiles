@@ -65,7 +65,7 @@ void MainWindow::onSelectDirPath()
     d_ptr->m_dirPath = dirPath;
     ui->lineEdit_ShowDIrPath->setText(d_ptr->m_dirPath);
     ui->pushBut_StartCheck->setEnabled(true);
-    ui->listWidget->setDirPath(dirPath);
+    ui->listWidget->setDirPath(d_ptr->m_dirPath);
 }
 
 void MainWindow::onStartCheck()
@@ -103,9 +103,13 @@ void MainWindow::onAbout()
 
 }
 
-void MainWindow::onFileTotal(int fileTotal)
+void MainWindow::onFileStatistics(WidgetUtil::Progress progress)
 {
-
+    QString fileTotal(QString::number(progress.FileStatistics));
+    QString ComputeProgress(QString::number(progress.ComputeProgress));
+    d_ptr->m_fileTotalLabel->setText(
+                QObject::tr("File Total : %1 , Calculation progress : %2")
+                .arg(fileTotal).arg(ComputeProgress)  );
 }
 
 void MainWindowPrivate::init()
@@ -132,6 +136,9 @@ void MainWindowPrivate::init()
     QObject::connect(q_ptr->ui->actionAbout, SIGNAL(triggered()), q_ptr, SLOT(onAbout()));
     QObject::connect(q_ptr->ui->pushBut_DelFile, SIGNAL(clicked()), q_ptr, SLOT(onDelFile()));
     QObject::connect(q_ptr->ui->pushBut_DelAllFiles, SIGNAL(clicked()), q_ptr, SLOT(onDelFile()));
+    QObject::connect(q_ptr->ui->listWidget, SIGNAL(
+                         signalFileStatistics(WidgetUtil::Progress)),q_ptr,
+                     SLOT(onFileStatistics(WidgetUtil::Progress))  );
 }
 
 void MainWindowPrivate::updateUIButton()

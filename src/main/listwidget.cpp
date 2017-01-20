@@ -11,7 +11,6 @@
 #include "computehash.h"
 #include "itemlistdelegate.h"
 #include "core/widgetUtil.h"
-#include "core/threadselectfiles.h"
 #include "core/backstage.h"
 
 class ListWidgetPrivate
@@ -22,8 +21,6 @@ class ListWidgetPrivate
 public:
     ListWidgetPrivate(ListWidget *publicListWidget)
         :q_ptr(publicListWidget),
-          m_isStart(false),
-          m_dirPath(QString()),
           m_selectItem(nullptr)
     {
         init();
@@ -33,12 +30,8 @@ public:
     void onStop();
     void onClickItem(QListWidgetItem *item);
 
-    bool m_isStart;
-    QString m_dirPath;
-    QStringList m_fileFilters;
     ItemListDelegate m_dselegate;
     QListWidgetItem *m_selectItem;
-    ThreadSelectFiles m_selectFiles;
     QHash<QString, QListWidgetItem*> m_fileItemHash;
     QStringList m_filePathList;
     Backstage m_backstage;
@@ -46,6 +39,7 @@ public:
 
 void ListWidgetPrivate::init()
 {
+    qRegisterMetaType<WidgetUtil::Progress>("WidgetUtil::Progress");
     QSize IconSize(QSize(32,32));
     BackstageWork *backstageWork = m_backstage.getBackstagwWork();
     backstageWork->setListWidget(q_ptr->ui->listWidget);
@@ -56,8 +50,8 @@ void ListWidgetPrivate::init()
     q_ptr->ui->listWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
     QObject::connect(q_ptr->ui->listWidget, SIGNAL(itemClicked(QListWidgetItem*)),
                      q_ptr, SLOT(onClickItem(QListWidgetItem*)));
-    QObject::connect(&m_selectFiles, SIGNAL(signalFilePath(QString)), backstageWork,
-                     SLOT(doListWidgetAddItem(QString)));
+    QObject::connect(backstageWork, SIGNAL(signalFileStatistics(WidgetUtil::Progress)),
+                     q_ptr, SIGNAL(signalFileStatistics(WidgetUtil::Progress)) );
 
 }
 
@@ -67,15 +61,12 @@ void ListWidgetPrivate::onStart()
     m_fileItemHash.clear();
     m_filePathList.clear();
     m_selectItem = nullptr;
-    //TODO:开始遍循环
-    m_selectFiles.setDirPath(m_dirPath);
-    m_selectFiles.setFilters(m_fileFilters);
-    m_selectFiles.onStartSelectFiles();
+    m_backstage.getBackstagwWork()->onStart();
 }
 
 void ListWidgetPrivate::onStop()
 {
-    m_selectFiles.onStopSelectFiles();
+    m_backstage.getBackstagwWork()->onStop();
 }
 
 void ListWidgetPrivate::onClickItem(QListWidgetItem *item)
@@ -109,25 +100,25 @@ ListWidget::~ListWidget()
 
 bool ListWidget::setFileFilters(QStringList filters)
 {
-    if(d_ptr->m_isStart)
+    if(d_ptr->m_backstage.getBackstagwWork()->getOperatingStatus())
         return false;
 
-    d_ptr->m_fileFilters = filters;
+    d_ptr->m_backstage.getBackstagwWork()->setFileFilters(filters);
     return true;
 }
 
-bool ListWidget::setDirPath(QString &dirPath)
+bool ListWidget::setDirPath(QString dirPath)
 {
-    if(d_ptr->m_isStart)
+    if(d_ptr->m_backstage.getBackstagwWork()->getOperatingStatus())
         return false;
 
-    d_ptr->m_dirPath = dirPath;
+    d_ptr->m_backstage.getBackstagwWork()->setDirPath(dirPath);
     return true;
 }
 
 bool ListWidget::operatingStatus()
 {
-    return d_ptr->m_isStart;
+    return d_ptr->m_backstage.getBackstagwWork()->getOperatingStatus();
 }
 
 void ListWidget::onStart()

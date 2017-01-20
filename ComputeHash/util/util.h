@@ -18,6 +18,7 @@ public:
 
     enum ResultMessageType
     {
+        NoCheck    ,
         CheckIng   , 
         CheckOver  , 
         CheckError , 

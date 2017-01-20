@@ -18,6 +18,12 @@ public:
         CheckResult   ,       //util::ComputeResult
         ItemSelect
     };
+
+    struct Progress
+    {
+        int FileStatistics;
+        int ComputeProgress;
+    };
 };
 
 #endif // WIDGETUTIL_H

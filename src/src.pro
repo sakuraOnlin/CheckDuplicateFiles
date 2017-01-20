@@ -12,9 +12,9 @@ SOURCES += \
     main/mainwindow.cpp \
     core/threadselectfiles.cpp \
     main/itemlistdelegate.cpp \
-    main/listwidget.cpp \
+    core/backstage.cpp \
     core/widgetUtil.cpp \
-    core/backstage.cpp
+    main/listwidget.cpp
 
 FORMS += \
     main/mainwindow.ui \
@@ -24,9 +24,9 @@ HEADERS += \
     main/mainwindow.h \
     core/threadselectfiles.h \
     main/itemlistdelegate.h \
-    main/listwidget.h \
+    core/backstage.h \
     core/widgetUtil.h \
-    core/backstage.h
+    main/listwidget.h
 
 TRANSLATIONS += res/translator/translator_cn.ts
 

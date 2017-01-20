@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "core/widgetUtil.h"
 
 namespace Ui {
 class MainWindow;
@@ -29,6 +30,7 @@ private slots:
     void onDelFile();
     void onHelp();
     void onAbout();
+    void onFileStatistics(WidgetUtil::Progress progress);
 
 private:
     Ui::MainWindow *ui;

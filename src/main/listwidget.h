@@ -2,6 +2,7 @@
 #define LISTWIDGET_H
 
 #include <QWidget>
+#include "core/widgetUtil.h"
 
 namespace Ui {
 class ListWidget;
@@ -18,14 +19,17 @@ public:
     explicit ListWidget(QWidget *parent = 0);
     ~ListWidget();
     bool setFileFilters(QStringList filters);
-    bool setDirPath(QString &dirPath);
+    bool setDirPath(QString dirPath);
     bool operatingStatus();
+
+signals:
+    void signalFileTotal(int fileTotal);
+    void signalFileStatistics(WidgetUtil::Progress progress);
 
 public slots:
     void onStart();
     void onStop();
     void onReceiveFilePath(QString filePath);
-    void onUpdateItemData(int role, QString &filePath, QVariant data);
     void onDelFile();
     void onClickItem(QListWidgetItem *item);
 

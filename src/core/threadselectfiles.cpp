@@ -3,16 +3,30 @@
 #include <QDir>
 #include <QDirIterator>
 
-DoWork::DoWork(QString dirPath, QStringList filters, QObject *parent)
+#ifdef _DEBUG
+#include <QDebug>
+#endif
+
+DoWork::DoWork(QObject *parent)
     : QObject(parent), 
       m_isStart(true), 
-      m_dirPath(dirPath), 
-      m_filters(filters)
+      m_dirPath(QString()),
+      m_filters(QString())
 {
 
 }
 
-void DoWork::doWork()
+void DoWork::setDirPath(QString dirPath)
+{
+    m_dirPath = dirPath;
+}
+
+void DoWork::setFilters(QStringList filters)
+{
+    m_filters = filters;
+}
+
+void DoWork::onDoWork()
 {
     //判断路径是否存在
     QDir dir(m_dirPath);
@@ -35,7 +49,12 @@ void DoWork::doWork()
     }
 }
 
-void DoWork::onStopSelectFiles()
+void DoWork::startSelectFiles()
+{
+    m_isStart = true;
+}
+
+void DoWork::stopSelectFiles()
 {
     m_isStart = false;
 }
@@ -46,7 +65,15 @@ ThreadSelectFiles::ThreadSelectFiles(QObject *parent)
       m_dirPath(QString("./")), 
       m_filters(QStringList("*.*"))
 {
+    init();
+}
 
+ThreadSelectFiles::~ThreadSelectFiles()
+{
+    m_work->stopSelectFiles();
+    m_thread->quit();
+    m_thread->wait(100);
+    delete m_thread;
 }
 
 void ThreadSelectFiles::setDirPath(QString dirPath)
@@ -61,32 +88,28 @@ void ThreadSelectFiles::setFilters(QStringList filters)
 
 void ThreadSelectFiles::onStartSelectFiles()
 {
-    if(nullptr != m_thread)
-        onStopSelectFiles();
 
-    m_thread = new QThread;
-    DoWork *work = new DoWork(m_dirPath, m_filters);
-    work->moveToThread(m_thread);
-    connect(m_thread, SIGNAL(finished()), work, SLOT(deleteLater()) );
-    connect(work, SIGNAL(signalFilePath(QString)), this,
-            SIGNAL(signalFilePath(QString)));
-    connect(this, SIGNAL(signalStartSelectFiles()), work, SLOT(doWork()) );
-    connect(this, SIGNAL(signalStopSelectFiles()), work, 
-            SLOT(onStopSelectFiles()) );
-    m_thread->start();
+    m_work->stopSelectFiles();
+    m_work->startSelectFiles();
+    m_work->setDirPath(m_dirPath);
+    m_work->setFilters(m_filters);
     emit signalStartSelectFiles();
-
 }
 
 void ThreadSelectFiles::onStopSelectFiles()
 {
-    if(nullptr == m_thread)
-        return;
+    m_work->stopSelectFiles();
+}
 
-    emit signalStopSelectFiles();
-    m_thread->quit();
-    m_thread->wait(200);
-    delete m_thread;
-    m_thread = nullptr;
+void ThreadSelectFiles::init()
+{
+    m_thread = new QThread;
+    m_work = new DoWork;
+    m_work->moveToThread(m_thread);
+    connect(m_thread, SIGNAL(finished()), m_work, SLOT(deleteLater()) );
+    connect(m_work, SIGNAL(signalFilePath(QString)), this,
+            SIGNAL(signalFilePath(QString)));
+    connect(this, SIGNAL(signalStartSelectFiles()), m_work, SLOT(onDoWork()) );
+    m_thread->start();
 }
 

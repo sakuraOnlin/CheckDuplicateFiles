@@ -9,14 +9,17 @@ class DoWork : public QObject
     Q_OBJECT
 
 public:
-    explicit DoWork(QString dirPath, QStringList filters,QObject *parent = 0);
+    explicit DoWork(QObject *parent = 0);
+    void setDirPath(QString dirPath);
+    void setFilters(QStringList filters);
+    void stopSelectFiles();
+    void startSelectFiles();
 
 signals:
     void signalFilePath(QString);
 
 public slots:
-    void doWork();
-    void onStopSelectFiles();
+    void onDoWork();
 
 private:
     bool m_isStart;
@@ -29,6 +32,7 @@ class ThreadSelectFiles : public QObject
     Q_OBJECT
 public:
     explicit ThreadSelectFiles(QObject *parent = 0);
+    ~ThreadSelectFiles();
     void setDirPath(QString dirPath);
     void setFilters(QStringList filters);
 
@@ -42,7 +46,11 @@ public slots:
     void onStopSelectFiles();
 
 private:
+    void init();
+
+private:
     QThread *m_thread;
+    DoWork *m_work;
     QString m_dirPath;
     QStringList m_filters;
 };
