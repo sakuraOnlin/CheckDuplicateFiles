@@ -9,7 +9,7 @@
 
 DoWork::DoWork(QObject *parent)
     : QObject(parent), 
-      m_isStart(true), 
+      m_operatingStatus(true),
       m_dirPath(QString()),
       m_filters(QString())
 {
@@ -40,23 +40,23 @@ void DoWork::onDoWork()
     //定义迭代器并设置过滤器
     QDirIterator dir_iterator(m_dirPath, m_filters, QDir::Files | QDir::NoSymLinks,
         QDirIterator::Subdirectories);
-    while(m_isStart && dir_iterator.hasNext())
+    while(m_operatingStatus && dir_iterator.hasNext())
     {
         dir_iterator.next();
         QFileInfo file_info(dir_iterator.fileInfo());
-        QThread::msleep(35);
+        QThread::msleep(25);
         emit signalFilePath(file_info.absoluteFilePath());
     }
 }
 
 void DoWork::startSelectFiles()
 {
-    m_isStart = true;
+    m_operatingStatus = true;
 }
 
 void DoWork::stopSelectFiles()
 {
-    m_isStart = false;
+    m_operatingStatus = false;
 }
 
 ThreadSelectFiles::ThreadSelectFiles(QObject *parent)

@@ -15,14 +15,14 @@ public:
     ComputeHashPrivate(ComputeHash *parent,util::ComputeType type);
     ~ComputeHashPrivate();
     void init();
-    bool setDirPath(QString dirPath);
-    inline bool checkDirValid(QString &dirPath);
+    bool setFilePath(QString filePath);
+    inline bool checkDirValid(QString &filePath);
     void setUserFactore(Factory *userFacrory);
     void onStart();
 
     bool m_isStart;
     Factory *m_factory;
-    QString m_dirPath;
+    QString m_filePath;
     util::ComputeType m_conputeType;
     ThreadControl m_threadControl;
     QList<util::factoryCreateResult> m_factoryList;
@@ -32,7 +32,7 @@ ComputeHashPrivate::ComputeHashPrivate(ComputeHash *parent, util::ComputeType ty
     :q_ptr(parent),
       m_isStart(false),
       m_factory(new Factory),
-      m_dirPath(QString()),
+      m_filePath(QString()),
       m_conputeType(type)
 {
     init();
@@ -54,19 +54,19 @@ void ComputeHashPrivate::init()
 
 }
 
-bool ComputeHashPrivate::setDirPath(QString dirPath)
+bool ComputeHashPrivate::setFilePath(QString filePath)
 {
-    if(!checkDirValid(dirPath))
+    if(!checkDirValid(filePath))
         return false;
 
-    m_dirPath = dirPath;
+    m_filePath = filePath;
     return true;
 }
 
-bool ComputeHashPrivate::checkDirValid(QString &dirPath)
+bool ComputeHashPrivate::checkDirValid(QString &filePath)
 {
-    QFileInfo fileInfo(dirPath);
-    if(dirPath.isEmpty() && !fileInfo.isFile())
+    QFileInfo fileInfo(filePath);
+    if(filePath.isEmpty() && !fileInfo.isFile())
         return false;
     return true;
 }
@@ -91,7 +91,7 @@ void ComputeHashPrivate::onStart()
 {
     QList<util::factoryCreateResult> factoryList = m_factory->createCompute(m_conputeType);
     m_threadControl.setFactorys(factoryList);
-    m_threadControl.setDirPath(m_dirPath);
+    m_threadControl.setDirPath(m_filePath);
     m_threadControl.start();
 }
 
@@ -100,7 +100,7 @@ ComputeHash::ComputeHash(int type, QObject *parent)
 {
     d_ptr = new ComputeHashPrivate(this, (util::ComputeType)type);
     qRegisterMetaType<util::factoryCreateResult>("util::factoryCreateResult");
-    qRegisterMetaType<util::ComputeResult>("util::computeResult");
+    qRegisterMetaType<util::ComputeResult>("util::ComputeResult");
 }
 
 ComputeHash::~ComputeHash()
@@ -108,9 +108,9 @@ ComputeHash::~ComputeHash()
     delete d_ptr;
 }
 
-bool ComputeHash::setDirPath(QString dirPath)
+bool ComputeHash::setFilePath(QString filePath)
 {
-    return d_ptr->setDirPath(dirPath);
+    return d_ptr->setFilePath(filePath);
 }
 
 void ComputeHash::setUserFactore(Factory *userFacrory)

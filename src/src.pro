@@ -14,7 +14,8 @@ SOURCES += \
     main/itemlistdelegate.cpp \
     core/backstage.cpp \
     core/widgetUtil.cpp \
-    main/listwidget.cpp
+    main/listwidget.cpp \
+    core/computemodule.cpp
 
 FORMS += \
     main/mainwindow.ui \
@@ -26,7 +27,8 @@ HEADERS += \
     main/itemlistdelegate.h \
     core/backstage.h \
     core/widgetUtil.h \
-    main/listwidget.h
+    main/listwidget.h \
+    core/computemodule.h
 
 TRANSLATIONS += res/translator/translator_cn.ts
 

@@ -72,13 +72,7 @@ void ThreadReadFile::onDoWork(QString filePath)
                fileProgress, compute->getTypeName(), computeResultStr);
     compute->reset();
     emit signalCalculationComplete();
-    qDebug() << "onDoWork " << this;
 
-//#ifdef _DEBUG
-//    qDebug() << "Result Valur :" << filePath + ",  util::ComputeType :" +
-//                compute->getTypeName() + QString::number((int)getType) +
-//                ",  " + computeResultStr;
-//#endif
 }
 
 void ThreadReadFile::onStop()
@@ -208,5 +202,4 @@ void ThreadControl::onModuleCounter()
     if(m_moduleCounter <= 0)
         emit signalCalculationComplete();
     m_count++;
-    qDebug() << "m_count " << QString::number(m_count);
 }

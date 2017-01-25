@@ -43,8 +43,8 @@ void ListWidgetPrivate::init()
     QSize IconSize(QSize(32,32));
     BackstageWork *backstageWork = m_backstage.getBackstagwWork();
     backstageWork->setListWidget(q_ptr->ui->listWidget);
-    backstageWork->setFilePath(m_filePathList);
-    backstageWork->setFileItem(m_fileItemHash, IconSize);
+    backstageWork->setFilePath(&m_filePathList);
+    backstageWork->setFileItem(&m_fileItemHash, IconSize);
     q_ptr->ui->listWidget->setItemDelegate(&m_dselegate);
     q_ptr->ui->listWidget->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     q_ptr->ui->listWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);

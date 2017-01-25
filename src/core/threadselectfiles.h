@@ -12,8 +12,8 @@ public:
     explicit DoWork(QObject *parent = 0);
     void setDirPath(QString dirPath);
     void setFilters(QStringList filters);
-    void stopSelectFiles();
     void startSelectFiles();
+    void stopSelectFiles();
 
 signals:
     void signalFilePath(QString);
@@ -22,7 +22,7 @@ public slots:
     void onDoWork();
 
 private:
-    bool m_isStart;
+    bool m_operatingStatus;
     QString m_dirPath;
     QStringList m_filters;
 };
@@ -39,7 +39,6 @@ public:
 signals:
     void signalFilePath(QString);
     void signalStartSelectFiles();
-    void signalStopSelectFiles();
 
 public slots:
     void onStartSelectFiles();

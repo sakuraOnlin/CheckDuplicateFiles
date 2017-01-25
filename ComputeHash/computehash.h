@@ -15,7 +15,7 @@ public:
     ComputeHash(int ComputeType = 1, QObject *parent = 0);
     ~ComputeHash();
 
-    bool setDirPath(QString dirPath);
+    bool setFilePath(QString filePath);
     void setUserFactore(Factory *userFacrory);
 
 signals:

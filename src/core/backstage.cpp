@@ -1,11 +1,12 @@
 #include "backstage.h"
+#include "core/computemodule.h"
 
 #include <QFileIconProvider>
 #include <QFileInfo>
 #include <QDateTime>
+#include <QVector>
 
 Q_DECLARE_METATYPE(util::ComputeResult)
-Q_DECLARE_METATYPE(WidgetUtil::Progress)
 
 BackstageWork::BackstageWork(QObject *parnet)
     :QObject(parnet)
@@ -32,21 +33,16 @@ void BackstageWork::setFileFilters(QStringList fileFIlters)
     m_fileFilters = fileFIlters;
 }
 
-void BackstageWork::setFilePath(QStringList &filePathList)
+void BackstageWork::setFilePath(QStringList *filePathList)
 {
     m_filePathList = filePathList;
 }
 
-void BackstageWork::setFileItem(QHash<QString, QListWidgetItem *> &fileItemHash,
+void BackstageWork::setFileItem(QHash<QString, QListWidgetItem *> *fileItemHash,
                                 QSize &iconSize)
 {
     m_fileItemHash = fileItemHash;
     m_iconSize = iconSize;
-}
-
-void BackstageWork::setComputeMaxThreadCount(int threadCount)
-{
-    m_computeThreadCount = threadCount;
 }
 
 bool BackstageWork::getOperatingStatus()
@@ -56,13 +52,14 @@ bool BackstageWork::getOperatingStatus()
 
 void BackstageWork::onStart()
 {
-    m_filePathList.clear();
-    m_fileItemHash.clear();
+    m_filePathList->clear();
+    m_fileItemHash->clear();
     m_operatingStatus = true;
     m_selectFiles.setDirPath(m_dirPath);
     m_selectFiles.setFilters(m_fileFilters);
     m_selectFiles.onStartSelectFiles();
-    m_computeFileIndex = 0;
+    m_computeModule.setFilePathList(m_filePathList);
+    m_computeModule.onStart();
 }
 
 void BackstageWork::onStop()
@@ -76,7 +73,7 @@ void BackstageWork::onListWidgetAddItem(QString filePath)
     if(filePath.isEmpty())
         return;
 
-    QListWidgetItem *item = m_fileItemHash.value(filePath);
+    QListWidgetItem *item = m_fileItemHash->value(filePath);
     if(nullptr == item)
     {
         QListWidgetItem *item = new QListWidgetItem;
@@ -92,21 +89,21 @@ void BackstageWork::onListWidgetAddItem(QString filePath)
         item->setData(WidgetUtil::FileTime, fileInfo.lastModified().
                       toString("yyyy-dd-MM hh:mm:ss"));
         m_listWidget->addItem(item);
-        m_filePathList.append(filePath);
+        m_filePathList->append(filePath);
+        m_fileItemHash->insert(filePath, item);
         WidgetUtil::Progress progress;
-        progress.FileStatistics = m_filePathList.length();
-        progress.ComputeProgress = m_computeFileIndex;
+        progress.FileStatistics = m_filePathList->length();
+        progress.ComputeProgress = m_computeModule.getComputeProgress();
         emit signalFileStatistics(progress);
     }
 }
 
 void BackstageWork::onItemSetData(util::ComputeResult result)
 {
-    util::ResultMessageType messageType = result.resultMessageType;
     util::ComputeType computeHashType = result.computeHashType;
     QString filePath = result.filePath;
 
-    QListWidgetItem *item = m_fileItemHash.value(filePath);
+    QListWidgetItem *item = m_fileItemHash->value(filePath);
 
     if(nullptr == item)
         return;
@@ -115,7 +112,7 @@ void BackstageWork::onItemSetData(util::ComputeResult result)
     int resultListIndex = -1;
     for(int i = 0 ; i < resultList.length() ; i++)
     {
-        if(computeHashType == resultList[i].computeHashType)
+        if(computeHashType == resultList.value(i).computeHashType)
         {
             resultListIndex = i;
             break;
@@ -127,43 +124,21 @@ void BackstageWork::onItemSetData(util::ComputeResult result)
         resultList.replace(resultListIndex, result);
     QVariant data;
     data.setValue(result);
-    item->setData(WidgetUtil::CheckResult,data);
-
-    if(messageType == util::CheckOver)
-        m_computeThreadCount--;
-
-}
-
-void BackstageWork::onThreadEffectiveness()
-{
-    while (m_operatingStatus)
-    {
-        if(m_computeFileIndex >= m_filePathList.length())
-        {
-            m_operatingStatus = false;
-            continue;
-        }
-        if(m_computeThreadCount >= m_computeMaxThreadCount)
-            continue;
-        QThread::msleep(35);
-        m_computeFileIndex++;
-        m_computeThreadCount++;
-        WidgetUtil::Progress progress;
-        progress.FileStatistics = m_filePathList.length();
-        progress.ComputeProgress = m_computeFileIndex;
-        emit signalFileStatistics(progress);
-    }
+    item->setData(WidgetUtil::CheckResult, data);
 }
 
 void BackstageWork::init()
 {
+    qRegisterMetaType<QVector<int> >("QVector<int>");
     m_listWidget = nullptr;
     m_dirPath = QString("..");
     m_fileFilters.append(QString("*.*"));
-    m_computeThreadCount = 3;
-    m_computeFileIndex = 0;
+    m_filePathList = nullptr;
+    m_fileItemHash = nullptr;
     m_operatingStatus = false;
     QObject::connect(&m_selectFiles, SIGNAL(signalFilePath(QString)), this, SLOT(onListWidgetAddItem(QString))  );
+    QObject::connect(&m_computeModule, SIGNAL(signalFinalResult(util::ComputeResult)),
+                     this, SLOT(onItemSetData(util::ComputeResult)) );
 }
 
 Backstage::Backstage(QObject *parent)

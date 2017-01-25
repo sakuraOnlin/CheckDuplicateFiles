@@ -25,7 +25,7 @@ void Widget::onSelectDir()
     if(fileName.isEmpty()) return;
 
     m_filePath = fileName;
-    m_compute->setDirPath(m_filePath);
+    m_compute->setFilePath(m_filePath);
     ui->lineEdit->setText(m_filePath);
     ui->pBStart->setEnabled(true);
     ui->laCRC32->clear();
