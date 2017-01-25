@@ -19,14 +19,14 @@ ComputeWork::~ComputeWork()
     {
         ComputeHash *value = m_computeRunList.takeFirst();
         value->onStop();
-        delete ComputeHash;
+        delete value;
     }
 
     for(int i = 0 ; i < m_computeRestList.length(); i=0)
     {
         ComputeHash *value = m_computeRestList.takeFirst();
         value->onStop();
-        delete ComputeHash;
+        delete value;
     }
 }
 
@@ -89,6 +89,8 @@ ComputeModule::~ComputeModule()
 {
     m_thread->quit();
     m_thread->wait(100);
+    delete m_thread;
+    m_thread = nullptr;
 }
 
 void ComputeModule::setFilePathList(QStringList *filePathList)

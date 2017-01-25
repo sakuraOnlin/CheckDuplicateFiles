@@ -10,9 +10,7 @@ CRC32::CRC32()
 
 CRC32::~CRC32()
 {
-#ifdef _DEBUG
-    qDebug() << "~CRC32() " << this;
-#endif
+
 }
 
 void CRC32::update(QByteArray &data, QString oldComputeHash)

@@ -6,10 +6,6 @@
 #include <QByteArray>
 #include "compute.h"
 
-#ifdef _DEBUG
-#include <QDebug>
-#endif
-
 template <typename T>
 class Crypto : public Compute
 {
@@ -36,9 +32,6 @@ public:
 
     ~Crypto()
     {
-#ifdef _DEBUG
-        qDebug() << "~Crypto() " << this;
-#endif
         if(nullptr != m_crypto)
             delete m_crypto;
     }

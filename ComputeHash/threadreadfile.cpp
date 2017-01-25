@@ -30,7 +30,6 @@ void ThreadReadFile::onDoWork(QString filePath)
     if(filePath.isEmpty())
         return;
 
-    qDebug() << "onDoWork(QString filePath) " << filePath;
     qint64 fileSize = 0;
     qint64 fileProgress = 0;
     qint64 loadFileData = 0;
@@ -61,7 +60,7 @@ void ThreadReadFile::onDoWork(QString filePath)
         QByteArray readFileRawData = file.read(loadFileData);
         compute->update(readFileRawData);
         fileProgress += loadFileData;
-        emitResult(util::CheckIng,  getType,filePath, fileSize,
+        emitResult(util::CheckIng, getType,filePath, fileSize,
                    fileProgress, compute->getTypeName());
     }
 

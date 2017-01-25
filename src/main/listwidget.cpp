@@ -94,7 +94,6 @@ ListWidget::ListWidget(QWidget *parent)
 
 ListWidget::~ListWidget()
 {
-    qDebug() << "ListWidget::~ListWidget()";
     delete d_ptr;
     delete ui;
 }
