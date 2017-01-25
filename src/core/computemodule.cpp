@@ -15,19 +15,18 @@ ComputeWork::~ComputeWork()
 {
     m_operatingStatus = false;
     QThread::msleep(50);
-    for(int i = 0 ; i < m_computeRunList.length(); i=0)
+    foreach (ComputeHash *value, m_computeRunList)
     {
-        ComputeHash *value = m_computeRunList.takeFirst();
         value->onStop();
         delete value;
     }
 
-    for(int i = 0 ; i < m_computeRestList.length(); i=0)
+    foreach (ComputeHash *value, m_computeRestList)
     {
-        ComputeHash *value = m_computeRestList.takeFirst();
         value->onStop();
         delete value;
     }
+
 }
 
 void ComputeWork::setFilePathList(QStringList *filePathList)
