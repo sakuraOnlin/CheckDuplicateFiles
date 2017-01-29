@@ -51,6 +51,7 @@ void ItemListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
                 WidgetUtil::CheckResultRole).value<QList<util::ComputeResult> >();
 
     QRect optRect(option.rect);
+    optRect.setWidth(optRect.width() -1);
     QRect fileIcoRect(optRect.x() + m_interval, optRect.y() + m_interval,32 ,32);
     int labelDatumPositioningX = optRect.x() + 32 + m_interval *2 ;
     int labelDatumPositioningY = optRect.y() + m_interval;
