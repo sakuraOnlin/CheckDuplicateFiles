@@ -91,7 +91,7 @@ void BackstageWork::onListWidgetAddItem(QString filePath)
         item->setData(WidgetUtil::FileName, fileInfo.fileName());
         item->setData(WidgetUtil::FileTimeRole, fileInfo.lastModified().
                       toString("yyyy-MM-dd hh:mm:ss"));
-        item->setData(WidgetUtil::CheckTypeRole, WidgetUtil::NoCheck);
+        item->setData(WidgetUtil::CheckTypeRole, util::NoCheck);
         m_listWidget->addItem(item);
         m_filePathList->append(filePath);
         m_fileItemHash->insert(filePath, item);
@@ -125,7 +125,7 @@ void BackstageWork::onItemSetData(util::ComputeResult result)
     QVariant data;
     data.setValue(resultList);
     item->setData(WidgetUtil::CheckResultRole, data);
-    item->setData(WidgetUtil::CheckTypeRole, WidgetUtil::CheckIng);
+    item->setData(WidgetUtil::CheckTypeRole, util::CheckIng);
 }
 
 void BackstageWork::onItemComputeErr(QString filePath, QString errStr)
@@ -134,7 +134,7 @@ void BackstageWork::onItemComputeErr(QString filePath, QString errStr)
     if(nullptr == item)
         return;
     item->setData(WidgetUtil::CheckResultRole,errStr);
-    item->setData(WidgetUtil::CheckTypeRole, WidgetUtil::CheckError);
+    item->setData(WidgetUtil::CheckTypeRole, util::CheckError);
 }
 
 void BackstageWork::onItemCalculationComplete(QString filePath)
@@ -142,7 +142,7 @@ void BackstageWork::onItemCalculationComplete(QString filePath)
     QListWidgetItem *item = m_fileItemHash->value(filePath);
     if(nullptr == item)
         return;
-    item->setData(WidgetUtil::CheckTypeRole, WidgetUtil::CheckOver);
+    item->setData(WidgetUtil::CheckTypeRole, util::CheckOver);
 }
 
 void BackstageWork::onTimeSengProgress()

@@ -8,14 +8,6 @@ class WidgetUtil
 public:
     explicit WidgetUtil();
 
-    enum CheckType
-    {
-        NoCheck    ,
-        CheckIng   ,
-        CheckOver  ,
-        CheckError
-    };
-
     enum ItemDelegate
     {
         FileName = Qt::UserRole +100,
@@ -24,7 +16,7 @@ public:
         FileTimeRole    ,
         FileIcoRole     ,
         CheckResultRole ,       // util::ComputeResult is list
-        CheckTypeRole   ,       // item compute type ,it's CheckType
+        CheckTypeRole   ,       // item compute type
         ItemSelectRole
     };
 

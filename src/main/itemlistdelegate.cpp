@@ -131,7 +131,8 @@ void ItemListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
         for(int i = 0 ; i < resultRectList.length(); i++ )
         {
             util::ComputeResult result = resultList[i];
-            util::ResultMessageType messageType = result.resultMessageType;
+            util::ResultMessageType messageType = index.
+                    data(WidgetUtil::CheckTypeRole).value<util::ResultMessageType>();
             qApp->style()->drawItemText(painter, resultRectList[i].first ,Qt::AlignLeft,
                                         option.palette, true,
                                         result.checkTypeName);
