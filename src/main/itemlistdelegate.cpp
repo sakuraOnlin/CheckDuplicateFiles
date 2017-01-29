@@ -3,7 +3,9 @@
 #include <QPen>
 #include <QFileIconProvider>
 #include <QIcon>
+#include <QPair>
 #include <QDebug>
+#include <QProgressBar>
 
 #include "itemlistdelegate.h"
 #include "core/widgetUtil.h"
@@ -20,8 +22,6 @@ ItemListDelegate::ItemListDelegate(QObject *parent)
     m_interval = 5;
     m_rectLabelWidth = 50;
     m_rectLabelHeight = 17;
-    m_rectWidth = 400;
-    m_rectHeight = 17;
     m_pButWidth =40;
     m_pButHeight = 28;
     m_labelHeightAndInterva = m_rectLabelHeight + m_interval;
@@ -51,59 +51,76 @@ void ItemListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
                 WidgetUtil::CheckResultRole).value<QList<util::ComputeResult> >();
 
     QRect optRect(option.rect);
-    QRect defaultRect(optRect.x() + m_interval, optRect.y() + m_interval,
-                      optRect.width() - 10, optRect.height() - 10);
+    QRect fileIcoRect(optRect.x() + m_interval, optRect.y() + m_interval,32 ,32);
+    int labelDatumPositioningX = optRect.x() + 32 + m_interval *2 ;
+    int labelDatumPositioningY = optRect.y() + m_interval;
+    int puButDatumPositioningX = optRect.width() - m_interval - m_pButWidth;
+    int contentLengthX = optRect.width() - m_labelWidthAndInterva - m_pButHeight
+            - m_interval * 2;
 
-    int strRectWidth = defaultRect.width() - 48 - m_rectLabelWidth - m_pButWidth - (m_interval * 3);
-
-    QRect fileIconRect(defaultRect.x(), defaultRect.y() , 48,48);
-
-    QRect pButOpenDirRect(optRect.width() - m_interval - m_pButWidth, m_interval,
-                           m_pButWidth, m_pButHeight);
-
-    QRect pButOpenDelFileRect(pButOpenDirRect.x(), pButOpenDirRect.y() +
-                              m_pButHeight + m_interval, m_pButWidth, m_pButHeight);
-
-    QRect fileNameLabel(fileIconRect.x() + fileIconRect.width() + m_interval,
-                         fileIconRect.y(), m_rectLabelWidth, m_rectLabelHeight);
-
-    QRect fileNameRect(fileNameLabel.x() + m_rectLabelWidth + m_interval,
-                        fileNameLabel.y(),strRectWidth,m_rectLabelHeight);
-
-    QRect filePathLabel(fileNameLabel.x(), fileNameLabel.y() + m_labelHeightAndInterva,
+    QRect pButOpenDirRect(puButDatumPositioningX, labelDatumPositioningY,
+                          m_pButWidth, m_pButHeight);
+    QRect pButOpenDelFileRect(puButDatumPositioningX, labelDatumPositioningY +
+                              m_pButHeight + m_interval *2,
+                              m_pButWidth, m_pButHeight);
+    QRect fileNameLabelRect(labelDatumPositioningX, labelDatumPositioningY,
                         m_rectLabelWidth, m_rectLabelHeight);
-
-    QRect filePathRect(fileNameRect.x(), fileNameRect.y() + m_labelHeightAndInterva,
-                       strRectWidth, m_rectLabelHeight);
-
-    QRect fileSizeLabel(filePathLabel.x(), filePathLabel.y() + m_labelHeightAndInterva,
+    QRect fileNameRect(labelDatumPositioningX + m_labelWidthAndInterva,
+                   fileNameLabelRect.y(), contentLengthX, m_rectLabelHeight);
+    QRect filePathLabelRect(labelDatumPositioningX, labelDatumPositioningY +
+                        m_labelHeightAndInterva * 1,
                         m_rectLabelWidth, m_rectLabelHeight);
+    QRect filePathRect(labelDatumPositioningX + m_labelWidthAndInterva,
+                       filePathLabelRect.y(), contentLengthX, m_rectLabelHeight);
+    QRect fileSizeLabelRect(labelDatumPositioningX, labelDatumPositioningY +
+                        m_labelHeightAndInterva * 2,
+                        m_rectLabelWidth, m_rectLabelHeight);
+    QRect fileSizeRect(labelDatumPositioningX + m_labelWidthAndInterva,
+                       fileSizeLabelRect.y(), m_rectLabelWidth, m_rectLabelHeight);
+    QRect fileTimeLabelRect(fileSizeRect.x() + m_labelWidthAndInterva, fileSizeRect.y(),
+                            m_rectLabelWidth, m_rectLabelHeight);
+    QRect fileTimeRect(fileTimeLabelRect.x() + m_labelWidthAndInterva, fileSizeRect.y(),
+                       fontMetrics.size(Qt::TextSingleLine,fileTime).width(),
+                       m_rectLabelHeight);
 
-    QRect fileSizeRect(fileSizeLabel.x() + m_labelWidthAndInterva,
-                       fileSizeLabel.y(), m_rectLabelWidth, m_rectLabelHeight);
+    QList<QPair<QRect, QRect> > resultRectList;
+    if(isSelected)
+    {
+        /*
+         * Line 0 is the starting point.
+         * All file fingerprint results are displayed starting at the third line.
+        */
+        int contentStartingPoint = 3;
+        for(int i = 0 ; i < resultList.length(); i++)
+        {
+            QRect resultNameRect(labelDatumPositioningX, labelDatumPositioningY +
+                                 m_labelHeightAndInterva * contentStartingPoint,
+                                 m_rectLabelWidth, m_rectLabelHeight);
 
-    QRect fileTimeLabel(fileSizeRect.x() + m_labelWidthAndInterva,
-                        fileSizeRect.y(), m_rectLabelWidth, m_rectLabelHeight);
+            QRect resultRect(labelDatumPositioningX + m_labelWidthAndInterva,
+                             resultNameRect.y(), contentLengthX, m_rectLabelHeight);
+            resultRectList.append(qMakePair(resultNameRect,resultRect));
+            contentStartingPoint++;
+        }
+    }
 
-    QRect fileTimeRect(fileTimeLabel.x() + m_labelWidthAndInterva,
-                       fileTimeLabel.y(), fontMetrics.size(
-                           Qt::TextSingleLine,fileTime).width(), m_rectLabelHeight);
-
-    qApp->style()->drawItemPixmap(painter, fileIconRect,
+    painter->save();
+//    qApp->style()->drawControl();
+    qApp->style()->drawItemPixmap(painter, fileIcoRect,
                                 Qt::AlignLeft | Qt::AlignTop, fileIco);
-    qApp->style()->drawItemText(painter, fileNameLabel,Qt::AlignLeft,
+    qApp->style()->drawItemText(painter, fileNameLabelRect,Qt::AlignLeft,
                                 option.palette, true, "FileName:");
     qApp->style()->drawItemText(painter, fileNameRect ,Qt::AlignLeft,
                                 option.palette, true, fileName);
-    qApp->style()->drawItemText(painter, filePathLabel,Qt::AlignLeft,
+    qApp->style()->drawItemText(painter, filePathLabelRect,Qt::AlignLeft,
                                 option.palette, true, "FilePath:");
     qApp->style()->drawItemText(painter, filePathRect ,Qt::AlignLeft,
                                 option.palette, true, filePath);
-    qApp->style()->drawItemText(painter, fileSizeLabel,Qt::AlignLeft,
+    qApp->style()->drawItemText(painter, fileSizeLabelRect,Qt::AlignLeft,
                                 option.palette, true, "FileSize:");
     qApp->style()->drawItemText(painter, fileSizeRect ,Qt::AlignLeft,
                                 option.palette, true, fileSize);
-    qApp->style()->drawItemText(painter, fileTimeLabel,Qt::AlignLeft,
+    qApp->style()->drawItemText(painter, fileTimeLabelRect,Qt::AlignLeft,
                                 option.palette, true, "FileTime:");
     qApp->style()->drawItemText(painter, fileTimeRect ,Qt::AlignLeft,
                                 option.palette, true, fileTime);
@@ -111,19 +128,61 @@ void ItemListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
     if(isSelected)
     {
         //计算进度条或是指纹结果的偏移量
-
-        for(int i = 0 ; i < resultList.length(); i++)
+        for(int i = 0 ; i < resultRectList.length(); i++ )
         {
-            //在此处计算
             util::ComputeResult result = resultList[i];
-            qDebug() << "checkTypeName " << result.checkTypeName;
-            qDebug() << "filePath " << result.filePath ;
-            qDebug() << "resultStr " << result.resultStr;
+            util::ResultMessageType messageType = result.resultMessageType;
+            qApp->style()->drawItemText(painter, resultRectList[i].first ,Qt::AlignLeft,
+                                        option.palette, true,
+                                        result.checkTypeName);
+            switch (messageType) {
+            case util::NoCheck:
+            {
+                // 未开始
+                qApp->style()->drawItemText(painter, resultRectList[i].second ,Qt::AlignLeft,
+                                            option.palette, true, tr("Not yet started"));
+                break;
+            }
+            case util::CheckIng:
+            {
+                // 设置进度条的风格
+                QStyleOptionProgressBar progressBarOption;
+                progressBarOption.initFrom(option.widget);
+                progressBarOption.rect = resultRectList[i].second;
+                progressBarOption.minimum = 0;
+                progressBarOption.maximum = result.fileSize;
+                progressBarOption.textAlignment = Qt::AlignCenter;
+                progressBarOption.progress = result.computeProgress;
+                progressBarOption.text = QString("%1 / %2")
+                       .arg(QString::number(result.computeProgress))
+                       .arg(QString::number(result.fileSize));
+                progressBarOption.textVisible = true;
+                QProgressBar progressBar;
+                QApplication::style()->drawControl(QStyle::CE_ProgressBar,
+                                    &progressBarOption, painter, &progressBar);
+                break;
+            }
+            case util::CheckOver:
+            {
+                qApp->style()->drawItemText(painter, resultRectList[i].second ,Qt::AlignLeft,
+                                            option.palette, true, result.resultStr);
+                break;
+            }
+            case util::CheckError:
+            {
+                // 检查错误！错误原因:
+                qApp->style()->drawItemText(painter, resultRectList[i].second ,Qt::AlignLeft,
+                                            option.palette, true,
+                                            tr("Check for errors! Cause of error:"));
+                break;
+            }
+            default:
+                break;
+            }
         }
     }
 
     painter->restore();
-
  }
 
 QSize ItemListDelegate::sizeHint(const QStyleOptionViewItem &option,

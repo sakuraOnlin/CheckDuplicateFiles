@@ -30,8 +30,6 @@ private:
     int m_interval;
     int m_rectLabelWidth;
     int m_rectLabelHeight;
-    int m_rectWidth;
-    int m_rectHeight;
     int m_labelHeightAndInterva;
     int m_labelWidthAndInterva;
 
