@@ -77,11 +77,11 @@ void ListWidgetPrivate::onClickItem(QListWidgetItem *item)
     else
     {
         m_selectItem->setSizeHint(QSize(width, 70));
-        m_selectItem->setData(WidgetUtil::ItemSelect, false);
+        m_selectItem->setData(WidgetUtil::ItemSelectRole, false);
     }
     m_selectItem = item;
     item->setSizeHint(QSize(item->sizeHint().width(), 140));
-    item->setData(WidgetUtil::ItemSelect, true);
+    item->setData(WidgetUtil::ItemSelectRole, true);
 }
 
 ListWidget::ListWidget(QWidget *parent)

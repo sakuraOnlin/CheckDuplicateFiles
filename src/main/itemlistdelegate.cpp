@@ -36,20 +36,19 @@ void ItemListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
                              const QModelIndex &index) const
 {
     QStyledItemDelegate::paint(painter, option, index);
-//    return;
 
     //Data
     QFont font(qApp->font());
     QFontMetrics fontMetrics(font);
     QString fileName(index.data(WidgetUtil::FileName).toString());
-    QString filePath(index.data(WidgetUtil::FilePath).toString());
-    QString fileSize(index.data(WidgetUtil::FileSize).toString());
-    QString fileTime(index.data(WidgetUtil::FileTime).toString());
-    QPixmap fileIco(index.data(WidgetUtil::FileIco).value<QPixmap>());
-    bool isSelected = index.data(WidgetUtil::ItemSelect).toBool();
+    QString filePath(index.data(WidgetUtil::FilePathRole).toString());
+    QString fileSize(index.data(WidgetUtil::FileSizeRole).toString());
+    QString fileTime(index.data(WidgetUtil::FileTimeRole).toString());
+    QPixmap fileIco(index.data(WidgetUtil::FileIcoRole).value<QPixmap>());
+    bool isSelected = index.data(WidgetUtil::ItemSelectRole).toBool();
 
-    QList<util::ComputeResult> resultList = index.data(WidgetUtil::CheckResult).value<
-            QList<util::ComputeResult> >();
+    QList<util::ComputeResult> resultList = index.data(
+                WidgetUtil::CheckResultRole).value<QList<util::ComputeResult> >();
 
     QRect optRect(option.rect);
     QRect defaultRect(optRect.x() + m_interval, optRect.y() + m_interval,
@@ -90,34 +89,39 @@ void ItemListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
                        fileTimeLabel.y(), fontMetrics.size(
                            Qt::TextSingleLine,fileTime).width(), m_rectLabelHeight);
 
+    qApp->style()->drawItemPixmap(painter, fileIconRect,
+                                Qt::AlignLeft | Qt::AlignTop, fileIco);
+    qApp->style()->drawItemText(painter, fileNameLabel,Qt::AlignLeft,
+                                option.palette, true, "FileName:");
+    qApp->style()->drawItemText(painter, fileNameRect ,Qt::AlignLeft,
+                                option.palette, true, fileName);
+    qApp->style()->drawItemText(painter, filePathLabel,Qt::AlignLeft,
+                                option.palette, true, "FilePath:");
+    qApp->style()->drawItemText(painter, filePathRect ,Qt::AlignLeft,
+                                option.palette, true, filePath);
+    qApp->style()->drawItemText(painter, fileSizeLabel,Qt::AlignLeft,
+                                option.palette, true, "FileSize:");
+    qApp->style()->drawItemText(painter, fileSizeRect ,Qt::AlignLeft,
+                                option.palette, true, fileSize);
+    qApp->style()->drawItemText(painter, fileTimeLabel,Qt::AlignLeft,
+                                option.palette, true, "FileTime:");
+    qApp->style()->drawItemText(painter, fileTimeRect ,Qt::AlignLeft,
+                                option.palette, true, fileTime);
+
     if(isSelected)
     {
         //计算进度条或是指纹结果的偏移量
+
         for(int i = 0 ; i < resultList.length(); i++)
         {
+            //在此处计算
+            util::ComputeResult result = resultList[i];
+            qDebug() << "checkTypeName " << result.checkTypeName;
+            qDebug() << "filePath " << result.filePath ;
+            qDebug() << "resultStr " << result.resultStr;
         }
     }
-    //draw FileNameLabel
-    painter->save();
-    QString testStr(index.data(Qt::DisplayRole).toString());
-    qApp->style()->drawItemPixmap(painter, fileIconRect,
-                                Qt::AlignLeft | Qt::AlignTop,fileIco);
-    qApp->style()->drawItemText(painter,fileNameLabel,Qt::AlignLeft,
-                                option.palette,true,"FileName:");
-    qApp->style()->drawItemText(painter,fileNameRect ,Qt::AlignLeft,option.palette
-                                ,true,testStr + fileName);
-    qApp->style()->drawItemText(painter,filePathLabel,Qt::AlignLeft,option.palette
-                                ,true,"FilePath:");
-    qApp->style()->drawItemText(painter,filePathRect ,Qt::AlignLeft,option.palette
-                                ,true,filePath);
-    qApp->style()->drawItemText(painter,fileSizeLabel,Qt::AlignLeft,option.palette
-                                ,true,"FileSize:");
-    qApp->style()->drawItemText(painter,fileSizeRect ,Qt::AlignLeft,option.palette
-                                ,true,fileSize);
-    qApp->style()->drawItemText(painter,fileTimeLabel,Qt::AlignLeft,option.palette
-                                ,true,"FileTime:");
-    qApp->style()->drawItemText(painter,fileTimeRect ,Qt::AlignLeft,option.palette
-                                ,true,fileTime);
+
     painter->restore();
 
  }

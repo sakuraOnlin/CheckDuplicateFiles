@@ -81,16 +81,17 @@ void BackstageWork::onListWidgetAddItem(QString filePath)
     {
         QListWidgetItem *item = new QListWidgetItem;
         item->setSizeHint(QSize(400, 70));
-        item->setData(WidgetUtil::FilePath,filePath);
+        item->setData(WidgetUtil::FilePathRole,filePath);
         QFileInfo fileInfo(filePath);
         QFileIconProvider fileIco;
         QIcon ico(fileIco.icon(fileInfo));
         QPixmap pixmap(ico.pixmap(m_iconSize));
-        item->setData(WidgetUtil::FileIco,pixmap);
-        item->setData(WidgetUtil::FileSize, QString::number(fileInfo.size()));
+        item->setData(WidgetUtil::FileIcoRole,pixmap);
+        item->setData(WidgetUtil::FileSizeRole, QString::number(fileInfo.size()));
         item->setData(WidgetUtil::FileName, fileInfo.fileName());
-        item->setData(WidgetUtil::FileTime, fileInfo.lastModified().
-                      toString("yyyy-dd-MM hh:mm:ss"));
+        item->setData(WidgetUtil::FileTimeRole, fileInfo.lastModified().
+                      toString("yyyy-MM-dd hh:mm:ss"));
+        item->setData(WidgetUtil::CheckTypeRole, WidgetUtil::NoCheck);
         m_listWidget->addItem(item);
         m_filePathList->append(filePath);
         m_fileItemHash->insert(filePath, item);
@@ -107,7 +108,7 @@ void BackstageWork::onItemSetData(util::ComputeResult result)
     if(nullptr == item)
         return;
     QList<util::ComputeResult> resultList = item->data(
-                WidgetUtil::CheckResult).value<QList<util::ComputeResult> >();
+                WidgetUtil::CheckResultRole).value<QList<util::ComputeResult> >();
     int resultListIndex = -1;
     for(int i = 0 ; i < resultList.length() ; i++)
     {
@@ -123,17 +124,17 @@ void BackstageWork::onItemSetData(util::ComputeResult result)
         resultList.replace(resultListIndex, result);
     QVariant data;
     data.setValue(resultList);
-    item->setData(WidgetUtil::CheckResult, data);
+    item->setData(WidgetUtil::CheckResultRole, data);
+    item->setData(WidgetUtil::CheckTypeRole, WidgetUtil::CheckIng);
 }
 
 void BackstageWork::onItemComputeErr(QString filePath, QString errStr)
 {
-    Q_UNUSED(errStr)
-
     QListWidgetItem *item = m_fileItemHash->value(filePath);
     if(nullptr == item)
         return;
-
+    item->setData(WidgetUtil::CheckResultRole,errStr);
+    item->setData(WidgetUtil::CheckTypeRole, WidgetUtil::CheckError);
 }
 
 void BackstageWork::onItemCalculationComplete(QString filePath)
@@ -141,6 +142,7 @@ void BackstageWork::onItemCalculationComplete(QString filePath)
     QListWidgetItem *item = m_fileItemHash->value(filePath);
     if(nullptr == item)
         return;
+    item->setData(WidgetUtil::CheckTypeRole, WidgetUtil::CheckOver);
 }
 
 void BackstageWork::onTimeSengProgress()

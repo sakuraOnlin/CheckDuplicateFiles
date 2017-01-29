@@ -8,15 +8,24 @@ class WidgetUtil
 public:
     explicit WidgetUtil();
 
+    enum CheckType
+    {
+        NoCheck    ,
+        CheckIng   ,
+        CheckOver  ,
+        CheckError
+    };
+
     enum ItemDelegate
     {
         FileName = Qt::UserRole +100,
-        FilePath    ,
-        FileSize    ,
-        FileTime    ,
-        FileIco     ,
-        CheckResult ,       //util::ComputeResult is list
-        ItemSelect
+        FilePathRole    ,
+        FileSizeRole    ,
+        FileTimeRole    ,
+        FileIcoRole     ,
+        CheckResultRole ,       // util::ComputeResult is list
+        CheckTypeRole   ,       // item compute type ,it's CheckType
+        ItemSelectRole
     };
 
     struct Progress
