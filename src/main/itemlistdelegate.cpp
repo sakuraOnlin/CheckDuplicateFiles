@@ -93,6 +93,9 @@ void ItemListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
     if(isSelected)
     {
         //计算进度条或是指纹结果的偏移量
+        for(int i = 0 ; i < resultList.length(); i++)
+        {
+        }
     }
     //draw FileNameLabel
     painter->save();

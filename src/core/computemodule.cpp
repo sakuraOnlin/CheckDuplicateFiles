@@ -42,7 +42,7 @@ int ComputeWork::getComputeProgress()
 void ComputeWork::onWork()
 {
     QThread::msleep(50);
-    m_computeIndex = 0;
+    m_computeIndex = -1;
     while (m_operatingStatus)
     {
         if(m_computeRestList.length() == 0)
@@ -57,11 +57,10 @@ void ComputeWork::onWork()
             continue;
         ComputeHash *compute = m_computeRestList.takeFirst();
         compute->onRestore();
-        compute->setFilePath(m_filePaths->value(m_computeIndex));
+        compute->setFilePath(m_filePaths->value(++m_computeIndex));
         compute->onStart();
         m_computeRunList.append(compute);
         m_computeHash.insert(compute, m_filePaths->value(m_computeIndex));
-        m_computeIndex++;
         m_threadRunCount++;
     }
 }

@@ -15,7 +15,7 @@ public:
         FileSize    ,
         FileTime    ,
         FileIco     ,
-        CheckResult   ,       //util::ComputeResult
+        CheckResult ,       //util::ComputeResult is list
         ItemSelect
     };
 

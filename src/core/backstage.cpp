@@ -16,6 +16,7 @@ BackstageWork::BackstageWork(QObject *parnet)
 
 BackstageWork::~BackstageWork()
 {
+    m_time.stop();
 }
 
 void BackstageWork::setListWidget(QListWidget *listWidget)
@@ -60,12 +61,14 @@ void BackstageWork::onStart()
     m_selectFiles.onStartSelectFiles();
     m_computeModule.setFilePathList(m_filePathList);
     m_computeModule.onStart();
+    m_time.start(30);
 }
 
 void BackstageWork::onStop()
 {
     m_operatingStatus = false;
     m_selectFiles.onStopSelectFiles();
+    m_time.stop();
 }
 
 void BackstageWork::onListWidgetAddItem(QString filePath)
@@ -91,10 +94,6 @@ void BackstageWork::onListWidgetAddItem(QString filePath)
         m_listWidget->addItem(item);
         m_filePathList->append(filePath);
         m_fileItemHash->insert(filePath, item);
-        WidgetUtil::Progress progress;
-        progress.FileStatistics = m_filePathList->length();
-        progress.ComputeProgress = m_computeModule.getComputeProgress();
-        emit signalFileStatistics(progress);
     }
 }
 
@@ -123,8 +122,33 @@ void BackstageWork::onItemSetData(util::ComputeResult result)
     else
         resultList.replace(resultListIndex, result);
     QVariant data;
-    data.setValue(result);
+    data.setValue(resultList);
     item->setData(WidgetUtil::CheckResult, data);
+}
+
+void BackstageWork::onItemComputeErr(QString filePath, QString errStr)
+{
+    Q_UNUSED(errStr)
+
+    QListWidgetItem *item = m_fileItemHash->value(filePath);
+    if(nullptr == item)
+        return;
+
+}
+
+void BackstageWork::onItemCalculationComplete(QString filePath)
+{
+    QListWidgetItem *item = m_fileItemHash->value(filePath);
+    if(nullptr == item)
+        return;
+}
+
+void BackstageWork::onTimeSengProgress()
+{
+    WidgetUtil::Progress progress;
+    progress.FileStatistics = m_filePathList->length();
+    progress.ComputeProgress = m_computeModule.getComputeProgress();
+    emit signalFileStatistics(progress);
 }
 
 void BackstageWork::init()
@@ -139,6 +163,11 @@ void BackstageWork::init()
     QObject::connect(&m_selectFiles, SIGNAL(signalFilePath(QString)), this, SLOT(onListWidgetAddItem(QString))  );
     QObject::connect(&m_computeModule, SIGNAL(signalFinalResult(util::ComputeResult)),
                      this, SLOT(onItemSetData(util::ComputeResult)) );
+    QObject::connect(&m_computeModule, SIGNAL(signalError(QString,QString)),
+                     this, SLOT(onItemComputeErr(QString,QString)) );
+    QObject::connect(&m_computeModule, SIGNAL(signalCalculationComplete(QString)),
+                     this, SLOT(onItemCalculationComplete(QString)));
+    QObject::connect(&m_time, SIGNAL(timeout()), this, SLOT(onTimeSengProgress()) );
 }
 
 Backstage::Backstage(QObject *parent)

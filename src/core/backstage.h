@@ -2,6 +2,7 @@
 #define BACKSTAGE_H
 
 #include <QObject>
+#include <QTimer>
 #include <QThread>
 #include <QListWidget>
 #include <QListWidgetItem>
@@ -15,6 +16,7 @@
 class BackstageWork : public QObject
 {
      Q_OBJECT
+
 public:
     explicit BackstageWork(QObject *parnet = 0);
     ~BackstageWork();
@@ -36,6 +38,9 @@ public slots:
 private slots:
     void onListWidgetAddItem(QString filePath);
     void onItemSetData(util::ComputeResult result);
+    void onItemComputeErr(QString filePath, QString errStr);
+    void onItemCalculationComplete(QString filePath);
+    void onTimeSengProgress();
 
 private:
     void init();
@@ -50,6 +55,7 @@ private:
     bool m_operatingStatus;
     ThreadSelectFiles m_selectFiles;
     ComputeModule m_computeModule;
+    QTimer m_time;
 
 };
 
