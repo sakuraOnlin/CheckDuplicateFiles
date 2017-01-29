@@ -118,6 +118,11 @@ void ComputeHash::setUserFactore(Factory *userFacrory)
     d_ptr->setUserFactore(userFacrory);
 }
 
+bool ComputeHash::getOperatingStatus()
+{
+    return d_ptr->m_threadControl.getOperatingStatus();
+}
+
 void ComputeHash::onStart()
 {
     d_ptr->onStart();

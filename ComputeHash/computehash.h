@@ -17,6 +17,7 @@ public:
 
     bool setFilePath(QString filePath);
     void setUserFactore(Factory *userFacrory);
+    bool getOperatingStatus();
 
 signals:
     void signalFinalResult(util::ComputeResult result);

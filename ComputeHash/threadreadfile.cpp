@@ -130,9 +130,10 @@ qint64 ThreadReadFile::automaticDivision(qint64 fileSize)
 ThreadControl::ThreadControl(QObject *parent)
     :QObject(parent),
       m_moduleCounter(0),
-      m_dirPath(QString())
+      m_dirPath(QString()),
+      m_count(0),
+      m_operatingStatus(false)
 {
-    m_count = 0;
 }
 
 ThreadControl::~ThreadControl()
@@ -148,6 +149,11 @@ void ThreadControl::setDirPath(QString dirPath)
 void ThreadControl::setFactorys(QList<util::factoryCreateResult> &list)
 {
     m_listFactorys = list;
+}
+
+bool ThreadControl::getOperatingStatus()
+{
+    return m_operatingStatus;
 }
 
 void ThreadControl::start()
@@ -174,6 +180,7 @@ void ThreadControl::start()
     }
 
     m_moduleCounter = m_readFileThreadList.length();
+    m_operatingStatus = true;
     emit signalStartCheck(m_dirPath);
 }
 
@@ -188,6 +195,7 @@ void ThreadControl::stop()
         delete m_readFileThreadList[i];
         m_readFileThreadList.removeAt(i);
     }
+    m_operatingStatus = false;
 }
 
 void ThreadControl::restore()
@@ -199,6 +207,9 @@ void ThreadControl::onModuleCounter()
 {
     m_moduleCounter--;
     if(m_moduleCounter <= 0)
+    {
+        m_operatingStatus = false;
         emit signalCalculationComplete();
+    }
     m_count++;
 }

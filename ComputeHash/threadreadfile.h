@@ -47,6 +47,7 @@ public:
     ~ThreadControl();
     void setDirPath(QString dirPath);
     void setFactorys(QList<util::factoryCreateResult> &list);
+    bool getOperatingStatus();
 
     void start();
     void stop();
@@ -69,6 +70,7 @@ private:
     QList<util::factoryCreateResult> m_listFactorys;
     QList<QThread*> m_readFileThreadList;
     int m_count;
+    bool m_operatingStatus;
 
 };
 
