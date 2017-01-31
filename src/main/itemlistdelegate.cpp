@@ -56,8 +56,8 @@ void ItemListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
     int labelDatumPositioningX = optRect.x() + 32 + m_interval *2 ;
     int labelDatumPositioningY = optRect.y() + m_interval;
     int puButDatumPositioningX = optRect.width() - m_interval - m_pButWidth;
-    int contentLengthX = optRect.width() - m_labelWidthAndInterva - m_pButHeight
-            - m_interval * 2;
+    int contentLengthX = optRect.width() - fileIcoRect.width()
+            - m_labelWidthAndInterva - m_pButHeight - m_interval * 2;
 
     QRect pButOpenDirRect(puButDatumPositioningX, labelDatumPositioningY,
                           m_pButWidth, m_pButHeight);
