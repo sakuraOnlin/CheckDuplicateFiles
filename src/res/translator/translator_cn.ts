@@ -2,6 +2,29 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="zh_CN">
 <context>
+    <name>ItemListDelegate</name>
+    <message>
+        <location filename="../../main/itemlistdelegate.cpp" line="110"/>
+        <source>Open File Dir</source>
+        <translation>打开文件夹</translation>
+    </message>
+    <message>
+        <location filename="../../main/itemlistdelegate.cpp" line="115"/>
+        <source>Del File</source>
+        <translation>删除文件</translation>
+    </message>
+    <message>
+        <location filename="../../main/itemlistdelegate.cpp" line="156"/>
+        <source>Not yet started</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../main/itemlistdelegate.cpp" line="189"/>
+        <source>Check for errors! Cause of error:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MainWindow</name>
     <message>
         <location filename="../../main/mainwindow.ui" line="20"/>
@@ -116,20 +139,17 @@
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.cpp" line="50"/>
         <source>Select Directory</source>
-        <translation>选择文件夹</translation>
+        <translation type="vanished">选择文件夹</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.cpp" line="59"/>
         <source>Error!</source>
-        <translation>错误!</translation>
+        <translation type="vanished">错误!</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.cpp" line="60"/>
         <source>Please select a valid directory!.
 </source>
-        <translation>请选择有效的文件夹!</translation>
+        <translation type="vanished">请选择有效的文件夹!</translation>
     </message>
 </context>
 <context>
@@ -143,9 +163,26 @@
         <translation type="vanished">停止检查</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.cpp" line="115"/>
+        <location filename="../../main/mainwindow.cpp" line="41"/>
+        <location filename="../../main/mainwindow.cpp" line="131"/>
         <source>File Total : %1 , Calculation progress : %2</source>
         <translation>文件总数： %1 ，效验总数： %2 </translation>
+    </message>
+    <message>
+        <location filename="../../main/mainwindow.cpp" line="90"/>
+        <source>Select Directory</source>
+        <translation>选择文件夹</translation>
+    </message>
+    <message>
+        <location filename="../../main/mainwindow.cpp" line="99"/>
+        <source>Error!</source>
+        <translation>错误!</translation>
+    </message>
+    <message>
+        <location filename="../../main/mainwindow.cpp" line="100"/>
+        <source>Please select a valid directory!.
+</source>
+        <translation type="unfinished">请选择有效的文件夹!</translation>
     </message>
 </context>
 </TS>

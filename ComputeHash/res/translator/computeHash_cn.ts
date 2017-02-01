@@ -10,7 +10,7 @@ Wrong address :</source>
 错误地址：</translation>
     </message>
     <message>
-        <location filename="../../computehash.cpp" line="129"/>
+        <location filename="../../computehash.cpp" line="134"/>
         <source>Failed to check the file for fingerprint verification!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -151,7 +151,7 @@ Wrong address :</source>
 <context>
     <name>ThreadReadFile</name>
     <message>
-        <location filename="../../threadreadfile.cpp" line="50"/>
+        <location filename="../../threadreadfile.cpp" line="49"/>
         <source>File open errors!</source>
         <translation>文件打开错误！导致无法检查当前文件指纹！</translation>
     </message>

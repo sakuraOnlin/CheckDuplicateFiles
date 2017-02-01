@@ -22,8 +22,8 @@ ItemListDelegate::ItemListDelegate(QObject *parent)
     m_interval = 5;
     m_rectLabelWidth = 50;
     m_rectLabelHeight = 17;
-    m_pButWidth =40;
-    m_pButHeight = 28;
+    m_pButWidth = 80;
+    m_pButHeight = 22;
     m_labelHeightAndInterva = m_rectLabelHeight + m_interval;
     m_labelWidthAndInterva = m_rectLabelWidth + m_interval;
 }
@@ -57,12 +57,12 @@ void ItemListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
     int labelDatumPositioningY = optRect.y() + m_interval;
     int puButDatumPositioningX = optRect.width() - m_interval - m_pButWidth;
     int contentLengthX = optRect.width() - fileIcoRect.width()
-            - m_labelWidthAndInterva - m_pButHeight - m_interval * 2;
+            - m_labelWidthAndInterva - m_pButWidth - m_interval * 4;
 
     QRect pButOpenDirRect(puButDatumPositioningX, labelDatumPositioningY,
                           m_pButWidth, m_pButHeight);
-    QRect pButOpenDelFileRect(puButDatumPositioningX, labelDatumPositioningY +
-                              m_pButHeight + m_interval *2,
+    QRect pButDelFileRect(puButDatumPositioningX, labelDatumPositioningY +
+                              m_pButHeight + m_interval,
                               m_pButWidth, m_pButHeight);
     QRect fileNameLabelRect(labelDatumPositioningX, labelDatumPositioningY,
                         m_rectLabelWidth, m_rectLabelHeight);
@@ -105,8 +105,20 @@ void ItemListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
         }
     }
 
+    QStyleOptionButton pButtOpenFile;
+    pButtOpenFile.rect = pButOpenDirRect;
+    pButtOpenFile.text = tr("Open File Dir");
+    pButtOpenFile.state |= QStyle::State_Enabled;
+
+    QStyleOptionButton pButtDelFile;
+    pButtDelFile.rect = pButDelFileRect;
+    pButtDelFile.text = tr("Del File");
+    pButtDelFile.state |= QStyle::State_Enabled;
+
     painter->save();
-//    qApp->style()->drawControl();
+    //TODO: 按钮显示状态的处理，包括按下和悬浮状态的处理，需要一个bool值来表示
+    qApp->style()->drawControl(QStyle::CE_PushButton, &pButtOpenFile, painter);
+    qApp->style()->drawControl(QStyle::CE_PushButton, &pButtDelFile, painter);
     qApp->style()->drawItemPixmap(painter, fileIcoRect,
                                 Qt::AlignLeft | Qt::AlignTop, fileIco);
     qApp->style()->drawItemText(painter, fileNameLabelRect,Qt::AlignLeft,
@@ -128,6 +140,7 @@ void ItemListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
 
     if(isSelected)
     {
+        //TODO: Item在各种状态下的数据显示，包括未计算时的数据显示
         //计算进度条或是指纹结果的偏移量
         for(int i = 0 ; i < resultRectList.length(); i++ )
         {
@@ -197,5 +210,39 @@ bool ItemListDelegate::editorEvent(QEvent *event, QAbstractItemModel *model,
                                    const QStyleOptionViewItem &option,
                                    const QModelIndex &index)
 {
+    //TODO:按钮事件的处理
+    if (event->type() == QEvent::MouseButtonPress)
+    {
+
+        QMouseEvent* e =(QMouseEvent*)event;
+        qDebug() << "editorEvent MouseButtonPress";
+//        if (m_btns.contains(index))
+//        {
+//            QPair<QStyleOptionButton*, QStyleOptionButton*>* btns = m_btns.value(index);
+//            if (btns->first->rect.contains(e->x(), e->y())) {
+//                btns->first->state |= QStyle::State_Sunken;
+//            }
+//            else if(btns->second->rect.contains(e->x(), e->y())) {
+//                btns->second->state |= QStyle::State_Sunken;
+//            }
+//        }
+    }
+    else if (event->type() == QEvent::MouseButtonRelease)
+    {
+        QMouseEvent* e =(QMouseEvent*)event;
+        qDebug() << "editorEvent MouseButtonRelease";
+//        if (m_btns.contains(index))
+//        {
+//            QPair<QStyleOptionButton*, QStyleOptionButton*>* btns = m_btns.value(index);
+//            if (btns->first->rect.contains(e->x(), e->y())) {
+//                btns->first->state &= (~QStyle::State_Sunken);
+//                showMsg(tr("btn1 column %1").arg(index.column()));
+//            } else if(btns->second->rect.contains(e->x(), e->y())) {
+//                btns->second->state &= (~QStyle::State_Sunken);
+//                showMsg(tr("btn2 row %1").arg(index.row()));
+//            }
+//        }
+    }
+
     return QStyledItemDelegate::editorEvent(event, model, option, index);
 }
