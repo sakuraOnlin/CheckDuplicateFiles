@@ -29,10 +29,13 @@ signals:
 public slots:
     void onStart();
     void onStop();
-    void onDelFile();
     void onClickItem(QListWidgetItem *item);
+    void onOpenFileDir();
+    void onDelFile();
 
 private slots:
+    void onOpenFileDir(QString filePath);
+    void onDelFile(QString filePath);
 
 private:
     Ui::ListWidget *ui;

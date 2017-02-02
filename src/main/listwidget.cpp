@@ -1,6 +1,11 @@
 #include <QListWidget>
 #include <QDateTime>
 #include <QVariant>
+#include <QString>
+#include <QFile>
+#include <QDesktopServices>
+#include <QUrl>
+#include <QFileInfo>
 
 #ifdef _DEBUG
 #include <QDebug>
@@ -29,12 +34,17 @@ public:
     void onStart();
     void onStop();
     void onClickItem(QListWidgetItem *item);
+    void onOpenFileDir();
+    void onDelFile();
+    void onOpenFileDir(QString filePath);
+    void onDelFile(QString filePath);
 
     ItemListDelegate m_dselegate;
     QListWidgetItem *m_selectItem;
     QHash<QString, QListWidgetItem*> m_fileItemHash;
     QStringList m_filePathList;
     Backstage m_backstage;
+    QFile m_removeFile;
 };
 
 void ListWidgetPrivate::init()
@@ -52,6 +62,10 @@ void ListWidgetPrivate::init()
                      q_ptr, SLOT(onClickItem(QListWidgetItem*)));
     QObject::connect(backstageWork, SIGNAL(signalFileStatistics(WidgetUtil::Progress)),
                      q_ptr, SIGNAL(signalFileStatistics(WidgetUtil::Progress)) );
+    QObject::connect(&m_dselegate, SIGNAL(signalOpenFileDir(QString)),
+                     q_ptr, SLOT(onOpenFileDir(QString))  );
+    QObject::connect(&m_dselegate, SIGNAL(signalDelFile(QString)),
+                     q_ptr, SLOT(onDelFile(QString)) );
 
 }
 
@@ -82,6 +96,45 @@ void ListWidgetPrivate::onClickItem(QListWidgetItem *item)
     m_selectItem = item;
     item->setSizeHint(QSize(item->sizeHint().width(), 140));
     item->setData(WidgetUtil::ItemSelectRole, true);
+}
+
+void ListWidgetPrivate::onOpenFileDir()
+{
+    QListWidgetItem *item = q_ptr->ui->listWidget->currentItem();
+    QString filePath(item->data(WidgetUtil::FilePathRole).toString());
+    if(filePath.isEmpty())
+        return;
+    onOpenFileDir(filePath);
+}
+
+void ListWidgetPrivate::onDelFile()
+{
+    QListWidgetItem *item = q_ptr->ui->listWidget->currentItem();
+    QString filePath(item->data(WidgetUtil::FilePathRole).toString());
+    if(filePath.isEmpty())
+        return;
+    onDelFile(filePath);
+}
+
+void ListWidgetPrivate::onOpenFileDir(QString filePath)
+{
+    QFileInfo fileinfo(filePath);
+    QString validFolderPath;
+
+#ifdef Q_OS_LINUX
+    validFolderPath = fileinfo.absolutePath();
+#endif
+
+#ifdef Q_OS_WIN
+    if(fileinfo.isSymLink())
+        validFolderPath = fileinfo.symLinkTarget();
+#endif
+    QDesktopServices::openUrl(QUrl(/*"file:///" +*/ validFolderPath , QUrl::TolerantMode));
+}
+
+void ListWidgetPrivate::onDelFile(QString filePath)
+{
+    bool isRemove = m_removeFile.remove(filePath);
 }
 
 ListWidget::ListWidget(QWidget *parent)
@@ -131,13 +184,27 @@ void ListWidget::onStop()
     d_ptr->onStop();
 }
 
-void ListWidget::onDelFile()
-{
-
-}
-
 void ListWidget::onClickItem(QListWidgetItem *item)
 {
     d_ptr->onClickItem(item);
 }
 
+void ListWidget::onOpenFileDir()
+{
+    d_ptr->onDelFile();
+}
+
+void ListWidget::onDelFile()
+{
+    d_ptr->onDelFile();
+}
+
+void ListWidget::onOpenFileDir(QString filePath)
+{
+    d_ptr->onOpenFileDir(filePath);
+}
+
+void ListWidget::onDelFile(QString filePath)
+{
+    d_ptr->onDelFile(filePath);
+}

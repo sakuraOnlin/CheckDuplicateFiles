@@ -4,11 +4,13 @@
 #include <QStyledItemDelegate>
 #include <QPointF>
 #include <QRectF>
+#include <QPair>
 #include "util/util.h"
 
 class ItemListDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
+
 public:
     explicit ItemListDelegate(QObject *parent = 0);
     ~ItemListDelegate();
@@ -16,6 +18,11 @@ public:
     void paint(QPainter *painter, const QStyleOptionViewItem &option,
                const QModelIndex &index) const;
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
+
+signals:
+    void signalDelFile(QString filePath);
+    void signalOpenFileDir(QString filePath);
+
 protected:
     bool editorEvent(QEvent *event, QAbstractItemModel *model,
                      const QStyleOptionViewItem &option, const QModelIndex &index);
@@ -23,15 +30,12 @@ protected:
 private:
     QPoint m_pixmapPoint;
     QSize m_pixmapSize;
-    int m_pixmapWidth;
-    int m_pixmapHeight;
-    int m_pButWidth;
-    int m_pButHeight;
+    QSize m_pButtSize;
+    QSize m_labelSize;
+    QSize m_labelIntervaSize;
     int m_interval;
-    int m_rectLabelWidth;
-    int m_rectLabelHeight;
-    int m_labelHeightAndInterva;
-    int m_labelWidthAndInterva;
+    QPair<bool, bool> m_mouseType;  // mouseHour, mouse click
+    QPoint m_mousePoint;
 
 };
 
