@@ -79,13 +79,13 @@ void BackstageWork::onListWidgetAddItem(QString filePath)
     QListWidgetItem *item = m_fileItemHash->value(filePath);
     if(nullptr == item)
     {
-        QListWidgetItem *item = new QListWidgetItem;
-        item->setSizeHint(QSize(400, 70));
-        item->setData(WidgetUtil::FilePathRole,filePath);
         QFileInfo fileInfo(filePath);
         QFileIconProvider fileIco;
         QIcon ico(fileIco.icon(fileInfo));
         QPixmap pixmap(ico.pixmap(m_iconSize));
+        QListWidgetItem *item = new QListWidgetItem;
+        item->setSizeHint(QSize(400, 70));
+        item->setData(WidgetUtil::FilePathRole,filePath);
         item->setData(WidgetUtil::FileIcoRole,pixmap);
         item->setData(WidgetUtil::FileSizeRole, QString::number(fileInfo.size()));
         item->setData(WidgetUtil::FileName, fileInfo.fileName());
