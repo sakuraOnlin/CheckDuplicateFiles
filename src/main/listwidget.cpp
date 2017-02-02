@@ -85,6 +85,8 @@ void ListWidgetPrivate::onStop()
 
 void ListWidgetPrivate::onClickItem(QListWidgetItem *item)
 {
+    if(nullptr == item )
+        return;
     int width = item->sizeHint().width();
     if(nullptr == m_selectItem)
         m_selectItem = item;
@@ -134,7 +136,10 @@ void ListWidgetPrivate::onOpenFileDir(QString filePath)
 
 void ListWidgetPrivate::onDelFile(QString filePath)
 {
-    bool isRemove = m_removeFile.remove(filePath);
+    m_removeFile.remove(filePath);
+    int itemRow = q_ptr->ui->listWidget->currentRow();
+    delete q_ptr->ui->listWidget->takeItem(itemRow);
+    m_selectItem = nullptr;
 }
 
 ListWidget::ListWidget(QWidget *parent)
