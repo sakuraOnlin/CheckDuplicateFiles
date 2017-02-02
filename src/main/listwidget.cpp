@@ -102,7 +102,11 @@ void ListWidgetPrivate::onClickItem(QListWidgetItem *item)
 
 void ListWidgetPrivate::onOpenFileDir()
 {
-    QListWidgetItem *item = q_ptr->ui->listWidget->currentItem();
+    int itemRow = q_ptr->ui->listWidget->currentRow();
+    if(itemRow < 0)
+        return;
+
+    QListWidgetItem *item = q_ptr->ui->listWidget->item(itemRow);
     QString filePath(item->data(WidgetUtil::FilePathRole).toString());
     if(filePath.isEmpty())
         return;
@@ -111,7 +115,11 @@ void ListWidgetPrivate::onOpenFileDir()
 
 void ListWidgetPrivate::onDelFile()
 {
-    QListWidgetItem *item = q_ptr->ui->listWidget->currentItem();
+    int itemRow = q_ptr->ui->listWidget->currentRow();
+    if(itemRow < 0)
+        return;
+
+    QListWidgetItem *item = q_ptr->ui->listWidget->item(itemRow);
     QString filePath(item->data(WidgetUtil::FilePathRole).toString());
     if(filePath.isEmpty())
         return;
@@ -136,9 +144,10 @@ void ListWidgetPrivate::onOpenFileDir(QString filePath)
 
 void ListWidgetPrivate::onDelFile(QString filePath)
 {
+    m_filePathList.removeAt(m_filePathList.indexOf(filePath));
     m_removeFile.remove(filePath);
-    int itemRow = q_ptr->ui->listWidget->currentRow();
-    delete q_ptr->ui->listWidget->takeItem(itemRow);
+    m_fileItemHash.take(filePath);
+    q_ptr->ui->listWidget->takeItem(q_ptr->ui->listWidget->currentRow());
     m_selectItem = nullptr;
 }
 
