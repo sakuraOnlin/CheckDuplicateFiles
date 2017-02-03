@@ -34,6 +34,7 @@ signals:
 public slots:
     void onStart();
     void onStop();
+    void onStopCheckFile(QString filePath);
 
 private slots:
     void onListWidgetAddItem(QString filePath);

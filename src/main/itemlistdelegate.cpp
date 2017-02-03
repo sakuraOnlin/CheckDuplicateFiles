@@ -268,7 +268,6 @@ bool ItemListDelegate::editorEvent(QEvent *event, QAbstractItemModel *model,
         }
         else if(pButDelFileRect.contains(mouseEvent->x(), mouseEvent->y()))
         {
-            //TODO:删除文件时正在进行计算
             emit signalDelFile(filePath);
         }
         m_mouseType.first = false;

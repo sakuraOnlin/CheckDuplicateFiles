@@ -71,6 +71,11 @@ void BackstageWork::onStop()
     m_time.stop();
 }
 
+void BackstageWork::onStopCheckFile(QString filePath)
+{
+    m_computeModule.onStopCheckFile(filePath);
+}
+
 void BackstageWork::onListWidgetAddItem(QString filePath)
 {
     if(filePath.isEmpty())

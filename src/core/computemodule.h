@@ -57,6 +57,7 @@ signals:
 public slots:
     void onStart();
     void onStop();
+    void onStopCheckFile(QString filePath);
 
 private slots:
     void onHandleErrStr(QString err);

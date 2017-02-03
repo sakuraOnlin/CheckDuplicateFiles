@@ -66,6 +66,8 @@ void ListWidgetPrivate::init()
                      q_ptr, SLOT(onOpenFileDir(QString))  );
     QObject::connect(&m_dselegate, SIGNAL(signalDelFile(QString)),
                      q_ptr, SLOT(onDelFile(QString)) );
+    QObject::connect(&m_dselegate, SIGNAL(signalDelFile(QString)),
+                     backstageWork, SLOT(onStopCheckFile(QString))  );
 
 }
 

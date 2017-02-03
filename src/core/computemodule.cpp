@@ -118,6 +118,16 @@ void ComputeModule::onStop()
     }
 }
 
+void ComputeModule::onStopCheckFile(QString filePath)
+{
+    if(filePath.isEmpty())
+        return;
+    ComputeHash* value = m_computeWork->m_computeHash.key(filePath);
+    if(nullptr == value)
+        return;
+    value->onStop();
+}
+
 void ComputeModule::onHandleErrStr(QString err)
 {
     ComputeHash* value = (ComputeHash*)sender();
@@ -125,6 +135,7 @@ void ComputeModule::onHandleErrStr(QString err)
     int index = m_computeWork->m_computeRunList.indexOf(value);
     m_computeWork->m_computeRestList.append(
                 m_computeWork->m_computeRunList.takeAt(index));
+    m_computeWork->m_computeHash.remove(value);
     emit signalError(filePath, err);
     m_computeWork->m_threadRunCount--;
 }
@@ -136,6 +147,7 @@ void ComputeModule::onHandleCalculationComplete()
     int index = m_computeWork->m_computeRunList.indexOf(value);
     m_computeWork->m_computeRestList.append(
                 m_computeWork->m_computeRunList.takeAt(index));
+    m_computeWork->m_computeHash.remove(value);
     emit signalCalculationComplete(filePath);
     m_computeWork->m_threadRunCount--;
 }
