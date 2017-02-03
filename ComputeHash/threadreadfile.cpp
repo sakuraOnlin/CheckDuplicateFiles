@@ -174,9 +174,8 @@ void ThreadControl::start()
         connect( this, SIGNAL(signalStartCheck(QString) ),
                  work, SLOT(onDoWork(QString)) );
         connect( this, SIGNAL(signalRestore()), work, SLOT(onRestore()) );
-        connect( this, SIGNAL(signalStop()), work, SLOT(onStop()));
         thread->start();
-        m_readFileThreadList.append(thread);
+        m_readFileThreadList.append(qMakePair(thread, work));
     }
 
     m_moduleCounter = m_readFileThreadList.length();
@@ -186,13 +185,12 @@ void ThreadControl::start()
 
 void ThreadControl::stop()
 {
-    emit signalStop();
-
     for(int i = 0 ; i < m_readFileThreadList.length() ; i = 0)
     {
-        m_readFileThreadList[i]->quit();
-        m_readFileThreadList[i]->wait(300);
-        delete m_readFileThreadList[i];
+        m_readFileThreadList[i].second->onStop();
+        m_readFileThreadList[i].first->quit();
+        m_readFileThreadList[i].first->wait(300);
+        delete  m_readFileThreadList[i].first;
         m_readFileThreadList.removeAt(i);
     }
     m_operatingStatus = false;

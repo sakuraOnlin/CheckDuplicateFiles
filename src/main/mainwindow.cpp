@@ -97,7 +97,7 @@ void MainWindowPrivate::onSelectDirPath()
     if(!isFilePath.exists() && !isFilePath.isDir())
     {
         QMessageBox::warning(q_ptr, QObject::tr("Error!"),
-                                         QObject::tr("Please select a valid directory!.\n"),
+                                         QObject::tr("Please select a valid directory!\n"),
                                          QMessageBox::Ok);
         return;
     }

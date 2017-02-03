@@ -29,8 +29,7 @@ public:
     int m_computeThreadMaxNum;
     int m_threadRunCount;
     bool m_operatingStatus;
-    QList<ComputeHash*> m_computeRunList;
-    QList<ComputeHash*> m_computeRestList;
+    QList<QPair<ComputeHash*, bool> > m_checkFilelist;
     QHash<ComputeHash*, QString> m_computeHash;
 
 private:

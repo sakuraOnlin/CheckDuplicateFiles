@@ -68,6 +68,7 @@ void BackstageWork::onStop()
 {
     m_operatingStatus = false;
     m_selectFiles.onStopSelectFiles();
+    m_computeModule.onStop();
     m_time.stop();
 }
 

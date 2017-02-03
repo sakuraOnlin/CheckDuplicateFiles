@@ -4,22 +4,22 @@
 <context>
     <name>ItemListDelegate</name>
     <message>
-        <location filename="../../main/itemlistdelegate.cpp" line="110"/>
+        <location filename="../../main/itemlistdelegate.cpp" line="113"/>
         <source>Open File Dir</source>
         <translation>打开文件夹</translation>
     </message>
     <message>
-        <location filename="../../main/itemlistdelegate.cpp" line="115"/>
+        <location filename="../../main/itemlistdelegate.cpp" line="118"/>
         <source>Del File</source>
         <translation>删除文件</translation>
     </message>
     <message>
-        <location filename="../../main/itemlistdelegate.cpp" line="156"/>
+        <location filename="../../main/itemlistdelegate.cpp" line="169"/>
         <source>Not yet started</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../main/itemlistdelegate.cpp" line="189"/>
+        <location filename="../../main/itemlistdelegate.cpp" line="202"/>
         <source>Check for errors! Cause of error:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -180,9 +180,14 @@
     </message>
     <message>
         <location filename="../../main/mainwindow.cpp" line="100"/>
+        <source>Please select a valid directory!
+</source>
+        <translation>请选择有效的文件夹!</translation>
+    </message>
+    <message>
         <source>Please select a valid directory!.
 </source>
-        <translation type="unfinished">请选择有效的文件夹!</translation>
+        <translation type="obsolete">请选择有效的文件夹!</translation>
     </message>
 </context>
 </TS>
