@@ -69,7 +69,6 @@ void ThreadReadFile::onDoWork(QString filePath)
     QString computeResultStr(compute->getFinalResult());
     emitResult(util::CheckOver, getType, filePath, fileSize,
                fileProgress, compute->getTypeName(), computeResultStr);
-    compute->reset();
     emit signalCalculationComplete();
 
 }
@@ -131,7 +130,6 @@ ThreadControl::ThreadControl(QObject *parent)
     :QObject(parent),
       m_moduleCounter(0),
       m_dirPath(QString()),
-      m_count(0),
       m_operatingStatus(false)
 {
 }
@@ -160,10 +158,11 @@ void ThreadControl::start()
 {
     stop();
 
-    for(int i = 0 ; i < m_listFactorys.length();i++)
+    m_moduleCounter = 0;
+    for(; m_moduleCounter < m_listFactorys.length();m_moduleCounter++)
     {
         QThread *thread = new QThread;
-        util::factoryCreateResult factoryValue = m_listFactorys[i];
+        util::factoryCreateResult factoryValue = m_listFactorys[m_moduleCounter];
         ThreadReadFile *work = new ThreadReadFile(factoryValue);
         work->moveToThread( thread );
         connect( thread, SIGNAL(finished()), work, SLOT(deleteLater()) );
@@ -178,20 +177,25 @@ void ThreadControl::start()
         m_readFileThreadList.append(qMakePair(thread, work));
     }
 
-    m_moduleCounter = m_readFileThreadList.length();
     m_operatingStatus = true;
     emit signalStartCheck(m_dirPath);
 }
 
 void ThreadControl::stop()
 {
+    QThread::msleep(300);
+    for(int i = 0 ; i < m_readFileThreadList.length() ; i++)
+    {
+        QPair<QThread*, ThreadReadFile *> value = m_readFileThreadList.value(i);
+        value.second->onStop();
+        value.first->quit();
+        value.first->wait(500);
+    }
+
     for(int i = 0 ; i < m_readFileThreadList.length() ; i = 0)
     {
-        m_readFileThreadList[i].second->onStop();
-        m_readFileThreadList[i].first->quit();
-        m_readFileThreadList[i].first->wait(300);
-        delete  m_readFileThreadList[i].first;
-        m_readFileThreadList.removeAt(i);
+        QPair<QThread*, ThreadReadFile *> value = m_readFileThreadList.takeAt(i);
+        delete value.first;
     }
     m_operatingStatus = false;
 }
@@ -209,5 +213,4 @@ void ThreadControl::onModuleCounter()
         m_operatingStatus = false;
         emit signalCalculationComplete();
     }
-    m_count++;
 }

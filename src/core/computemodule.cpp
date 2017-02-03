@@ -31,34 +31,37 @@ void ComputeWork::setFilePathList(QStringList *filePathList)
 
 int ComputeWork::getComputeProgress()
 {
-    return m_computeIndex;
+    // m_computeIndex start 0
+    return m_computeIndex + 1;
 }
 
 void ComputeWork::onWork()
 {
-    QThread::msleep(50);
     m_computeIndex = -1;
     while (m_operatingStatus)
     {
-        QThread::msleep(35);
+        QThread::msleep(40);
         if(m_computeIndex >= m_filePaths->length())
-        {
-            m_operatingStatus = false;
             continue;
-        }
+
         if(m_threadRunCount >= m_computeThreadMaxNum)
             continue;
 
-        for(int i = 0 ; i< m_checkFilelist.length(); i++)
+        for(int i = 0 ; i< m_checkFilelist.length() && m_operatingStatus; i++)
         {
             if(!m_checkFilelist[i].second)
             {
+                QString file(m_filePaths->value(m_computeIndex + 1));
+                if(file.isEmpty())
+                    break;
+
                 ComputeHash *compute = m_checkFilelist[i].first;
                 compute->onRestore();
-                compute->setFilePath(m_filePaths->value(++m_computeIndex));
+                compute->setFilePath(file);
                 compute->onStart();
                 m_checkFilelist[i].second = true;
                 m_computeHash.insert(compute, m_filePaths->value(m_computeIndex));
+                m_computeIndex++;
                 m_threadRunCount++;
             }
         }
@@ -71,11 +74,8 @@ void ComputeWork::init()
     {
         ComputeHash *value = new ComputeHash(util::MD5 | util::SHA1 |util::CRC32);
         m_checkFilelist.append(qMakePair(value, false));
-
     }
-
 }
-
 
 ComputeModule::ComputeModule(QObject *parent) : QObject(parent)
 {
@@ -84,6 +84,7 @@ ComputeModule::ComputeModule(QObject *parent) : QObject(parent)
 
 ComputeModule::~ComputeModule()
 {
+    onStop();
     m_thread->quit();
     m_thread->wait(100);
     delete m_thread;
@@ -109,7 +110,6 @@ void ComputeModule::onStart()
 void ComputeModule::onStop()
 {
     m_computeWork->m_operatingStatus = false;
-    QThread::msleep(30);
     for(int i = 0 ; i < m_computeWork->m_checkFilelist.length(); i++)
     {
         m_computeWork->m_checkFilelist[i].first->onStop();

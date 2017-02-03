@@ -69,7 +69,6 @@ private:
     QString m_dirPath;
     QList<util::factoryCreateResult> m_listFactorys;
     QList<QPair<QThread*, ThreadReadFile *> > m_readFileThreadList;
-    int m_count;
     bool m_operatingStatus;
 
 };
