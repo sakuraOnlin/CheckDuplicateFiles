@@ -17,12 +17,10 @@ public:
     ~ComputeWork();
     void setFilePathList(QStringList *filePathList);
     int getComputeProgress();
+    void createCheck(util::ComputeType checkType);
 
 public slots:
     void onWork();
-
-private:
-    void init();
 
 public:
     int m_computeIndex;
@@ -40,6 +38,7 @@ private:
 class ComputeModule : public QObject
 {
     Q_OBJECT
+
 public:
     explicit ComputeModule(QObject *parent = 0);
     ~ComputeModule();
@@ -54,7 +53,7 @@ signals:
     void signalStart();
 
 public slots:
-    void onStart();
+    void onStart(int checkType);
     void onStop();
     void onStopCheckFile(QString filePath);
 
@@ -64,12 +63,11 @@ private slots:
 
 private:
     void init();
+    void connectWork();
 
 private:
     QThread *m_thread;
     ComputeWork *m_computeWork;
-
-
 };
 
 #endif // COMPUTEMODULE_H

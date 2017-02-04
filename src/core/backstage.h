@@ -32,7 +32,7 @@ signals:
     void signalFileStatistics(WidgetUtil::Progress progress);
 
 public slots:
-    void onStart();
+    void onStart(int checkType);
     void onStop();
     void onStopCheckFile(QString filePath);
 

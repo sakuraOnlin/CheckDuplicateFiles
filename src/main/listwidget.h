@@ -27,7 +27,7 @@ signals:
     void signalFileStatistics(WidgetUtil::Progress progress);
 
 public slots:
-    void onStart();
+    void onStart(int checkType);    // it's util::ComputeType
     void onStop();
     void onClickItem(QListWidgetItem *item);
     void onOpenFileDir();

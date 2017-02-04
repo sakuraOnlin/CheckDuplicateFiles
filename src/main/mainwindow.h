@@ -30,6 +30,7 @@ private slots:
     void onDelFile();
     void onHelp();
     void onAbout();
+    void onCheckBox(int state);
     void onFileStatistics(WidgetUtil::Progress progress);
 
 private:

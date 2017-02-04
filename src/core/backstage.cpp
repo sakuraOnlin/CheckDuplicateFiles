@@ -51,7 +51,7 @@ bool BackstageWork::getOperatingStatus()
     return m_operatingStatus;
 }
 
-void BackstageWork::onStart()
+void BackstageWork::onStart(int checkType)
 {
     m_filePathList->clear();
     m_fileItemHash->clear();
@@ -60,7 +60,7 @@ void BackstageWork::onStart()
     m_selectFiles.setFilters(m_fileFilters);
     m_selectFiles.onStartSelectFiles();
     m_computeModule.setFilePathList(m_filePathList);
-    m_computeModule.onStart();
+    m_computeModule.onStart(checkType);
     m_time.start(30);
 }
 

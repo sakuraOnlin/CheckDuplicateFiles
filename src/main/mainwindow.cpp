@@ -5,6 +5,7 @@
 #include <QProgressBar>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "util/util.h"
 
 class MainWindowPrivate
 {
@@ -16,6 +17,7 @@ public:
           m_dirPath(QString()),
           m_fileTotalLabel(new QLabel),
           m_calculationProgress(new QProgressBar),
+          m_checkBoxState(util::MD5 | util::SHA1 | util::CRC32),
           m_isStart(false)
     {
         init();
@@ -26,11 +28,12 @@ public:
     void onSelectDirPath();
     void onStartCheck();
     void onFileStatistics(WidgetUtil::Progress progress);
-
+    void onCheckBox(int state);
 
     QString m_dirPath;
     QLabel *m_fileTotalLabel;
     QProgressBar *m_calculationProgress;
+    int m_checkBoxState;
     bool m_isStart;
 };
 
@@ -57,9 +60,14 @@ void MainWindowPrivate::init()
     QObject::connect(q_ptr->ui->actionAbout, SIGNAL(triggered()), q_ptr, SLOT(onAbout()));
     QObject::connect(q_ptr->ui->pushBut_DelFile, SIGNAL(clicked()), q_ptr, SLOT(onDelFile()));
     QObject::connect(q_ptr->ui->pushBut_DelAllFiles, SIGNAL(clicked()), q_ptr, SLOT(onDelFile()));
-    QObject::connect(q_ptr->ui->listWidget, SIGNAL(
-                         signalFileStatistics(WidgetUtil::Progress)),q_ptr,
-                     SLOT(onFileStatistics(WidgetUtil::Progress))  );
+    QObject::connect(q_ptr->ui->listWidget, SIGNAL(signalFileStatistics(WidgetUtil::Progress)),
+                     q_ptr, SLOT(onFileStatistics(WidgetUtil::Progress)));
+    QObject::connect(q_ptr->ui->checkBox_MD5, SIGNAL(stateChanged(int)),
+                     q_ptr, SLOT(onCheckBox(int)) );
+    QObject::connect(q_ptr->ui->checkBox_SHA1, SIGNAL(stateChanged(int)),
+                     q_ptr, SLOT(onCheckBox(int)) );
+    QObject::connect(q_ptr->ui->checkBox_CRC32, SIGNAL(stateChanged(int)),
+                     q_ptr, SLOT(onCheckBox(int)) );
 }
 
 void MainWindowPrivate::updateUIButton()
@@ -118,7 +126,7 @@ void MainWindowPrivate::onStartCheck()
     else
     {
         m_isStart = true;
-        q_ptr->ui->listWidget->onStart();
+        q_ptr->ui->listWidget->onStart(m_checkBoxState);
     }
     updateUIButton();
 }
@@ -134,6 +142,28 @@ void MainWindowPrivate::onFileStatistics(WidgetUtil::Progress progress)
     m_calculationProgress->setValue(progress.ComputeProgress);
 }
 
+void MainWindowPrivate::onCheckBox(int)
+{
+    QCheckBox *value = dynamic_cast<QCheckBox*>(q_ptr->sender());
+    if(nullptr == value)
+        return;
+
+    if(value == q_ptr->ui->checkBox_MD5)
+    {
+        m_checkBoxState = value->isChecked() ? (m_checkBoxState | util::MD5) :
+                                                (m_checkBoxState ^ util::MD5) ;
+    }
+    if(value == q_ptr->ui->checkBox_SHA1)
+    {
+        m_checkBoxState = value->isChecked() ? (m_checkBoxState | util::SHA1) :
+                                                (m_checkBoxState ^ util::SHA1) ;
+    }
+    if(value == q_ptr->ui->checkBox_CRC32)
+    {
+        m_checkBoxState = (value->isChecked()) ? (m_checkBoxState | util::CRC32) :
+                                                (m_checkBoxState ^ util::CRC32) ;
+    }
+}
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -177,6 +207,11 @@ void MainWindow::onHelp()
 void MainWindow::onAbout()
 {
 
+}
+
+void MainWindow::onCheckBox(int state)
+{
+    d_ptr->onCheckBox(state);
 }
 
 void MainWindow::onFileStatistics(WidgetUtil::Progress progress)

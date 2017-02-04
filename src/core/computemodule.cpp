@@ -8,7 +8,6 @@ ComputeWork::ComputeWork(QObject *parent)
       m_threadRunCount(0),
       m_operatingStatus(false)
 {
-    init();
 }
 
 ComputeWork::~ComputeWork()
@@ -35,16 +34,23 @@ int ComputeWork::getComputeProgress()
     return m_computeIndex + 1;
 }
 
+void ComputeWork::createCheck(util::ComputeType checkType)
+{
+    for(int i = 0 ; i < m_computeThreadMaxNum ; i++)
+    {
+        ComputeHash *value = new ComputeHash(checkType);
+        m_checkFilelist.append(qMakePair(value, false));
+    }
+}
+
 void ComputeWork::onWork()
 {
     m_computeIndex = -1;
     while (m_operatingStatus)
     {
-        QThread::msleep(40);
-        if(m_computeIndex >= m_filePaths->length())
-            continue;
-
-        if(m_threadRunCount >= m_computeThreadMaxNum)
+        if( (m_filePaths->length() <= 0) ||
+                (m_computeIndex >= m_filePaths->length()) ||
+                (m_threadRunCount >= m_computeThreadMaxNum))
             continue;
 
         for(int i = 0 ; i< m_checkFilelist.length() && m_operatingStatus; i++)
@@ -65,15 +71,6 @@ void ComputeWork::onWork()
                 m_threadRunCount++;
             }
         }
-    }
-}
-
-void ComputeWork::init()
-{
-    for(int i = 0 ; i < m_computeThreadMaxNum ; i++)
-    {
-        ComputeHash *value = new ComputeHash(util::MD5 | util::SHA1 |util::CRC32);
-        m_checkFilelist.append(qMakePair(value, false));
     }
 }
 
@@ -101,19 +98,23 @@ int ComputeModule::getComputeProgress()
     return m_computeWork->getComputeProgress();
 }
 
-void ComputeModule::onStart()
+void ComputeModule::onStart(int checkType)
 {
     m_computeWork->m_operatingStatus = true;
+    m_computeWork->createCheck((util::ComputeType)checkType);
+    connectWork();
     emit signalStart();
 }
 
 void ComputeModule::onStop()
 {
     m_computeWork->m_operatingStatus = false;
-    for(int i = 0 ; i < m_computeWork->m_checkFilelist.length(); i++)
+    for(int i = 0 ; i < m_computeWork->m_checkFilelist.length(); i = 0)
     {
-        m_computeWork->m_checkFilelist[i].first->onStop();
-        m_computeWork->m_checkFilelist[i].second = false;
+        QPair<ComputeHash*, bool> value = m_computeWork->m_checkFilelist.takeAt(i);
+        value.first->onStop();
+        value.second = false;
+        delete  value.first;
     }
 }
 
@@ -170,6 +171,12 @@ void ComputeModule::init()
     connect(m_thread, SIGNAL(finished()), m_computeWork, SLOT(deleteLater()) );
     connect(this, SIGNAL(signalStart()), m_computeWork, SLOT(onWork()) );
 
+    m_computeWork->moveToThread(m_thread);
+    m_thread->start();
+}
+
+void ComputeModule::connectWork()
+{
     for(int i = 0 ; i < m_computeWork->m_checkFilelist.length(); i++)
     {
         ComputeHash *comHash = m_computeWork->m_checkFilelist[i].first;
@@ -180,8 +187,5 @@ void ComputeModule::init()
         connect(comHash, SIGNAL(signalCalculationComplete()), this,
                 SLOT(onHandleCalculationComplete()) );
     }
-
-    m_computeWork->moveToThread(m_thread);
-    m_thread->start();
 }
 

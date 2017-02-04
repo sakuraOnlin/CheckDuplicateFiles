@@ -31,7 +31,7 @@ public:
         init();
     }
     void init();
-    void onStart();
+    void onStart(int checkType);
     void onStop();
     void onClickItem(QListWidgetItem *item);
     void onOpenFileDir();
@@ -71,13 +71,13 @@ void ListWidgetPrivate::init()
 
 }
 
-void ListWidgetPrivate::onStart()
+void ListWidgetPrivate::onStart(int checkType)
 {
     q_ptr->ui->listWidget->clear();
     m_fileItemHash.clear();
     m_filePathList.clear();
     m_selectItem = nullptr;
-    m_backstage.getBackstagwWork()->onStart();
+    m_backstage.getBackstagwWork()->onStart(checkType);
 }
 
 void ListWidgetPrivate::onStop()
@@ -192,9 +192,9 @@ bool ListWidget::operatingStatus()
     return d_ptr->m_backstage.getBackstagwWork()->getOperatingStatus();
 }
 
-void ListWidget::onStart()
+void ListWidget::onStart(int checkType)
 {
-    d_ptr->onStart();
+    d_ptr->onStart(checkType);
 }
 
 void ListWidget::onStop()
