@@ -30,9 +30,10 @@ HEADERS  += widget.h
 
 FORMS    += widget.ui
 
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../ComputeHash/release/ -lComputeHash
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../ComputeHash/debug/ -lComputeHash
-else:unix:!macx: LIBS += -L$$OUT_PWD/../../ComputeHash/ -lComputeHash
 
-INCLUDEPATH += $$PWD/../../ComputeHash
-DEPENDPATH += $$PWD/../../ComputeHash
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../CheckFile/release/ -lCheckFile
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../CheckFile/debug/ -lCheckFile
+else:unix: LIBS += -L$$OUT_PWD/../../CheckFile/ -lCheckFile
+
+INCLUDEPATH += $$PWD/../../CheckFile
+DEPENDPATH += $$PWD/../../CheckFile

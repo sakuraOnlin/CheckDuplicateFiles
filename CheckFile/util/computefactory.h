@@ -6,7 +6,7 @@
 #include "util/util.h"
 #include "compute.h"
 
-class COMPUTEHASHSHARED_EXPORT Factory :public QObject
+class CHECKFILESHARED_EXPORT Factory :public QObject
 {
 public:
     explicit Factory(QObject *parent = 0);

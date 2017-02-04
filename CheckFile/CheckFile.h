@@ -2,18 +2,18 @@
 #define COMPUTEHASH_H
 
 #include <QObject>
-#include "computehash_global.h"
+#include "CheckFile_global.h"
 #include "util/util.h"
 
 class Factory;
-class ComputeHashPrivate;
-class COMPUTEHASHSHARED_EXPORT ComputeHash : public QObject
+class CheckFilePrivate;
+class CHECKFILESHARED_EXPORT CheckFile : public QObject
 {
     Q_OBJECT
 
 public:
-    ComputeHash(int ComputeType = 1, QObject *parent = 0);
-    ~ComputeHash();
+    explicit CheckFile(int ComputeType = 1, QObject *parent = 0);
+    ~CheckFile();
 
     bool setFilePath(QString filePath);
     void setUserFactore(Factory *userFacrory);
@@ -32,8 +32,8 @@ public slots:
 private slots:
 
 private:
-    ComputeHashPrivate *d_ptr;
-    Q_DECLARE_PRIVATE(ComputeHash)
+    CheckFilePrivate *d_ptr;
+    Q_DECLARE_PRIVATE(CheckFile)
 };
 
 #endif // COMPUTEHASH_H

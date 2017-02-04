@@ -10,7 +10,7 @@
 #include "util/util.h"
 #include "core/widgetUtil.h"
 #include "core/threadselectfiles.h"
-#include "computehash.h"
+#include "CheckFile.h"
 #include "core/computemodule.h"
 
 class BackstageWork : public QObject

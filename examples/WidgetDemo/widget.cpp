@@ -71,7 +71,7 @@ void Widget::onFinalResult(util::ComputeResult result)
 void Widget::init()
 {
     int computeType = util::MD5 | util::SHA1 | util::CRC32;
-    m_compute = new ComputeHash(computeType);
+    m_compute = new CheckFile(computeType);
     connect(ui->pBSelectDir, SIGNAL(clicked()), this,SLOT(onSelectDir()) );
     connect(ui->pBStart, SIGNAL(clicked()), this, SLOT(onStart()) );
     connect(this, SIGNAL(signalStart()), m_compute, SLOT(onStart()) );

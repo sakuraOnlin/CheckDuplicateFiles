@@ -3,47 +3,47 @@
 #include <QFileInfo>
 
 #include "compute.h"
-#include "computehash.h"
+#include "CheckFile.h"
 #include "threadreadfile.h"
 #include "util/computefactory.h"
 
-class ComputeHashPrivate
+class CheckFilePrivate
 {
-    ComputeHash *q_ptr;
-    Q_DECLARE_PUBLIC(ComputeHash)
+    CheckFile *q_ptr;
+    Q_DECLARE_PUBLIC(CheckFile)
 public:
-    ComputeHashPrivate(ComputeHash *parent,util::ComputeType type);
-    ~ComputeHashPrivate();
+    CheckFilePrivate(CheckFile *parent,util::ComputeType type);
+    ~CheckFilePrivate();
     void init();
     bool setFilePath(QString filePath);
     inline bool checkDirValid(QString &filePath);
     void setUserFactore(Factory *userFacrory);
     void onStart();
 
-    bool m_isStart;
-    Factory *m_factory;
     QString m_filePath;
-    util::ComputeType m_conputeType;
     ThreadControl m_threadControl;
     QList<util::factoryCreateResult> m_factoryList;
+    Factory *m_factory;
+    util::ComputeType m_conputeType;
+    bool m_isStart;
 };
 
-ComputeHashPrivate::ComputeHashPrivate(ComputeHash *parent, util::ComputeType type)
+CheckFilePrivate::CheckFilePrivate(CheckFile *parent, util::ComputeType type)
     :q_ptr(parent),
-      m_isStart(false),
-      m_factory(new Factory),
       m_filePath(QString()),
-      m_conputeType(type)
+      m_factory(new Factory),
+      m_conputeType(type),
+      m_isStart(false)
 {
     init();
 }
 
-ComputeHashPrivate::~ComputeHashPrivate()
+CheckFilePrivate::~CheckFilePrivate()
 {
     delete m_factory;
 }
 
-void ComputeHashPrivate::init()
+void CheckFilePrivate::init()
 {
     QObject::connect(&m_threadControl, SIGNAL(signalError(QString)),
                      q_ptr, SIGNAL(signalError(QString)));
@@ -54,7 +54,7 @@ void ComputeHashPrivate::init()
 
 }
 
-bool ComputeHashPrivate::setFilePath(QString filePath)
+bool CheckFilePrivate::setFilePath(QString filePath)
 {
     if(!checkDirValid(filePath))
         return false;
@@ -63,7 +63,7 @@ bool ComputeHashPrivate::setFilePath(QString filePath)
     return true;
 }
 
-bool ComputeHashPrivate::checkDirValid(QString &filePath)
+bool CheckFilePrivate::checkDirValid(QString &filePath)
 {
     QFileInfo fileInfo(filePath);
     if(filePath.isEmpty() && !fileInfo.isFile())
@@ -71,7 +71,7 @@ bool ComputeHashPrivate::checkDirValid(QString &filePath)
     return true;
 }
 
-void ComputeHashPrivate::setUserFactore(Factory *userFacrory)
+void CheckFilePrivate::setUserFactore(Factory *userFacrory)
 {
     if(nullptr == userFacrory)
         return;
@@ -87,7 +87,7 @@ void ComputeHashPrivate::setUserFactore(Factory *userFacrory)
     return;
 }
 
-void ComputeHashPrivate::onStart()
+void CheckFilePrivate::onStart()
 {
     QList<util::factoryCreateResult> factoryList = m_factory->createCompute(m_conputeType);
     m_threadControl.setFactorys(factoryList);
@@ -95,46 +95,46 @@ void ComputeHashPrivate::onStart()
     m_threadControl.start();
 }
 
-ComputeHash::ComputeHash(int type, QObject *parent)
+CheckFile::CheckFile(int type, QObject *parent)
     :QObject(parent)
 {
-    d_ptr = new ComputeHashPrivate(this, (util::ComputeType)type);
+    d_ptr = new CheckFilePrivate(this, (util::ComputeType)type);
     qRegisterMetaType<util::factoryCreateResult>("util::factoryCreateResult");
     qRegisterMetaType<util::ComputeResult>("util::ComputeResult");
 }
 
-ComputeHash::~ComputeHash()
+CheckFile::~CheckFile()
 {
     delete d_ptr;
 }
 
-bool ComputeHash::setFilePath(QString filePath)
+bool CheckFile::setFilePath(QString filePath)
 {
     return d_ptr->setFilePath(filePath);
 }
 
-void ComputeHash::setUserFactore(Factory *userFacrory)
+void CheckFile::setUserFactore(Factory *userFacrory)
 {
     d_ptr->setUserFactore(userFacrory);
 }
 
-bool ComputeHash::getOperatingStatus()
+bool CheckFile::getOperatingStatus()
 {
     return d_ptr->m_threadControl.getOperatingStatus();
 }
 
-void ComputeHash::onStart()
+void CheckFile::onStart()
 {
     d_ptr->onStart();
 }
 
-void ComputeHash::onStop()
+void CheckFile::onStop()
 {
     d_ptr->m_threadControl.stop();
     emit signalError(tr("Failed to check the file for fingerprint verification!"));
 }
 
-void ComputeHash::onRestore()
+void CheckFile::onRestore()
 {
     d_ptr->m_threadControl.restore();
 }

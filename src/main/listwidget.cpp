@@ -13,7 +13,7 @@
 
 #include "listwidget.h"
 #include "ui_listwidget.h"
-#include "computehash.h"
+#include "CheckFile.h"
 #include "itemlistdelegate.h"
 #include "core/widgetUtil.h"
 #include "core/backstage.h"

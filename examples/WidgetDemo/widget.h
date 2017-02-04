@@ -2,7 +2,7 @@
 #define WIDGET_H
 
 #include <QWidget>
-#include "computehash.h"
+#include "CheckFile.h"
 #include "util/util.h"
 
 namespace Ui {
@@ -31,7 +31,7 @@ private:
 
 private:
     Ui::Widget *ui;
-    ComputeHash *m_compute;
+    CheckFile *m_compute;
     QString m_filePath;
 
 };

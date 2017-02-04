@@ -6,7 +6,7 @@
 #include <QHash>
 #include "util/util.h"
 
-class ComputeHash;
+class CheckFile;
 
 class ComputeWork : public QObject
 {
@@ -27,8 +27,8 @@ public:
     int m_computeThreadMaxNum;
     int m_threadRunCount;
     bool m_operatingStatus;
-    QList<QPair<ComputeHash*, bool> > m_checkFilelist;
-    QHash<ComputeHash*, QString> m_computeHash;
+    QList<QPair<CheckFile*, bool> > m_checkFilelist;
+    QHash<CheckFile*, QString> m_computeHash;
 
 private:
     QStringList *m_filePaths;

@@ -1,7 +1,7 @@
 TEMPLATE = subdirs
 CONFIG += ordered
 
-SUBDIRS += ComputeHash \
+SUBDIRS += CheckFile \
         src \
         examples
 

@@ -1,5 +1,5 @@
 #include "computemodule.h"
-#include "computehash.h"
+#include "CheckFile.h"
 
 ComputeWork::ComputeWork(QObject *parent)
     :QObject(parent),
@@ -38,7 +38,7 @@ void ComputeWork::createCheck(util::ComputeType checkType)
 {
     for(int i = 0 ; i < m_computeThreadMaxNum ; i++)
     {
-        ComputeHash *value = new ComputeHash(checkType);
+        CheckFile *value = new CheckFile(checkType);
         m_checkFilelist.append(qMakePair(value, false));
     }
 }
@@ -61,7 +61,7 @@ void ComputeWork::onWork()
                 if(file.isEmpty())
                     break;
 
-                ComputeHash *compute = m_checkFilelist[i].first;
+                CheckFile *compute = m_checkFilelist[i].first;
                 compute->onRestore();
                 compute->setFilePath(file);
                 compute->onStart();
@@ -112,7 +112,7 @@ void ComputeModule::onStop()
     m_computeWork->m_operatingStatus = false;
     for(int i = 0 ; i < m_computeWork->m_checkFilelist.length(); i = 0)
     {
-        QPair<ComputeHash*, bool> value = m_computeWork->m_checkFilelist.takeAt(i);
+        QPair<CheckFile*, bool> value = m_computeWork->m_checkFilelist.takeAt(i);
         value.first->onStop();
         value.second = false;
         delete  value.first;
@@ -123,7 +123,7 @@ void ComputeModule::onStopCheckFile(QString filePath)
 {
     if(filePath.isEmpty())
         return;
-    ComputeHash* value = m_computeWork->m_computeHash.key(filePath);
+    CheckFile* value = m_computeWork->m_computeHash.key(filePath);
     if(nullptr == value)
         return;
     value->onStop();
@@ -131,7 +131,7 @@ void ComputeModule::onStopCheckFile(QString filePath)
 
 void ComputeModule::onHandleErrStr(QString err)
 {
-    ComputeHash* value = dynamic_cast<ComputeHash*>(sender());
+    CheckFile* value = dynamic_cast<CheckFile*>(sender());
     if(nullptr == value)
         return;
 
@@ -149,7 +149,7 @@ void ComputeModule::onHandleErrStr(QString err)
 
 void ComputeModule::onHandleCalculationComplete()
 {
-    ComputeHash* value = dynamic_cast<ComputeHash*>(sender());
+    CheckFile* value = dynamic_cast<CheckFile*>(sender());
     if(nullptr == value)
         return;
 
@@ -180,7 +180,7 @@ void ComputeModule::connectWork()
 {
     for(int i = 0 ; i < m_computeWork->m_checkFilelist.length(); i++)
     {
-        ComputeHash *comHash = m_computeWork->m_checkFilelist[i].first;
+        CheckFile *comHash = m_computeWork->m_checkFilelist[i].first;
         connect(comHash, SIGNAL(signalFinalResult(util::ComputeResult)), this,
                 SIGNAL(signalFinalResult(util::ComputeResult)) );
         connect(comHash, SIGNAL(signalError(QString)), this,
