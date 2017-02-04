@@ -66,10 +66,10 @@ void ComputeWork::onWork()
                 compute->setFilePath(file);
                 compute->onStart();
                 if(!m_operatingStatus) break;
-                m_checkFilelist[i].second = true;
-                m_computeHash.insert(compute, m_filePaths->value(m_computeIndex));
+                m_computeHash.insert(compute, file);
                 m_computeIndex++;
                 m_threadRunCount++;
+                m_checkFilelist[i].second = true;
             }
         }
     }
