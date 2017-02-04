@@ -14,12 +14,12 @@
         <translation>删除文件</translation>
     </message>
     <message>
-        <location filename="../../main/itemlistdelegate.cpp" line="169"/>
+        <location filename="../../main/itemlistdelegate.cpp" line="163"/>
         <source>Not yet started</source>
-        <translation type="unfinished"></translation>
+        <translation>未开始检查</translation>
     </message>
     <message>
-        <location filename="../../main/itemlistdelegate.cpp" line="202"/>
+        <location filename="../../main/itemlistdelegate.cpp" line="206"/>
         <source>Check for errors! Cause of error:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -87,54 +87,54 @@
         <translation>SHA1</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="210"/>
         <location filename="../../main/mainwindow.ui" line="213"/>
+        <location filename="../../main/mainwindow.ui" line="216"/>
         <source>Check CRC32</source>
         <translation>CRC32</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="240"/>
+        <location filename="../../main/mainwindow.ui" line="246"/>
         <source>File</source>
         <translation>文件夹</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="247"/>
-        <location filename="../../main/mainwindow.ui" line="285"/>
+        <location filename="../../main/mainwindow.ui" line="253"/>
+        <location filename="../../main/mainwindow.ui" line="291"/>
         <source>help</source>
         <translation>帮助</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="258"/>
+        <location filename="../../main/mainwindow.ui" line="264"/>
         <source>Select Dir Path</source>
         <translation>选择文件夹…</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="261"/>
+        <location filename="../../main/mainwindow.ui" line="267"/>
         <source>Select Dir Path_tooltip</source>
         <translation>选择需要检查是否有重复文件的文件夹</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="264"/>
+        <location filename="../../main/mainwindow.ui" line="270"/>
         <source>Ctrl+F</source>
         <translation>选择需要检查是否有重复文件的文件夹</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="269"/>
+        <location filename="../../main/mainwindow.ui" line="275"/>
         <source>Exit</source>
         <translation>退出程序</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="272"/>
+        <location filename="../../main/mainwindow.ui" line="278"/>
         <source>Exit_tooltip</source>
         <translation>退出当前程序</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="275"/>
+        <location filename="../../main/mainwindow.ui" line="281"/>
         <source>Ctrl+Q</source>
         <translation>退出程序</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="280"/>
+        <location filename="../../main/mainwindow.ui" line="286"/>
         <source>about</source>
         <translation>关于</translation>
     </message>
@@ -163,23 +163,23 @@
         <translation type="vanished">停止检查</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.cpp" line="41"/>
-        <location filename="../../main/mainwindow.cpp" line="131"/>
+        <location filename="../../main/mainwindow.cpp" line="44"/>
+        <location filename="../../main/mainwindow.cpp" line="139"/>
         <source>File Total : %1 , Calculation progress : %2</source>
         <translation>文件总数： %1 ，效验总数： %2 </translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.cpp" line="90"/>
+        <location filename="../../main/mainwindow.cpp" line="98"/>
         <source>Select Directory</source>
         <translation>选择文件夹</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.cpp" line="99"/>
+        <location filename="../../main/mainwindow.cpp" line="107"/>
         <source>Error!</source>
         <translation>错误!</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.cpp" line="100"/>
+        <location filename="../../main/mainwindow.cpp" line="108"/>
         <source>Please select a valid directory!
 </source>
         <translation>请选择有效的文件夹!</translation>

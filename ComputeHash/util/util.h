@@ -4,6 +4,10 @@
 #include <QString>
 #include "computehash_global.h"
 
+#ifdef _DEBUG
+#include <QtDebug>
+#endif
+
 class Compute;
 class COMPUTEHASHSHARED_EXPORT util
 {

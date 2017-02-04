@@ -53,7 +53,7 @@ void ComputeWork::onWork()
                 (m_threadRunCount >= m_computeThreadMaxNum))
             continue;
 
-        for(int i = 0 ; i< m_checkFilelist.length() && m_operatingStatus; i++)
+        for(int i = 0 ; (i< m_checkFilelist.length()) && m_operatingStatus; i++)
         {
             if(!m_checkFilelist[i].second)
             {
@@ -65,6 +65,7 @@ void ComputeWork::onWork()
                 compute->onRestore();
                 compute->setFilePath(file);
                 compute->onStart();
+                if(!m_operatingStatus) break;
                 m_checkFilelist[i].second = true;
                 m_computeHash.insert(compute, m_filePaths->value(m_computeIndex));
                 m_computeIndex++;

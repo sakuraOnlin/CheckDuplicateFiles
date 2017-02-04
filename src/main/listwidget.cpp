@@ -133,6 +133,7 @@ void ListWidgetPrivate::onOpenFileDir(QString filePath)
     QFileInfo fileinfo(filePath);
     QString validFolderPath;
 
+    //TODO : 对文件做链接类判断，同时，在扫描添加的时候，元需要做判断
 #ifdef Q_OS_LINUX
     validFolderPath = fileinfo.absolutePath();
 #endif

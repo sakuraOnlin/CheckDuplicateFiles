@@ -3,6 +3,10 @@ QT       -= gui
 TARGET = ComputeHash
 TEMPLATE = lib
 
+VER_MAJ = 0
+VER_MIN = 1
+VER_PAT = 10
+
 DEFINES += COMPUTEHASH_LIBRARY _DEBUG
 
 SOURCES += computehash.cpp \

@@ -15,11 +15,13 @@ SOURCES += \
     core/backstage.cpp \
     core/widgetUtil.cpp \
     main/listwidget.cpp \
-    core/computemodule.cpp
+    core/computemodule.cpp \
+    main/about.cpp
 
 FORMS += \
     main/mainwindow.ui \
-    main/listwidget.ui
+    main/listwidget.ui \
+    main/about.ui
 
 HEADERS += \
     main/mainwindow.h \
@@ -28,16 +30,18 @@ HEADERS += \
     core/backstage.h \
     core/widgetUtil.h \
     main/listwidget.h \
-    core/computemodule.h
+    core/computemodule.h \
+    main/about.h
 
 TRANSLATIONS += res/translator/translator_cn.ts
 
 RESOURCES += \
     res/resource.qrc
 
+
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../ComputeHash/release/ -lComputeHash
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../ComputeHash/debug/ -lComputeHash
-else:unix: LIBS += -L$$OUT_PWD/../ComputeHash/ -lComputeHash
+else:unix:!macx: LIBS += -L$$OUT_PWD/../ComputeHash/ -lComputeHash
 
 INCLUDEPATH += $$PWD/../ComputeHash
 DEPENDPATH += $$PWD/../ComputeHash

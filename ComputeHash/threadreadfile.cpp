@@ -183,7 +183,7 @@ void ThreadControl::start()
 
 void ThreadControl::stop()
 {
-    QThread::msleep(300);
+    QThread::msleep(500);
     for(int i = 0 ; i < m_readFileThreadList.length() ; i++)
     {
         QPair<QThread*, ThreadReadFile *> value = m_readFileThreadList.value(i);

@@ -151,59 +151,61 @@ void ItemListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
 
     if(isSelected)
     {
-        //TODO: Item在各种状态下的数据显示，包括未计算时的数据显示
-        //计算进度条或是指纹结果的偏移量
-        for(int i = 0 ; i < resultRectList.length(); i++ )
+        if(resultRectList.length() <= 0)
         {
-            util::ComputeResult result = resultList[i];
-            util::ResultMessageType messageType = index.
-                    data(WidgetUtil::CheckTypeRole).value<util::ResultMessageType>();
-            qApp->style()->drawItemText(painter, resultRectList[i].first ,Qt::AlignLeft,
-                                        option.palette, true,
-                                        result.checkTypeName);
-            switch (messageType) {
-            case util::NoCheck:
+            int contentStartingPoint = 3;
+            QRect resultRect(labelDatumPositioningX + m_labelIntervaSize.width(),
+                             labelDatumPositioningY + m_labelIntervaSize.height() *
+                             contentStartingPoint, contentLengthX, m_labelSize.height());
+            qApp->style()->drawItemText(painter, resultRect ,Qt::AlignLeft,
+                                        option.palette, true, tr("Not yet started"));
+        }
+        else
+        {
+            util::ResultMessageType messageType = index.data(
+                        WidgetUtil::CheckTypeRole).value<util::ResultMessageType>();
+            for(int i = 0 ; i < resultRectList.length(); i++ )
             {
-                // 未开始
-                qApp->style()->drawItemText(painter, resultRectList[i].second ,Qt::AlignLeft,
-                                            option.palette, true, tr("Not yet started"));
-                break;
-            }
-            case util::CheckIng:
-            {
-                // 设置进度条的风格
-                QStyleOptionProgressBar progressBarOption;
-                progressBarOption.initFrom(option.widget);
-                progressBarOption.rect = resultRectList[i].second;
-                progressBarOption.minimum = 0;
-                progressBarOption.maximum = result.fileSize;
-                progressBarOption.textAlignment = Qt::AlignCenter;
-                progressBarOption.progress = result.computeProgress;
-                progressBarOption.text = QString("%1 / %2")
-                       .arg(QString::number(result.computeProgress))
-                       .arg(QString::number(result.fileSize));
-                progressBarOption.textVisible = true;
-                QProgressBar progressBar;
-                QApplication::style()->drawControl(QStyle::CE_ProgressBar,
-                                    &progressBarOption, painter, &progressBar);
-                break;
-            }
-            case util::CheckOver:
-            {
-                qApp->style()->drawItemText(painter, resultRectList[i].second ,Qt::AlignLeft,
-                                            option.palette, true, result.resultStr);
-                break;
-            }
-            case util::CheckError:
-            {
-                // 检查错误！错误原因:
-                qApp->style()->drawItemText(painter, resultRectList[i].second ,Qt::AlignLeft,
+                util::ComputeResult result = resultList[i];
+                qApp->style()->drawItemText(painter, resultRectList[i].first ,Qt::AlignLeft,
                                             option.palette, true,
-                                            tr("Check for errors! Cause of error:"));
-                break;
-            }
-            default:
-                break;
+                                            result.checkTypeName);
+                switch (messageType) {
+                case util::CheckIng:
+                {
+                    QStyleOptionProgressBar progressBarOption;
+                    progressBarOption.initFrom(option.widget);
+                    progressBarOption.rect = resultRectList[i].second;
+                    progressBarOption.minimum = 0;
+                    progressBarOption.maximum = result.fileSize;
+                    progressBarOption.textAlignment = Qt::AlignCenter;
+                    progressBarOption.progress = result.computeProgress;
+                    progressBarOption.text = QString("%1 / %2")
+                           .arg(QString::number(result.computeProgress))
+                           .arg(QString::number(result.fileSize));
+                    progressBarOption.textVisible = true;
+                    QProgressBar progressBar;
+                    QApplication::style()->drawControl(QStyle::CE_ProgressBar,
+                                        &progressBarOption, painter, &progressBar);
+                    break;
+                }
+                case util::CheckOver:
+                {
+                    qApp->style()->drawItemText(painter, resultRectList[i].second ,Qt::AlignLeft,
+                                                option.palette, true, result.resultStr);
+                    break;
+                }
+                case util::CheckError:
+                {
+                    // 检查错误！错误原因:
+                    qApp->style()->drawItemText(painter, resultRectList[i].second ,Qt::AlignLeft,
+                                                option.palette, true,
+                                                tr("Check for errors! Cause of error:"));
+                    break;
+                }
+                default:
+                    break;
+                }
             }
         }
     }
