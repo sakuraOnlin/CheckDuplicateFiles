@@ -59,7 +59,7 @@ void ThreadReadFile::onDoWork(QString filePath)
     {
         QByteArray readFileRawData = file.read(loadFileData);
         compute->update(readFileRawData);
-        fileProgress += loadFileData;
+        fileProgress += readFileRawData.size();
         emitResult(util::CheckIng, getType,filePath, fileSize,
                    fileProgress, compute->getTypeName());
     }

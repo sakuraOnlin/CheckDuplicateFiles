@@ -130,7 +130,20 @@ void ListWidgetPrivate::onDelFile()
 
 void ListWidgetPrivate::onOpenFileDir(QString filePath)
 {
-    QDesktopServices::openUrl(QUrl(filePath , QUrl::TolerantMode));
+    QFileInfo fileinfo(filePath);
+    QString validFolderPath;
+
+#ifdef Q_OS_LINUX
+    validFolderPath = fileinfo.absolutePath();
+#endif
+
+#ifdef Q_OS_WIN
+    if(fileinfo.isSymLink())
+        validFolderPath = fileinfo.symLinkTarget();
+    else
+        validFolderPath = fileinfo.absolutePath();
+#endif
+    QDesktopServices::openUrl(QUrl(validFolderPath , QUrl::TolerantMode));
 }
 
 void ListWidgetPrivate::onDelFile(QString filePath)
