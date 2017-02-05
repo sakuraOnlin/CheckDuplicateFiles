@@ -31,6 +31,9 @@ public:
     void onCheckBox(int state);
 
     QString m_dirPath;
+    QString m_pButEnStyleSheet;
+    QString m_pButDisStyleSheet;
+    QList<QPushButton*> m_pButAddressList;
     QLabel *m_fileTotalLabel;
     QProgressBar *m_calculationProgress;
     int m_checkBoxState;
@@ -39,7 +42,6 @@ public:
 
 void MainWindowPrivate::init()
 {
-    updateUIButton();
     q_ptr->ui->pushBut_StartCheck->setEnabled(false);
     m_fileTotalLabel->setText(QObject::tr("File Total : %1 , Calculation progress : %2").arg("0").arg("0"));
     q_ptr->ui->statusbar->addPermanentWidget(m_fileTotalLabel);
@@ -51,6 +53,30 @@ void MainWindowPrivate::init()
     m_calculationProgress->setAlignment(Qt::AlignCenter);
     m_calculationProgress->setMaximumWidth(150);
     q_ptr->ui->statusbar->addPermanentWidget(m_calculationProgress);
+
+    q_ptr->ui->pushBut_SelectDir->setEnabled(true);
+    q_ptr->ui->lineEdit_ShowDIrPath->setEnabled(true);
+    q_ptr->ui->pushBut_FindDuplicateFiles->setEnabled(false);
+    q_ptr->ui->pushBut_DelFile->setEnabled(false);
+    q_ptr->ui->pushBut_DelAllFiles->setEnabled(false);
+
+    m_pButAddressList.append(q_ptr->ui->pushBut_SelectDir);
+    m_pButAddressList.append(q_ptr->ui->pushBut_FindDuplicateFiles);
+    m_pButAddressList.append(q_ptr->ui->pushBut_DelFile);
+    m_pButAddressList.append(q_ptr->ui->pushBut_DelAllFiles);
+
+    m_pButEnStyleSheet = " QPushButton#pushBut_StartCheck"
+                         "{ background-color:rgba(255,255,255,0); border-image: url(:/img/image/start.png); }"
+                         "QPushButton#pushBut_StartCheck:hover{ border-image: url(:/img/image/start_highlight.png); }"
+                         "QPushButton#pushBut_StartCheck:pressed{ border-image: url(:/img/image/start_pushed.png); }"
+                         "QPushButton#pushBut_StartCheck:disabled{ border-image: url(:/img/image/start_disabled.png); }";
+
+    m_pButDisStyleSheet = "QPushButton#pushBut_StartCheck"
+                          "{ background-color:rgba(255,255,255,0); border-image:url(:/img/image/stop.png); }"
+                          "QPushButton#pushBut_StartCheck:hover{ border-image: url(:/img/image/stop_highlight.png); }"
+                          "QPushButton#pushBut_StartCheck:pressed{ border-image: url(:/img/image/stop_pushed.png); }"
+                          "QPushButton#pushBut_StartCheck:disabled{ border-image: url(:/img/image/stop_disabled.png); }";
+    q_ptr->ui->pushBut_StartCheck->setStyleSheet(m_pButEnStyleSheet);
 
     QObject::connect(q_ptr->ui->pushBut_SelectDir, SIGNAL(clicked()), q_ptr, SLOT(onSelectDirPath()) );
     QObject::connect(q_ptr->ui->pushBut_StartCheck, SIGNAL(clicked()), q_ptr, SLOT(onStartCheck()));
@@ -72,24 +98,13 @@ void MainWindowPrivate::init()
 
 void MainWindowPrivate::updateUIButton()
 {
-    if(m_isStart)
+    q_ptr->ui->lineEdit_ShowDIrPath->setEnabled(!q_ptr->ui->lineEdit_ShowDIrPath->isEnabled());
+    foreach (QPushButton *value, m_pButAddressList)
     {
-        q_ptr->ui->pushBut_SelectDir->setEnabled(false);
-        q_ptr->ui->lineEdit_ShowDIrPath->setEnabled(false);
-        q_ptr->ui->pushBut_DelFile->setEnabled(true);
-        q_ptr->ui->pushBut_DelAllFiles->setEnabled(true);
-        q_ptr->ui->pushBut_StartCheck->setIcon(QIcon(":/img/image/stop.png"));
-        q_ptr->ui->pushBut_StartCheck->setIconSize(QSize(24,24));
+        value->setEnabled(!value->isEnabled());
     }
-    else
-    {
-        q_ptr->ui->pushBut_SelectDir->setEnabled(true);
-        q_ptr->ui->lineEdit_ShowDIrPath->setEnabled(true);
-        q_ptr->ui->pushBut_DelFile->setEnabled(false);
-        q_ptr->ui->pushBut_DelAllFiles->setEnabled(false);
-        q_ptr->ui->pushBut_StartCheck->setIcon(QIcon(":/img/image/start.png"));
-        q_ptr->ui->pushBut_StartCheck->setIconSize(QSize(24,24));
-    }
+    m_isStart ? q_ptr->ui->pushBut_StartCheck->setStyleSheet(m_pButDisStyleSheet) :
+                q_ptr->ui->pushBut_StartCheck->setStyleSheet(m_pButEnStyleSheet);
 }
 
 void MainWindowPrivate::onSelectDirPath()
@@ -197,6 +212,11 @@ void MainWindow::onExit()
 void MainWindow::onDelFile()
 {
     ui->listWidget->onDelFile();
+}
+
+void MainWindow::onDelAllDupFiles()
+{
+
 }
 
 void MainWindow::onHelp()

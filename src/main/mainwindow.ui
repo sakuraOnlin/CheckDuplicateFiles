@@ -23,6 +23,42 @@
    <iconset resource="../res/resource.qrc">
     <normaloff>:/img/image/file_search.png</normaloff>:/img/image/file_search.png</iconset>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget#MainWindow
+{ background-color: rgb(247, 250, 253); }
+QMenuBar#menubar
+{ background-color: rgb(247, 250, 253); }
+QCheckBox::indicator:checked
+{ background-image: url(:/img/image/checkbox_highlight.png); }
+QCheckBox::indicator:checked:hover
+{ background-image: url(:/img/image/checkbox_normal.png); }
+QCheckBox::indicator:checked:pressed
+{ background-image: url(:/img/image/checkbox_pushed.png); }
+QPushButton#pushBut_StartCheck
+{ background-color:rgba(255,255,255,0); border-image: url(:/img/image/start.png); }
+QPushButton#pushBut_StartCheck:hover{ border-image: url(:/img/image/start_highlight.png); }
+QPushButton#pushBut_StartCheck:pressed{ border-image: url(:/img/image/start_pushed.png); }
+QPushButton#pushBut_StartCheck:disabled{ border-image: url(:/img/image/start_disabled.png); }
+QPushButton#pushBut_SelectDir
+{ background-color:rgba(255,255,255,0); border-image: url(:/img/image/add.png); }
+QPushButton#pushBut_SelectDir:hover{ border-image: url(:/img/image/add_highlight.png); }
+QPushButton#pushBut_SelectDir:pressed{ border-image:url(:/img/image/add_pushed.png); }
+QPushButton#pushBut_SelectDir:disabled{ border-image: url(:/img/image/add_disabled.png); }
+QPushButton#pushBut_FindDuplicateFiles
+{ background-color:rgba(255,255,255,0); border-image: url(:/img/image/SearchFiles.png); }
+QPushButton#pushBut_FindDuplicateFiles:hover{ border-image: url(:/img/image/SearchFiles_highlight.png); }
+QPushButton#pushBut_FindDuplicateFiles:pressed{ border-image: url(:/img/image/SearchFiles_pushed.png); }
+QPushButton#pushBut_FindDuplicateFiles:disabled{ border-image: url(:/img/image/SearchFiles_disabled.png); }
+QPushButton#pushBut_DelFile
+{ background-color:rgba(255,255,255,0); border-image: url(:/img/image/delFile.png); }
+QPushButton#pushBut_DelFile:hover{ border-image: url(:/img/image/delFile_highlight.png); }
+QPushButton#pushBut_DelFile:pressed{ border-image: url(:/img/image/delFile_pushed.png); }
+QPushButton#pushBut_DelFile:disabled{ border-image:  url(:/img/image/delFile_disabled.png); }
+
+
+
+</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="0">
@@ -43,15 +79,15 @@
          <widget class="QPushButton" name="pushBut_SelectDir">
           <property name="minimumSize">
            <size>
-            <width>0</width>
-            <height>30</height>
+            <width>24</width>
+            <height>24</height>
            </size>
           </property>
           <property name="toolTip">
            <string>Select Dir</string>
           </property>
           <property name="text">
-           <string>Select Dir</string>
+           <string/>
           </property>
          </widget>
         </item>
@@ -62,8 +98,8 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>0</width>
-            <height>30</height>
+            <width>24</width>
+            <height>24</height>
            </size>
           </property>
           <property name="toolTip">
@@ -72,9 +108,27 @@
           <property name="text">
            <string extracomment="Start Check"/>
           </property>
-          <property name="icon">
-           <iconset resource="../res/resource.qrc">
-            <normaloff>:/img/image/start.png</normaloff>:/img/image/start.png</iconset>
+          <property name="iconSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushBut_FindDuplicateFiles">
+          <property name="minimumSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Find Duplicate Files</string>
+          </property>
+          <property name="text">
+           <string/>
           </property>
           <property name="iconSize">
            <size>
@@ -88,8 +142,8 @@
          <widget class="QPushButton" name="pushBut_DelFile">
           <property name="minimumSize">
            <size>
-            <width>0</width>
-            <height>30</height>
+            <width>24</width>
+            <height>24</height>
            </size>
           </property>
           <property name="toolTip">
@@ -97,10 +151,6 @@
           </property>
           <property name="text">
            <string/>
-          </property>
-          <property name="icon">
-           <iconset resource="../res/resource.qrc">
-            <normaloff>:/img/image/delFile.png</normaloff>:/img/image/delFile.png</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -238,7 +288,7 @@
      <x>0</x>
      <y>0</y>
      <width>826</width>
-     <height>23</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

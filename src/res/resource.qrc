@@ -9,5 +9,29 @@
         <file>image/stop.png</file>
         <file>image/DelAllFiles.png</file>
         <file>image/file_search.png</file>
+        <file>image/SearchFiles.png</file>
+        <file>image/checkbox_highlight.png</file>
+        <file>image/checkbox_normal.png</file>
+        <file>image/checkbox_pushed.png</file>
+        <file>image/add.png</file>
+        <file>image/stop_pushed.png</file>
+        <file>image/add_highlight.png</file>
+        <file>image/add_pushed.png</file>
+        <file>image/delFile_highlight.png</file>
+        <file>image/delFile_pushed.png</file>
+        <file>image/SearchFiles_highlight.png</file>
+        <file>image/SearchFiles_pushed.png</file>
+        <file>image/SelectDirPath.png</file>
+        <file>image/SelectDirPath_highlight.png</file>
+        <file>image/SelectDirPath_pushed.png</file>
+        <file>image/start_highlight.png</file>
+        <file>image/start_pushed.png</file>
+        <file>image/stop_highlight.png</file>
+        <file>image/add_disabled.png</file>
+        <file>image/delFile_disabled.png</file>
+        <file>image/SearchFiles_disabled.png</file>
+        <file>image/SelectDirPath_disabled.png</file>
+        <file>image/start_disabled.png</file>
+        <file>image/stop_disabled.png</file>
     </qresource>
 </RCC>

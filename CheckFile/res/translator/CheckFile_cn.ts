@@ -2,17 +2,20 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="zh_CN">
 <context>
+    <name>CheckFile</name>
+    <message>
+        <location filename="../../CheckFile.cpp" line="134"/>
+        <source>Failed to check the file for fingerprint verification!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ComputeHash</name>
     <message>
         <source>Please select a valid file for file fingerprinting! 
 Wrong address :</source>
         <translation type="vanished">请选择有效的文件进行文件指纹识别！
 错误地址：</translation>
-    </message>
-    <message>
-        <location filename="../../computehash.cpp" line="134"/>
-        <source>Failed to check the file for fingerprint verification!</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
