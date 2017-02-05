@@ -98,7 +98,8 @@ void MainWindowPrivate::init()
 
 void MainWindowPrivate::updateUIButton()
 {
-    q_ptr->ui->lineEdit_ShowDIrPath->setEnabled(!q_ptr->ui->lineEdit_ShowDIrPath->isEnabled());
+    q_ptr->ui->lineEdit_ShowDIrPath->setEnabled(!m_isStart);
+    q_ptr->ui->actionSelect_Dir_Path->setEnabled(!m_isStart);
     foreach (QPushButton *value, m_pButAddressList)
     {
         value->setEnabled(!value->isEnabled());

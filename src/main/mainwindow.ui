@@ -310,6 +310,10 @@ QPushButton#pushBut_DelFile:disabled{ border-image:  url(:/img/image/delFile_dis
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionSelect_Dir_Path">
+   <property name="icon">
+    <iconset resource="../res/resource.qrc">
+     <normaloff>:/img/image/add.png</normaloff>:/img/image/add.png</iconset>
+   </property>
    <property name="text">
     <string>Select Dir Path</string>
    </property>
