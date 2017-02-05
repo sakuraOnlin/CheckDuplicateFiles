@@ -28,25 +28,33 @@ void DoWork::setFilters(QStringList filters)
 
 void DoWork::onDoWork()
 {
-    //判断路径是否存在
     QDir dir(m_dirPath);
     if(!dir.exists())
     {
         return;
     }
 
-    // m_filters 文件类型过滤器
-
-    //定义迭代器并设置过滤器
     QDirIterator dir_iterator(m_dirPath, m_filters, QDir::Files | QDir::NoSymLinks,
         QDirIterator::Subdirectories);
+    QStringList fileList;
+    int msleepCount = 0;
     while(m_operatingStatus && dir_iterator.hasNext())
     {
         dir_iterator.next();
         QFileInfo file_info(dir_iterator.fileInfo());
-        QThread::msleep(25);
-        emit signalFilePath(file_info.absoluteFilePath());
+        QThread::msleep(10);
+        fileList.append(file_info.absoluteFilePath());
+        msleepCount += 5;
+        if(msleepCount >= 600)
+        {
+            QThread::msleep(20);
+            emit signalFilePathList(fileList);
+            msleepCount = 0;
+            fileList.clear();
+        }
     }
+    if(fileList.length() >=0)
+        emit signalFilePathList(fileList);
 }
 
 void DoWork::startSelectFiles()
@@ -107,8 +115,8 @@ void ThreadSelectFiles::init()
     m_work = new DoWork;
     m_work->moveToThread(m_thread);
     connect(m_thread, SIGNAL(finished()), m_work, SLOT(deleteLater()) );
-    connect(m_work, SIGNAL(signalFilePath(QString)), this,
-            SIGNAL(signalFilePath(QString)));
+    connect(m_work, SIGNAL(signalFilePathList(QStringList)), this,
+            SIGNAL(signalFilePathList(QStringList)));
     connect(this, SIGNAL(signalStartSelectFiles()), m_work, SLOT(onDoWork()) );
     m_thread->start();
 }

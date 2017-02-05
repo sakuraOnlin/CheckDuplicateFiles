@@ -37,7 +37,7 @@ public slots:
     void onStopCheckFile(QString filePath);
 
 private slots:
-    void onListWidgetAddItem(QString filePath);
+    void onListWidgetAddItem(QStringList filePathList);
     void onItemSetData(util::ComputeResult result);
     void onItemComputeErr(QString filePath, QString errStr);
     void onItemCalculationComplete(QString filePath);

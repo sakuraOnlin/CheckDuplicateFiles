@@ -77,30 +77,33 @@ void BackstageWork::onStopCheckFile(QString filePath)
     m_computeModule.onStopCheckFile(filePath);
 }
 
-void BackstageWork::onListWidgetAddItem(QString filePath)
+void BackstageWork::onListWidgetAddItem(QStringList filePathList)
 {
-    if(filePath.isEmpty())
+    if(filePathList.length() == 0)
         return;
 
-    QListWidgetItem *item = m_fileItemHash->value(filePath);
-    if(nullptr == item)
+    foreach (QString filePath, filePathList)
     {
-        QFileInfo fileInfo(filePath);
-        QFileIconProvider fileIco;
-        QIcon ico(fileIco.icon(fileInfo));
-        QPixmap pixmap(ico.pixmap(m_iconSize));
-        QListWidgetItem *item = new QListWidgetItem;
-        item->setSizeHint(QSize(400, 70));
-        item->setData(WidgetUtil::FilePathRole,filePath);
-        item->setData(WidgetUtil::FileIcoRole,pixmap);
-        item->setData(WidgetUtil::FileSizeRole, QString::number(fileInfo.size()));
-        item->setData(WidgetUtil::FileName, fileInfo.fileName());
-        item->setData(WidgetUtil::FileTimeRole, fileInfo.lastModified().
-                      toString("yyyy-MM-dd hh:mm:ss"));
-        item->setData(WidgetUtil::CheckTypeRole, util::NoCheck);
-        m_listWidget->addItem(item);
-        m_filePathList->append(filePath);
-        m_fileItemHash->insert(filePath, item);
+        QListWidgetItem *item = m_fileItemHash->value(filePath);
+        if(nullptr == item)
+        {
+            QFileInfo fileInfo(filePath);
+            QFileIconProvider fileIco;
+            QIcon ico(fileIco.icon(fileInfo));
+            QPixmap pixmap(ico.pixmap(m_iconSize));
+            QListWidgetItem *item = new QListWidgetItem;
+            item->setSizeHint(QSize(400, 70));
+            item->setData(WidgetUtil::FilePathRole,filePath);
+            item->setData(WidgetUtil::FileIcoRole,pixmap);
+            item->setData(WidgetUtil::FileSizeRole, QString::number(fileInfo.size()));
+            item->setData(WidgetUtil::FileName, fileInfo.fileName());
+            item->setData(WidgetUtil::FileTimeRole, fileInfo.lastModified().
+                          toString("yyyy-MM-dd hh:mm:ss"));
+            item->setData(WidgetUtil::CheckTypeRole, util::NoCheck);
+            m_listWidget->addItem(item);
+            m_filePathList->append(filePath);
+            m_fileItemHash->insert(filePath, item);
+        }
     }
 }
 
@@ -168,7 +171,7 @@ void BackstageWork::init()
     m_filePathList = nullptr;
     m_fileItemHash = nullptr;
     m_operatingStatus = false;
-    QObject::connect(&m_selectFiles, SIGNAL(signalFilePath(QString)), this, SLOT(onListWidgetAddItem(QString))  );
+    QObject::connect(&m_selectFiles, SIGNAL(signalFilePathList(QStringList)), this, SLOT(onListWidgetAddItem(QStringList))  );
     QObject::connect(&m_computeModule, SIGNAL(signalFinalResult(util::ComputeResult)),
                      this, SLOT(onItemSetData(util::ComputeResult)) );
     QObject::connect(&m_computeModule, SIGNAL(signalError(QString,QString)),

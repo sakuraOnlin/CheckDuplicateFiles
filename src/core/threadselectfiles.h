@@ -16,7 +16,7 @@ public:
     void stopSelectFiles();
 
 signals:
-    void signalFilePath(QString);
+    void signalFilePathList(QStringList);
 
 public slots:
     void onDoWork();
@@ -37,7 +37,7 @@ public:
     void setFilters(QStringList filters);
 
 signals:
-    void signalFilePath(QString);
+    void signalFilePathList(QStringList);
     void signalStartSelectFiles();
 
 public slots:
