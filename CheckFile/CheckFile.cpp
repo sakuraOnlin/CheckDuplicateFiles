@@ -12,7 +12,7 @@ class CheckFilePrivate
     CheckFile *q_ptr;
     Q_DECLARE_PUBLIC(CheckFile)
 public:
-    CheckFilePrivate(CheckFile *parent,util::ComputeType type);
+    CheckFilePrivate(CheckFile *parent,util::CheckType type);
     ~CheckFilePrivate();
     void init();
     bool setFilePath(QString filePath);
@@ -24,11 +24,11 @@ public:
     ThreadControl m_threadControl;
     QList<util::factoryCreateResult> m_factoryList;
     Factory *m_factory;
-    util::ComputeType m_conputeType;
+    util::CheckType m_conputeType;
     bool m_isStart;
 };
 
-CheckFilePrivate::CheckFilePrivate(CheckFile *parent, util::ComputeType type)
+CheckFilePrivate::CheckFilePrivate(CheckFile *parent, util::CheckType type)
     :q_ptr(parent),
       m_filePath(QString()),
       m_factory(new Factory),
@@ -98,7 +98,7 @@ void CheckFilePrivate::onStart()
 CheckFile::CheckFile(int CheckType, QObject *parent)
     :QObject(parent)
 {
-    d_ptr = new CheckFilePrivate(this, (util::ComputeType)CheckType);
+    d_ptr = new CheckFilePrivate(this, (util::CheckType)CheckType);
     qRegisterMetaType<util::factoryCreateResult>("util::factoryCreateResult");
     qRegisterMetaType<util::ComputeResult>("util::ComputeResult");
 }

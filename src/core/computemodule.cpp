@@ -34,7 +34,7 @@ int ComputeWork::getComputeProgress()
     return m_computeIndex + 1;
 }
 
-void ComputeWork::createCheck(util::ComputeType checkType)
+void ComputeWork::createCheck(util::CheckType checkType)
 {
     for(int i = 0 ; i < m_computeThreadMaxNum ; i++)
     {
@@ -102,7 +102,7 @@ int ComputeModule::getComputeProgress()
 void ComputeModule::onStart(int checkType)
 {
     m_computeWork->m_operatingStatus = true;
-    m_computeWork->createCheck((util::ComputeType)checkType);
+    m_computeWork->createCheck((util::CheckType)checkType);
     connectWork();
     emit signalStart();
 }

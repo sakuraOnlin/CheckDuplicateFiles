@@ -37,7 +37,7 @@ void ThreadReadFile::onDoWork(QString filePath)
     Compute *compute = m_result.creatorComputr;
     if(nullptr == compute)
     {
-        emitResult(util::CheckError, m_result.computeHashType, filePath,
+        emitResult(util::CheckError, m_result.checkHashType, filePath,
                    fileSize, fileProgress, QString("NoType"), m_result.creatorErrStr);
         return;
     }
@@ -45,13 +45,13 @@ void ThreadReadFile::onDoWork(QString filePath)
     QFile file(filePath);
     if(!file.open(QIODevice::ReadOnly))
     {
-        emitResult(util::CheckError, m_result.computeHashType, filePath,
+        emitResult(util::CheckError, m_result.checkHashType, filePath,
                    fileSize, fileProgress, compute->getTypeName(), tr("File open errors!"));
         return;
     }
     fileSize = file.size();
     loadFileData = automaticDivision(fileSize);
-    util::ComputeType getType = compute->getType();
+    util::CheckType getType = compute->getType();
 
     m_isWork = true;
     //start read file data to Compute Hash
@@ -88,12 +88,12 @@ void ThreadReadFile::onRestore()
 }
 
 void ThreadReadFile::emitResult(util::ResultMessageType resultType,
-                                util::ComputeType computeType, QString filePath,
+                                util::CheckType computeType, QString filePath,
                                 qint64 fileSize, qint64 fileProgress, QString typeName, QString result)
 {
     util::ComputeResult computeResult;
     computeResult.resultMessageType = resultType;
-    computeResult.computeHashType = computeType;
+    computeResult.checkHashType = computeType;
     computeResult.fileSize = fileSize;
     computeResult.computeProgress = fileProgress;
     computeResult.filePath = filePath;

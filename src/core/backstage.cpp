@@ -109,7 +109,7 @@ void BackstageWork::onListWidgetAddItem(QStringList filePathList)
 
 void BackstageWork::onItemSetData(util::ComputeResult result)
 {
-    util::ComputeType computeHashType = result.computeHashType;
+    util::CheckType checkHashType = result.checkHashType;
     QString filePath = result.filePath;
 
     QListWidgetItem *item = m_fileItemHash->value(filePath);
@@ -121,7 +121,7 @@ void BackstageWork::onItemSetData(util::ComputeResult result)
     int resultListIndex = -1;
     for(int i = 0 ; i < resultList.length() ; i++)
     {
-        if(computeHashType == resultList.value(i).computeHashType)
+        if(checkHashType == resultList.value(i).checkHashType)
         {
             resultListIndex = i;
             break;

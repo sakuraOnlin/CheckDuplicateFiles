@@ -17,7 +17,7 @@ public:
     ~ComputeWork();
     void setFilePathList(QStringList *filePathList);
     int getComputeProgress();
-    void createCheck(util::ComputeType checkType);
+    void createCheck(util::CheckType checkType);
 
 public slots:
     void onWork();
