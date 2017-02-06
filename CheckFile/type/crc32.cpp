@@ -17,11 +17,21 @@ void CRC32::update(QByteArray &data, QString oldComputeHash)
 {
     Q_UNUSED(oldComputeHash)
 
+    m_isRunning = true;
     int len = data.length();
     char *stdChar = data.data();
     unsigned char* buffer = (unsigned char *)stdChar;
     for(;len >0 ;len--)
+    {
+        if(!m_isRunning)
+            break;
         m_crc32Str = (m_crc32Str >> 8) ^ crc32_table[(m_crc32Str & 0xFF) ^ *buffer++];
+    }
+}
+
+void CRC32::stop()
+{
+    m_isRunning = false;
 }
 
 QString CRC32::getFinalResult()

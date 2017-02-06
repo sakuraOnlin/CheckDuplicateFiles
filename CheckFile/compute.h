@@ -14,10 +14,14 @@ public:
     virtual ~Compute();
 
     virtual void update(QByteArray &data, QString oldComputeHash = QString()) =0;
+    virtual void stop() = 0;
     virtual QString getFinalResult() =0;
     virtual void reset() =0;
     virtual util::CheckType getType() =0;
     virtual QString getTypeName() =0;
+
+protected:
+    bool m_isRunning;
 
 };
 

@@ -39,6 +39,11 @@ public:
         m_crypto->addData(data);
     }
 
+    void stop()
+    {
+
+    }
+
     QString getFinalResult()
     {
         return QString(m_crypto->result().toHex().toUpper());

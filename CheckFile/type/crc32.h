@@ -13,6 +13,7 @@ public:
     explicit CRC32();
     virtual ~CRC32();
     void update(QByteArray &data, QString oldComputeHash = QString());
+    void stop();
     QString getFinalResult();
     void reset();
     util::CheckType getType();
