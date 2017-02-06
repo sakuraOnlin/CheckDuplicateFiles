@@ -11,7 +11,7 @@ class CHECKFILESHARED_EXPORT Factory :public QObject
 public:
     explicit Factory(QObject *parent = 0);
     virtual ~Factory();
-    virtual QList<util::factoryCreateResult> createCompute(const util::ComputeType type);
+    virtual QList<util::factoryCreateResult> createCompute(const util::CheckType type);
 
 };
 

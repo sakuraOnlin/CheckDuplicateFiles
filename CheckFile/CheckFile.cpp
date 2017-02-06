@@ -95,10 +95,10 @@ void CheckFilePrivate::onStart()
     m_threadControl.start();
 }
 
-CheckFile::CheckFile(int type, QObject *parent)
+CheckFile::CheckFile(int CheckType, QObject *parent)
     :QObject(parent)
 {
-    d_ptr = new CheckFilePrivate(this, (util::ComputeType)type);
+    d_ptr = new CheckFilePrivate(this, (util::ComputeType)CheckType);
     qRegisterMetaType<util::factoryCreateResult>("util::factoryCreateResult");
     qRegisterMetaType<util::ComputeResult>("util::ComputeResult");
 }

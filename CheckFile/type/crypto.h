@@ -49,7 +49,7 @@ public:
         m_crypto->reset();
     }
 
-    util::ComputeType getType()
+    util::CheckType getType()
     {
         return m_hashType;
     }
@@ -60,7 +60,7 @@ public:
 
 private:
     QCryptographicHash *m_crypto;
-    util::ComputeType m_hashType;
+    util::CheckType m_hashType;
     QString m_typeName;
 };
 

@@ -41,7 +41,7 @@ void CRC32::reset()
     initCRC32Table();
 }
 
-util::ComputeType CRC32::getType()
+util::CheckType CRC32::getType()
 {
     return util::CRC32;
 }

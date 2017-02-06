@@ -15,7 +15,7 @@ public:
     void update(QByteArray &data, QString oldComputeHash = QString());
     QString getFinalResult();
     void reset();
-    util::ComputeType getType();
+    util::CheckType getType();
     QString getTypeName();
 
 private:

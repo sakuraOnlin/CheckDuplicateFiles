@@ -16,7 +16,7 @@ public:
     virtual void update(QByteArray &data, QString oldComputeHash = QString()) =0;
     virtual QString getFinalResult() =0;
     virtual void reset() =0;
-    virtual util::ComputeType getType() =0;
+    virtual util::CheckType getType() =0;
     virtual QString getTypeName() =0;
 
 };

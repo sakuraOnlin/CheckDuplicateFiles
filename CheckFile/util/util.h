@@ -12,7 +12,7 @@ class Compute;
 class CHECKFILESHARED_EXPORT util
 {
 public:
-    enum ComputeType
+    enum CheckType
     {
         NOTYPE      = 0,
         MD5         = 1,
@@ -32,7 +32,7 @@ public:
     struct ComputeResult
     {
         ResultMessageType   resultMessageType;
-        ComputeType         computeHashType;
+        CheckType           checkHashType;
         qint64              fileSize;
         qint64              computeProgress;
         QString             resultStr;
@@ -43,7 +43,7 @@ public:
     struct factoryCreateResult
     {
         Compute             *creatorComputr;
-        ComputeType         computeHashType;
+        CheckType           checkHashType;
         QString             creatorErrStr;
     };
 

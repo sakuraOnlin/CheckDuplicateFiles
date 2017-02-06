@@ -47,7 +47,7 @@ void Widget::onCalculationComplete()
 
 void Widget::onFinalResult(util::ComputeResult result)
 {
-    switch (result.computeHashType) {
+    switch (result.checkHashType) {
     case util::MD5:
     {
         ui->lbMD5->setText(result.resultStr);

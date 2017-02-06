@@ -14,7 +14,7 @@ Factory::~Factory()
 
 }
 
-QList<util::factoryCreateResult> Factory::createCompute(const util::ComputeType type)
+QList<util::factoryCreateResult> Factory::createCompute(const util::CheckType type)
 {
     QList<util::factoryCreateResult> computeList;
     if( (type & util::SHA1) == util::SHA1)

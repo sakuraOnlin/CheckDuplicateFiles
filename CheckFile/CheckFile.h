@@ -12,7 +12,7 @@ class CHECKFILESHARED_EXPORT CheckFile : public QObject
     Q_OBJECT
 
 public:
-    explicit CheckFile(int ComputeType = 1, QObject *parent = 0);
+    explicit CheckFile(int CheckType = 1, QObject *parent = 0);
     ~CheckFile();
 
     bool setFilePath(QString filePath);
