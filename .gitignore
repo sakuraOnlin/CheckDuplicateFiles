@@ -62,3 +62,6 @@ archive.zip
 ipch/
 *.sdf
 *.cd
+*VC.db
+*.aps
+

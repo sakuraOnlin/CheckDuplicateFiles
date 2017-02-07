@@ -3,10 +3,6 @@ QT       -= gui
 TARGET = CheckFile
 TEMPLATE = lib
 
-VER_MAJ = 0
-VER_MIN = 1
-VER_PAT = 19
-
 DEFINES += CHECKFILE_LIBRARY _DEBUG
 
 SOURCES += \
@@ -28,6 +24,8 @@ HEADERS +=\
     threadreadfile.h
 
 TRANSLATIONS += res/translator/CheckFile_cn.ts
+
+win32:RC_FILE = CheckFile.rc
 
 unix {
     target.path = /usr/lib

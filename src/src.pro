@@ -38,6 +38,8 @@ TRANSLATIONS += res/translator/translator_cn.ts
 RESOURCES += \
     res/resource.qrc
 
+win32:RC_FILE = CheckForDuplicateFiles.rc
+
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../CheckFile/release/ -lCheckFile
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../CheckFile/debug/ -lCheckFile
 else:unix: LIBS += -L$$OUT_PWD/../CheckFile/ -lCheckFile

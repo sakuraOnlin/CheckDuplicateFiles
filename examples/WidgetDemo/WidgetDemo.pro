@@ -30,6 +30,7 @@ HEADERS  += widget.h
 
 FORMS    += widget.ui
 
+win32:RC_FILE = WidgetDemo.rc
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../CheckFile/release/ -lCheckFile
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../CheckFile/debug/ -lCheckFile
