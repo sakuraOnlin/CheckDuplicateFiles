@@ -143,7 +143,7 @@ void ListWidgetPrivate::onOpenFileDir(QString filePath)
     else
         validFolderPath = fileinfo.absolutePath();
 #endif
-    QDesktopServices::openUrl(QUrl(validFolderPath , QUrl::TolerantMode));
+    QDesktopServices::openUrl(QUrl::fromLocalFile(validFolderPath));
 }
 
 void ListWidgetPrivate::onDelFile(QString filePath)
