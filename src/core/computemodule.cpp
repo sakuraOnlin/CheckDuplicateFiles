@@ -16,7 +16,7 @@ ComputeWork::~ComputeWork()
     QThread::msleep(50);
     for(int i = 0 ; i < m_checkFilelist.length(); i++)
     {
-        m_checkFilelist[i].first->onStop();
+        m_checkFilelist[i].first->onStopCheck();
         delete  m_checkFilelist[i].first;
         m_checkFilelist[i].second = false;
     }
@@ -38,7 +38,8 @@ void ComputeWork::createCheck(util::CheckType checkType)
 {
     for(int i = 0 ; i < m_computeThreadMaxNum ; i++)
     {
-        CheckFile *value = new CheckFile(checkType);
+        CheckFile *value = new CheckFile;
+        value->setCheckType(checkType);
         m_checkFilelist.append(qMakePair(value, false));
     }
 }
@@ -102,7 +103,7 @@ int ComputeModule::getComputeProgress()
 void ComputeModule::onStart(int checkType)
 {
     m_computeWork->m_operatingStatus = true;
-    m_computeWork->createCheck((util::CheckType)checkType);
+    m_computeWork->createCheck(util::CheckType(checkType));
     connectWork();
     emit signalStart();
 }
@@ -113,7 +114,7 @@ void ComputeModule::onStop()
     for(int i = 0 ; i < m_computeWork->m_checkFilelist.length(); i = 0)
     {
         QPair<CheckFile*, bool> value = m_computeWork->m_checkFilelist.takeAt(i);
-        value.first->onStop();
+        value.first->onStopCheck();
         value.second = false;
         delete  value.first;
     }
@@ -126,7 +127,7 @@ void ComputeModule::onStopCheckFile(QString filePath)
     CheckFile* value = m_computeWork->m_computeHash.key(filePath);
     if(nullptr == value)
         return;
-    value->onStop();
+    value->onStopCheck();
 }
 
 void ComputeModule::onHandleErrStr(QString err)

@@ -27,10 +27,8 @@ signals:
 
 public slots:
     void onStart();
-    void onStop();
+    void onStopCheck();
     void onRestore();
-
-private slots:
 
 private:
     CheckFilePrivate *d_ptr;

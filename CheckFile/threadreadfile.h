@@ -51,7 +51,8 @@ public:
     bool getOperatingStatus();
 
     void start();
-    void stop();
+    void stopApp();
+    void stopCheck();
     void restore();
 
 signals:

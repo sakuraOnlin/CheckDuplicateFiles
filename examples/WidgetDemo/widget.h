@@ -23,6 +23,7 @@ signals:
 private slots:
     void onSelectDir();
     void onStart();
+    void onStop();
     void onCalculationComplete();
     void onFinalResult(util::ComputeResult result);
 

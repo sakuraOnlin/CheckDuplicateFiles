@@ -46,7 +46,8 @@ public:
 
     QString getFinalResult()
     {
-        return QString(m_crypto->result().toHex().toUpper());
+        QByteArray data(m_crypto->result());
+        return QString(data.toHex().toUpper());
     }
 
     void reset()

@@ -18,11 +18,6 @@ ThreadReadFile::ThreadReadFile(QObject *parent)
 
 ThreadReadFile::~ThreadReadFile()
 {
-    if(nullptr != m_result.creatorComputr)
-    {
-        delete m_result.creatorComputr;
-        m_result.creatorComputr = nullptr;
-    }
 }
 
 void ThreadReadFile::setCheckData(util::factoryCreateResult result)
@@ -57,30 +52,30 @@ void ThreadReadFile::onDoWork(QString filePath)
     fileSize = file.size();
     loadFileData = automaticDivision(fileSize);
     util::CheckType getType = compute->getType();
+    QString typeName(compute->getTypeName());
 
     m_isWork = true;
     //start read file data to Compute Hash
     while(!file.atEnd() && m_isWork)
     {
-        QByteArray readFileRawData = file.read(loadFileData);
-        compute->update(readFileRawData);
-        fileProgress += readFileRawData.size();
         if(!m_isWork)
         {
             emitResult(util::CheckError, getType,filePath, fileSize,
-                       fileProgress, compute->getTypeName(),
+                       fileProgress, typeName,
                        tr("The user chooses to stop checking!"));
-            qDebug() << "m_isWork " << this << filePath;
             return;
         }
+        QByteArray readFileRawData = file.read(loadFileData);
+        compute->update(readFileRawData);
+        fileProgress += readFileRawData.size();
         emitResult(util::CheckIng, getType,filePath, fileSize,
-                   fileProgress, compute->getTypeName());
+                   fileProgress, typeName);
     }
     file.close();
 
     QString computeResultStr(compute->getFinalResult());
     emitResult(util::CheckOver, getType, filePath, fileSize,
-               fileProgress, compute->getTypeName(), computeResultStr);
+               fileProgress, typeName, computeResultStr);
 
 }
 
@@ -114,15 +109,15 @@ qint64 ThreadReadFile::automaticDivision(qint64 fileSize)
 {
     qint64 defaultSize = 1024 ; // 1 kb
     defaultSize *= qint64(1024); // 1MB
-    if(fileSize < defaultSize * qint64(20)) // 20 MB
+    if(fileSize < defaultSize * qint64(20)) // fileSize <= 20 MB
     {
         return fileSize;
     }
-    else if(fileSize <= defaultSize * 50)   // 50 MB
+    else if(fileSize <= defaultSize * 50)   // fileSize <= 50 MB
     {
         return (fileSize / qint64(2));
     }
-    else if(fileSize <= defaultSize *100)   // 100 MB
+    else if(fileSize <= defaultSize *100)   // fileSize <= 100 MB
     {
         return (fileSize / qint64(3));
     }
@@ -144,7 +139,7 @@ ThreadControl::ThreadControl(QObject *parent)
 
 ThreadControl::~ThreadControl()
 {
-    stop();
+    stopApp();
 }
 
 void ThreadControl::setDirPath(QString dirPath)
@@ -165,7 +160,9 @@ bool ThreadControl::getOperatingStatus()
 void ThreadControl::start()
 {
     if(m_operatingStatus)
-        stop();
+        stopCheck();
+
+    disconnect(this, SIGNAL(signalStartCheck(QString)), 0, 0);
 
     for(int i = 0 ; i < m_listFactorys.length(); i++ )
     {
@@ -190,6 +187,8 @@ void ThreadControl::start()
         else
         {
             readThread = m_threadList.value(i).second;
+            connect( this, SIGNAL(signalStartCheck(QString) ),
+                     readThread, SLOT(onDoWork(QString)) );
         }
         readThread->setCheckData(m_listFactorys.value(i));
         m_readFileThreadList.append(qMakePair(thread, readThread));
@@ -198,9 +197,9 @@ void ThreadControl::start()
     emit signalStartCheck(m_dirPath);
 }
 
-void ThreadControl::stop()
+void ThreadControl::stopApp()
 {
-    for(int i = 0 ; i < m_threadList.length() ;i = 0)
+    for(int i = 0 ; i < m_threadList.length() ; i = 0)
     {
         QPair<QThread*, ThreadReadFile *> value = m_threadList.takeAt(i);
         value.second->m_isWork = false;
@@ -208,6 +207,15 @@ void ThreadControl::stop()
         value.first->quit();
         value.first->wait();
         delete value.first;
+    }
+}
+
+void ThreadControl::stopCheck()
+{
+    for(int i = 0 ; i < m_readFileThreadList.length() ; i++)
+    {
+        m_readFileThreadList[i].second->m_isWork = false;
+        m_readFileThreadList[i].second->m_result.creatorComputr->stop();
     }
 }
 

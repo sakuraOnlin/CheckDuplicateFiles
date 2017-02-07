@@ -22,6 +22,7 @@ QList<util::factoryCreateResult> Factory::createCompute(const util::CheckType ty
         Compute *factoryType = new Crypto<QCryptographicHash::Algorithm>(QCryptographicHash::Sha1);
         util::factoryCreateResult reuslt;
         reuslt.creatorComputr = nullptr;
+        reuslt.checkHashType = util::SHA1;
         if(nullptr == factoryType)
             reuslt.creatorErrStr = tr("Error : Factoey Creator Compute SHA1 Error!");
         else
@@ -34,6 +35,7 @@ QList<util::factoryCreateResult> Factory::createCompute(const util::CheckType ty
         Compute *factoryType = new Crypto<QCryptographicHash::Algorithm>(QCryptographicHash::Md5);
         util::factoryCreateResult reuslt;
         reuslt.creatorComputr = nullptr;
+        reuslt.checkHashType = util::MD5;
         if(nullptr == factoryType)
             reuslt.creatorErrStr = tr("Error : Factoey Creator Compute MD5 Error!");
         else
@@ -46,6 +48,7 @@ QList<util::factoryCreateResult> Factory::createCompute(const util::CheckType ty
         Compute *factoryType = new CRC32;
         util::factoryCreateResult reuslt;
         reuslt.creatorComputr = nullptr;
+        reuslt.checkHashType = util::CRC32;
         if(nullptr == factoryType)
             reuslt.creatorErrStr = tr("Error : Factoey Creator Compute CRC32 Error!");
         else

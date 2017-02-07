@@ -17,6 +17,7 @@ public:
     void init();
     void setCheckType(int CheckType);
     void createFactory();
+    inline void deleteFactory();
     bool setFilePath(QString filePath);
     inline bool checkDirValid(QString &filePath);
     void setUserFactore(Factory *userFacrory);
@@ -44,6 +45,8 @@ CheckFilePrivate::CheckFilePrivate(CheckFile *parent)
 CheckFilePrivate::~CheckFilePrivate()
 {
     delete m_factory;
+    m_threadControl.stopApp();
+    deleteFactory();
 }
 
 void CheckFilePrivate::init()
@@ -60,13 +63,26 @@ void CheckFilePrivate::init()
 void CheckFilePrivate::setCheckType(int CheckType)
 {
     m_conputeType = util::CheckType(CheckType);
+    m_isCreatrFactoryBool = false;
 }
 
 void CheckFilePrivate::createFactory()
 {
-    m_factoryList = m_factory->createCompute(m_conputeType);
+    deleteFactory();
+
+    QList<util::factoryCreateResult> fatory(m_factory->createCompute(m_conputeType));
+    if(fatory.isEmpty())
+        return;
+
+    m_factoryList = fatory;
     m_threadControl.setFactorys(m_factoryList);
     m_isCreatrFactoryBool = true;
+}
+
+void CheckFilePrivate::deleteFactory()
+{
+    for(int i = 0 ; i< m_factoryList.length() ; i = 0)
+        delete m_factoryList.takeAt(i).creatorComputr;
 }
 
 bool CheckFilePrivate::setFilePath(QString filePath)
@@ -124,7 +140,6 @@ CheckFile::~CheckFile()
 void CheckFile::setCheckType(int CheckType)
 {
     d_ptr->setCheckType(CheckType);
-    d_ptr->createFactory();
 }
 
 bool CheckFile::setFilePath(QString filePath)
@@ -146,16 +161,20 @@ void CheckFile::onStart()
 {
     if(!d_ptr->m_isCreatrFactoryBool)
     {
-        emit signalError(tr("The file verification type is not specified!"
-                         "Please set the file verification type"));
-        return;
+        d_ptr->createFactory();
+        if(!d_ptr->m_isCreatrFactoryBool)
+        {
+            emit signalError(tr("The file verification type is not specified!"
+                             "Please set the file verification type"));
+            return;
+        }
     }
     d_ptr->onStart();
 }
 
-void CheckFile::onStop()
+void CheckFile::onStopCheck()
 {
-    d_ptr->m_threadControl.stop();
+    d_ptr->m_threadControl.stopCheck();
     emit signalError(tr("Failed to check the file for fingerprint verification!"));
 }
 

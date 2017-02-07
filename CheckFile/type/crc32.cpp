@@ -10,7 +10,6 @@ CRC32::CRC32()
 
 CRC32::~CRC32()
 {
-
 }
 
 void CRC32::update(QByteArray &data, QString oldComputeHash)
