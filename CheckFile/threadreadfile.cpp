@@ -9,11 +9,11 @@
 #include <QDebug>
 #endif
 
-ThreadReadFile::ThreadReadFile(util::factoryCreateResult result, QObject *parent)
+ThreadReadFile::ThreadReadFile(QObject *parent)
     :QObject(parent), 
-      m_result(result), 
       m_isWork(false)
 {
+    m_result.creatorComputr = nullptr;
 }
 
 ThreadReadFile::~ThreadReadFile()
@@ -23,6 +23,11 @@ ThreadReadFile::~ThreadReadFile()
         delete m_result.creatorComputr;
         m_result.creatorComputr = nullptr;
     }
+}
+
+void ThreadReadFile::setCheckData(util::factoryCreateResult result)
+{
+    m_result = result;
 }
 
 void ThreadReadFile::onDoWork(QString filePath)
@@ -60,22 +65,23 @@ void ThreadReadFile::onDoWork(QString filePath)
         QByteArray readFileRawData = file.read(loadFileData);
         compute->update(readFileRawData);
         fileProgress += readFileRawData.size();
+        if(!m_isWork)
+        {
+            emitResult(util::CheckError, getType,filePath, fileSize,
+                       fileProgress, compute->getTypeName(),
+                       tr("The user chooses to stop checking!"));
+            qDebug() << "m_isWork " << this << filePath;
+            return;
+        }
         emitResult(util::CheckIng, getType,filePath, fileSize,
                    fileProgress, compute->getTypeName());
     }
-
-    //read file atEnd, emit Hash
     file.close();
+
     QString computeResultStr(compute->getFinalResult());
     emitResult(util::CheckOver, getType, filePath, fileSize,
                fileProgress, compute->getTypeName(), computeResultStr);
-    emit signalCalculationComplete();
 
-}
-
-void ThreadReadFile::onStop()
-{
-    m_isWork = false;
 }
 
 void ThreadReadFile::onRestore()
@@ -100,6 +106,8 @@ void ThreadReadFile::emitResult(util::ResultMessageType resultType,
     computeResult.resultStr = result;
     computeResult.checkTypeName = typeName;
     emit signalResultReady( computeResult);
+    if(resultType == util::CheckError || resultType == util::CheckOver)
+        emit signalCalculationComplete();
 }
 
 qint64 ThreadReadFile::automaticDivision(qint64 fileSize)
@@ -166,7 +174,7 @@ void ThreadControl::start()
         if(i >= m_threadList.length())
         {
             thread = new QThread;
-            readThread = new ThreadReadFile(m_listFactorys.value(i));
+            readThread = new ThreadReadFile;
             readThread->moveToThread( thread);
             connect( thread, SIGNAL(finished()), readThread, SLOT(deleteLater()) );
             connect( readThread, SIGNAL(signalResultReady(util::ComputeResult)),
@@ -183,6 +191,7 @@ void ThreadControl::start()
         {
             readThread = m_threadList.value(i).second;
         }
+        readThread->setCheckData(m_listFactorys.value(i));
         m_readFileThreadList.append(qMakePair(thread, readThread));
     }
     m_operatingStatus = true;

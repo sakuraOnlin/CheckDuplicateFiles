@@ -40,7 +40,7 @@ QString CRC32::getFinalResult()
     unsigned long resultData = m_crc32Str ^ 0xffffffff;
 
     char hexChar[10] = {0};
-    int hexCharLength = sprintf(hexChar, "%X", resultData);
+    int hexCharLength = sprintf(hexChar, "%lX", resultData);
     QByteArray byteChar(hexChar, hexCharLength);
     return QString(byteChar);
 }

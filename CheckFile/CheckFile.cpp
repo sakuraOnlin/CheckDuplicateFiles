@@ -12,9 +12,11 @@ class CheckFilePrivate
     CheckFile *q_ptr;
     Q_DECLARE_PUBLIC(CheckFile)
 public:
-    CheckFilePrivate(CheckFile *parent,util::CheckType type);
+    CheckFilePrivate(CheckFile *parent);
     ~CheckFilePrivate();
     void init();
+    void setCheckType(int CheckType);
+    void createFactory();
     bool setFilePath(QString filePath);
     inline bool checkDirValid(QString &filePath);
     void setUserFactore(Factory *userFacrory);
@@ -25,14 +27,15 @@ public:
     QList<util::factoryCreateResult> m_factoryList;
     Factory *m_factory;
     util::CheckType m_conputeType;
+    bool m_isCreatrFactoryBool;
     bool m_isStart;
 };
 
-CheckFilePrivate::CheckFilePrivate(CheckFile *parent, util::CheckType type)
+CheckFilePrivate::CheckFilePrivate(CheckFile *parent)
     :q_ptr(parent),
       m_filePath(QString()),
       m_factory(new Factory),
-      m_conputeType(type),
+      m_isCreatrFactoryBool(false),
       m_isStart(false)
 {
     init();
@@ -52,6 +55,18 @@ void CheckFilePrivate::init()
     QObject::connect(&m_threadControl, SIGNAL(signalCalculationComplete()),
                      q_ptr, SIGNAL(signalCalculationComplete()));
 
+}
+
+void CheckFilePrivate::setCheckType(int CheckType)
+{
+    m_conputeType = util::CheckType(CheckType);
+}
+
+void CheckFilePrivate::createFactory()
+{
+    m_factoryList = m_factory->createCompute(m_conputeType);
+    m_threadControl.setFactorys(m_factoryList);
+    m_isCreatrFactoryBool = true;
 }
 
 bool CheckFilePrivate::setFilePath(QString filePath)
@@ -89,16 +104,14 @@ void CheckFilePrivate::setUserFactore(Factory *userFacrory)
 
 void CheckFilePrivate::onStart()
 {
-    QList<util::factoryCreateResult> factoryList = m_factory->createCompute(m_conputeType);
-    m_threadControl.setFactorys(factoryList);
     m_threadControl.setDirPath(m_filePath);
     m_threadControl.start();
 }
 
-CheckFile::CheckFile(int CheckType, QObject *parent)
+CheckFile::CheckFile(QObject *parent)
     :QObject(parent)
 {
-    d_ptr = new CheckFilePrivate(this, (util::CheckType)CheckType);
+    d_ptr = new CheckFilePrivate(this);
     qRegisterMetaType<util::factoryCreateResult>("util::factoryCreateResult");
     qRegisterMetaType<util::ComputeResult>("util::ComputeResult");
 }
@@ -106,6 +119,12 @@ CheckFile::CheckFile(int CheckType, QObject *parent)
 CheckFile::~CheckFile()
 {
     delete d_ptr;
+}
+
+void CheckFile::setCheckType(int CheckType)
+{
+    d_ptr->setCheckType(CheckType);
+    d_ptr->createFactory();
 }
 
 bool CheckFile::setFilePath(QString filePath)
@@ -125,6 +144,12 @@ bool CheckFile::getOperatingStatus()
 
 void CheckFile::onStart()
 {
+    if(!d_ptr->m_isCreatrFactoryBool)
+    {
+        emit signalError(tr("The file verification type is not specified!"
+                         "Please set the file verification type"));
+        return;
+    }
     d_ptr->onStart();
 }
 

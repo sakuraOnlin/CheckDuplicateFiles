@@ -13,12 +13,12 @@ class ThreadReadFile : public QObject
 {
     Q_OBJECT
 public:
-    explicit ThreadReadFile(util::factoryCreateResult result, QObject *parent = 0);
+    explicit ThreadReadFile(QObject *parent = 0);
     ~ThreadReadFile();
+    void setCheckData(util::factoryCreateResult result);
 
 public slots:
     void onDoWork (QString filePath = QString());
-    void onStop();
     void onRestore();
 
 signals:

@@ -12,9 +12,10 @@ class CHECKFILESHARED_EXPORT CheckFile : public QObject
     Q_OBJECT
 
 public:
-    explicit CheckFile(int CheckType = 1, QObject *parent = 0);
+    explicit CheckFile(QObject *parent = 0);
     ~CheckFile();
 
+    void setCheckType(int CheckType);
     bool setFilePath(QString filePath);
     void setUserFactore(Factory *userFacrory);
     bool getOperatingStatus();
