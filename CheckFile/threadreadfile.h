@@ -35,6 +35,7 @@ private:
     util::factoryCreateResult m_result;
     QString m_filePath;
     bool m_isWork;
+    friend class ThreadControl;
 
 };
 
@@ -68,7 +69,8 @@ private:
     int m_moduleCounter;
     QString m_dirPath;
     QList<util::factoryCreateResult> m_listFactorys;
-    QList<QPair<QThread*, ThreadReadFile *> > m_readFileThreadList;
+    QList<QPair<QThread *, ThreadReadFile *> > m_readFileThreadList;
+    QList<QPair<QThread *, ThreadReadFile *> > m_threadList;
     bool m_operatingStatus;
 
 };

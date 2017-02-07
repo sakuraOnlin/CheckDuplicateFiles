@@ -105,22 +105,22 @@ void ThreadReadFile::emitResult(util::ResultMessageType resultType,
 qint64 ThreadReadFile::automaticDivision(qint64 fileSize)
 {
     qint64 defaultSize = 1024 ; // 1 kb
-    defaultSize *= 1024; // 1MB
-    if(fileSize < defaultSize * (qint64)20) // 20 MB
+    defaultSize *= qint64(1024); // 1MB
+    if(fileSize < defaultSize * qint64(20)) // 20 MB
     {
         return fileSize;
     }
     else if(fileSize <= defaultSize * 50)   // 50 MB
     {
-        return (fileSize / (qint64)2);
+        return (fileSize / qint64(2));
     }
     else if(fileSize <= defaultSize *100)   // 100 MB
     {
-        return (fileSize / (qint64)3);
+        return (fileSize / qint64(3));
     }
     else                                    // fileSize > 100 MB
     {
-        return defaultSize * (qint64)40;
+        return defaultSize * qint64(40);
     }
 
     return defaultSize;
@@ -156,48 +156,50 @@ bool ThreadControl::getOperatingStatus()
 
 void ThreadControl::start()
 {
-    stop();
+    if(m_operatingStatus)
+        stop();
 
-    m_moduleCounter = 0;
-    for(; m_moduleCounter < m_listFactorys.length();m_moduleCounter++)
+    for(int i = 0 ; i < m_listFactorys.length(); i++ )
     {
-        QThread *thread = new QThread;
-        util::factoryCreateResult factoryValue = m_listFactorys[m_moduleCounter];
-        ThreadReadFile *work = new ThreadReadFile(factoryValue);
-        work->moveToThread( thread );
-        connect( thread, SIGNAL(finished()), work, SLOT(deleteLater()) );
-        connect( work, SIGNAL(signalResultReady(util::ComputeResult)),
-                 this, SIGNAL(signalFinalResult(util::ComputeResult)) );
-        connect( work, SIGNAL(signalCalculationComplete()),
-                 this, SLOT(onModuleCounter()) );
-        connect( this, SIGNAL(signalStartCheck(QString) ),
-                 work, SLOT(onDoWork(QString)) );
-        connect( this, SIGNAL(signalRestore()), work, SLOT(onRestore()) );
-        thread->start();
-        m_readFileThreadList.append(qMakePair(thread, work));
+        QThread *thread = nullptr;
+        ThreadReadFile *readThread = nullptr;
+        if(i >= m_threadList.length())
+        {
+            thread = new QThread;
+            readThread = new ThreadReadFile(m_listFactorys.value(i));
+            readThread->moveToThread( thread);
+            connect( thread, SIGNAL(finished()), readThread, SLOT(deleteLater()) );
+            connect( readThread, SIGNAL(signalResultReady(util::ComputeResult)),
+                     this, SIGNAL(signalFinalResult(util::ComputeResult)) );
+            connect( readThread, SIGNAL(signalCalculationComplete()),
+                     this, SLOT(onModuleCounter()) );
+            connect( this, SIGNAL(signalStartCheck(QString) ),
+                     readThread, SLOT(onDoWork(QString)) );
+            connect( this, SIGNAL(signalRestore()), readThread, SLOT(onRestore()) );
+            thread->start();
+            m_threadList.append(qMakePair(thread, readThread));
+        }
+        else
+        {
+            readThread = m_threadList.value(i).second;
+        }
+        m_readFileThreadList.append(qMakePair(thread, readThread));
     }
-
     m_operatingStatus = true;
     emit signalStartCheck(m_dirPath);
 }
 
 void ThreadControl::stop()
 {
-    QThread::msleep(500);
-    for(int i = 0 ; i < m_readFileThreadList.length() ; i++)
+    for(int i = 0 ; i < m_threadList.length() ;i = 0)
     {
-        QPair<QThread*, ThreadReadFile *> value = m_readFileThreadList.value(i);
-        value.second->onStop();
+        QPair<QThread*, ThreadReadFile *> value = m_threadList.takeAt(i);
+        value.second->m_isWork = false;
+        value.second->m_result.creatorComputr->stop();
         value.first->quit();
-        value.first->wait(500);
-    }
-
-    for(int i = 0 ; i < m_readFileThreadList.length() ; i = 0)
-    {
-        QPair<QThread*, ThreadReadFile *> value = m_readFileThreadList.takeAt(i);
+        value.first->wait();
         delete value.first;
     }
-    m_operatingStatus = false;
 }
 
 void ThreadControl::restore()
@@ -207,10 +209,14 @@ void ThreadControl::restore()
 
 void ThreadControl::onModuleCounter()
 {
-    m_moduleCounter--;
-    if(m_moduleCounter <= 0)
+    ThreadReadFile *read = dynamic_cast<ThreadReadFile*>(sender());
+    for(int i = 0 ; i < m_readFileThreadList.length(); i++)
     {
-        m_operatingStatus = false;
+        if(m_readFileThreadList.at(i).second == read)
+            m_readFileThreadList.takeAt(i);
+    }
+    if(m_readFileThreadList.length() <= 0)
+    {
         emit signalCalculationComplete();
     }
 }
