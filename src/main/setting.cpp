@@ -10,7 +10,6 @@ class SettingPrivate
 public:
     SettingPrivate(Setting *publicSetting)
         :q_ptr(publicSetting),
-          m_soliderThreadNum("Thunder Num: %1"),
           m_threadNum(nullptr),
           m_fileFilters(nullptr)
     {
@@ -33,6 +32,7 @@ public:
 
 void SettingPrivate::init()
 {
+    m_soliderThreadNum = QObject::tr("Thunder Num: %1");
     QObject::connect(q_ptr->ui->pButOK, SIGNAL(clicked()), q_ptr,
                      SLOT(onPButOK()) );
     QObject::connect(q_ptr->ui->pButCancel, SIGNAL(clicked()), q_ptr,

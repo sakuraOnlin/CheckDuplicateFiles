@@ -4,7 +4,12 @@
 <context>
     <name>CheckFile</name>
     <message>
-        <location filename="../../CheckFile.cpp" line="134"/>
+        <location filename="../../CheckFile.cpp" line="167"/>
+        <source>The file verification type is not specified!Please set the file verification type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../CheckFile.cpp" line="178"/>
         <source>Failed to check the file for fingerprint verification!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -21,17 +26,17 @@ Wrong address :</source>
 <context>
     <name>Factory</name>
     <message>
-        <location filename="../../util/computefactory.cpp" line="26"/>
+        <location filename="../../util/computefactory.cpp" line="27"/>
         <source>Error : Factoey Creator Compute SHA1 Error!</source>
         <translation>错误：创建 SHA1 模块失败！</translation>
     </message>
     <message>
-        <location filename="../../util/computefactory.cpp" line="38"/>
+        <location filename="../../util/computefactory.cpp" line="40"/>
         <source>Error : Factoey Creator Compute MD5 Error!</source>
         <translation>错误：创建 MD5 模块失败！</translation>
     </message>
     <message>
-        <location filename="../../util/computefactory.cpp" line="50"/>
+        <location filename="../../util/computefactory.cpp" line="53"/>
         <source>Error : Factoey Creator Compute CRC32 Error!</source>
         <translation>错误：创建 CRC32 模块失败！</translation>
     </message>
@@ -157,6 +162,11 @@ Wrong address :</source>
         <location filename="../../threadreadfile.cpp" line="49"/>
         <source>File open errors!</source>
         <translation>文件打开错误！导致无法检查当前文件指纹！</translation>
+    </message>
+    <message>
+        <location filename="../../threadreadfile.cpp" line="65"/>
+        <source>The user chooses to stop checking!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

@@ -85,85 +85,90 @@ p, li { white-space: pre-wrap; }
         <translation>删除所有重复的文件</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="194"/>
+        <location filename="../../main/mainwindow.ui" line="200"/>
         <source>Calculation options</source>
         <translation>计算选项</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="211"/>
-        <location filename="../../main/mainwindow.ui" line="214"/>
+        <location filename="../../main/mainwindow.ui" line="217"/>
+        <location filename="../../main/mainwindow.ui" line="220"/>
         <source>Version</source>
         <translation>版本</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="224"/>
-        <location filename="../../main/mainwindow.ui" line="227"/>
+        <location filename="../../main/mainwindow.ui" line="230"/>
+        <location filename="../../main/mainwindow.ui" line="233"/>
         <source>Modify Time</source>
         <translation>修改时间</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="237"/>
-        <location filename="../../main/mainwindow.ui" line="240"/>
+        <location filename="../../main/mainwindow.ui" line="243"/>
+        <location filename="../../main/mainwindow.ui" line="246"/>
         <source>Check MD5</source>
         <translation>MD5</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="250"/>
-        <location filename="../../main/mainwindow.ui" line="253"/>
+        <location filename="../../main/mainwindow.ui" line="256"/>
+        <location filename="../../main/mainwindow.ui" line="259"/>
         <source>Check SHA1</source>
         <translation>SHA1</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="263"/>
-        <location filename="../../main/mainwindow.ui" line="266"/>
+        <location filename="../../main/mainwindow.ui" line="269"/>
+        <location filename="../../main/mainwindow.ui" line="272"/>
         <source>Check CRC32</source>
         <translation>CRC32</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="296"/>
+        <location filename="../../main/mainwindow.ui" line="302"/>
         <source>File</source>
         <translation>文件夹</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="303"/>
-        <location filename="../../main/mainwindow.ui" line="341"/>
+        <location filename="../../main/mainwindow.ui" line="310"/>
+        <location filename="../../main/mainwindow.ui" line="352"/>
         <source>help</source>
         <translation>帮助</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="314"/>
+        <location filename="../../main/mainwindow.ui" line="325"/>
         <source>Select Dir Path</source>
         <translation>选择文件夹…</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="317"/>
+        <location filename="../../main/mainwindow.ui" line="328"/>
         <source>Select Dir Path_tooltip</source>
         <translation>选择需要检查是否有重复文件的文件夹</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="320"/>
+        <location filename="../../main/mainwindow.ui" line="331"/>
         <source>Ctrl+F</source>
         <translation>选择需要检查是否有重复文件的文件夹</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="325"/>
+        <location filename="../../main/mainwindow.ui" line="336"/>
         <source>Exit</source>
         <translation>退出程序</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="328"/>
+        <location filename="../../main/mainwindow.ui" line="339"/>
         <source>Exit_tooltip</source>
         <translation>退出当前程序</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="331"/>
+        <location filename="../../main/mainwindow.ui" line="342"/>
         <source>Ctrl+Q</source>
         <translation>退出程序</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="336"/>
+        <location filename="../../main/mainwindow.ui" line="347"/>
         <source>about</source>
         <translation>关于</translation>
+    </message>
+    <message>
+        <location filename="../../main/mainwindow.ui" line="361"/>
+        <source>Setting</source>
+        <translation>设置</translation>
     </message>
     <message>
         <source>Select Directory</source>
@@ -190,23 +195,23 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">停止检查</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.cpp" line="46"/>
-        <location filename="../../main/mainwindow.cpp" line="154"/>
+        <location filename="../../main/mainwindow.cpp" line="60"/>
+        <location filename="../../main/mainwindow.cpp" line="181"/>
         <source>File Total : %1 , Calculation progress : %2</source>
         <translation>文件总数： %1 ，效验总数： %2 </translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.cpp" line="113"/>
+        <location filename="../../main/mainwindow.cpp" line="140"/>
         <source>Select Directory</source>
         <translation>选择文件夹</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.cpp" line="122"/>
+        <location filename="../../main/mainwindow.cpp" line="149"/>
         <source>Error!</source>
         <translation>错误!</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.cpp" line="123"/>
+        <location filename="../../main/mainwindow.cpp" line="150"/>
         <source>Please select a valid directory!
 </source>
         <translation>请选择有效的文件夹!</translation>
@@ -215,6 +220,59 @@ p, li { white-space: pre-wrap; }
         <source>Please select a valid directory!.
 </source>
         <translation type="obsolete">请选择有效的文件夹!</translation>
+    </message>
+    <message>
+        <location filename="../../main/setting.cpp" line="35"/>
+        <source>Thunder Num: %1</source>
+        <translation>当前选定线程数 %1</translation>
+    </message>
+</context>
+<context>
+    <name>Setting</name>
+    <message>
+        <location filename="../../main/setting.ui" line="14"/>
+        <source>Dialog</source>
+        <translation>设置</translation>
+    </message>
+    <message>
+        <location filename="../../main/setting.ui" line="88"/>
+        <source>SetThreadNum</source>
+        <translation>检查线程数</translation>
+    </message>
+    <message>
+        <location filename="../../main/setting.ui" line="97"/>
+        <source>SetFileFilters</source>
+        <translation>文件过滤格式</translation>
+    </message>
+    <message>
+        <location filename="../../main/setting.ui" line="128"/>
+        <source>Set Check Thread Num</source>
+        <translation>设置效验文件时的最大线程数</translation>
+    </message>
+    <message>
+        <location filename="../../main/setting.ui" line="166"/>
+        <source>Thunder Num: %1</source>
+        <translation>当前选定线程数 %1</translation>
+    </message>
+    <message>
+        <location filename="../../main/setting.ui" line="181"/>
+        <source>Join a custom file format</source>
+        <translation>加入自定义格式</translation>
+    </message>
+    <message>
+        <location filename="../../main/setting.ui" line="194"/>
+        <source>PushButton</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../main/setting.ui" line="302"/>
+        <source>OK</source>
+        <translation>确定</translation>
+    </message>
+    <message>
+        <location filename="../../main/setting.ui" line="315"/>
+        <source>Cancel</source>
+        <translation>取消</translation>
     </message>
 </context>
 </TS>
