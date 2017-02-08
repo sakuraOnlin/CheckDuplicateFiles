@@ -21,6 +21,8 @@ public:
     bool setFileFilters(QStringList filters);
     bool setDirPath(QString dirPath);
     bool operatingStatus();
+    bool setCheckThreadNum(int num);
+    int getCheckThreadNum();
 
 signals:
     void signalFileTotal(int fileTotal);

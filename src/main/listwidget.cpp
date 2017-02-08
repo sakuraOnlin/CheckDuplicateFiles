@@ -192,6 +192,16 @@ bool ListWidget::operatingStatus()
     return d_ptr->m_backstage.getBackstagwWork()->getOperatingStatus();
 }
 
+bool ListWidget::setCheckThreadNum(int num)
+{
+    return d_ptr->m_backstage.getBackstagwWork()->setCheckThreadNum(num);
+}
+
+int ListWidget::getCheckThreadNum()
+{
+    return d_ptr->m_backstage.getBackstagwWork()->getCheckThreadNum();
+}
+
 void ListWidget::onStart(int checkType)
 {
     d_ptr->onStart(checkType);

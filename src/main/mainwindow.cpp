@@ -4,6 +4,7 @@
 #include <QFileInfo>
 #include <QProgressBar>
 #include "mainwindow.h"
+#include "setting.h"
 #include "ui_mainwindow.h"
 #include "util/util.h"
 
@@ -12,33 +13,46 @@ class MainWindowPrivate
     MainWindow *q_ptr;
     Q_DECLARE_PUBLIC(MainWindow)
 public:
-    MainWindowPrivate(MainWindow *publicMsinWindow)
-        :q_ptr(publicMsinWindow),
-          m_dirPath(QString()),
-          m_fileTotalLabel(new QLabel),
-          m_calculationProgress(new QProgressBar),
-          m_checkBoxState(util::MD5 | util::SHA1 | util::CRC32),
-          m_isStart(false)
-    {
-        init();
-    }
+    MainWindowPrivate(MainWindow *publicMsinWindow);
+    ~MainWindowPrivate();
 
-    void init();
+    inline void init();
     inline void updateUIButton();
+    void setSetting();
     void onSelectDirPath();
     void onStartCheck();
     void onFileStatistics(WidgetUtil::Progress progress);
     void onCheckBox(int state);
 
+    int m_checkThreadNum;
     QString m_dirPath;
     QString m_pButEnStyleSheet;
     QString m_pButDisStyleSheet;
+    Setting *m_settingDialog;
     QList<QPushButton*> m_pButAddressList;
     QLabel *m_fileTotalLabel;
     QProgressBar *m_calculationProgress;
     int m_checkBoxState;
     bool m_isStart;
 };
+
+
+MainWindowPrivate::MainWindowPrivate(MainWindow *publicMsinWindow)
+    :q_ptr(publicMsinWindow),
+      m_dirPath(QString()),
+      m_settingDialog(new Setting(publicMsinWindow)),
+      m_fileTotalLabel(new QLabel),
+      m_calculationProgress(new QProgressBar),
+      m_checkBoxState(util::MD5 | util::SHA1 | util::CRC32),
+      m_isStart(false)
+{
+    init();
+}
+
+MainWindowPrivate::~MainWindowPrivate()
+{
+    delete m_settingDialog;
+}
 
 void MainWindowPrivate::init()
 {
@@ -53,12 +67,18 @@ void MainWindowPrivate::init()
     m_calculationProgress->setAlignment(Qt::AlignCenter);
     m_calculationProgress->setMaximumWidth(150);
     q_ptr->ui->statusbar->addPermanentWidget(m_calculationProgress);
+    m_settingDialog->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
+    m_settingDialog->setWindowModality(Qt::WindowModal);
+    m_checkThreadNum = q_ptr->ui->listWidget->getCheckThreadNum();
+    m_settingDialog->setCheckThreadNum(&m_checkThreadNum);
+    q_ptr->ui->listWidget->setFileFilters(QStringList("*.*"));
 
     q_ptr->ui->pushBut_SelectDir->setEnabled(true);
     q_ptr->ui->lineEdit_ShowDIrPath->setEnabled(true);
     q_ptr->ui->pushBut_FindDuplicateFiles->setEnabled(false);
     q_ptr->ui->pushBut_DelFile->setEnabled(false);
     q_ptr->ui->pushBut_DelAllFiles->setEnabled(false);
+
 
     m_pButAddressList.append(q_ptr->ui->pushBut_SelectDir);
     m_pButAddressList.append(q_ptr->ui->pushBut_FindDuplicateFiles);
@@ -81,6 +101,7 @@ void MainWindowPrivate::init()
     QObject::connect(q_ptr->ui->pushBut_SelectDir, SIGNAL(clicked()), q_ptr, SLOT(onSelectDirPath()) );
     QObject::connect(q_ptr->ui->pushBut_StartCheck, SIGNAL(clicked()), q_ptr, SLOT(onStartCheck()));
     QObject::connect(q_ptr->ui->actionSelect_Dir_Path, SIGNAL(triggered()), q_ptr, SLOT(onSelectDirPath()));
+    QObject::connect(q_ptr->ui->actionSetting, SIGNAL(triggered()), q_ptr, SLOT(onSetting()));
     QObject::connect(q_ptr->ui->actionExit, SIGNAL(triggered()), q_ptr, SLOT(onExit()));
     QObject::connect(q_ptr->ui->actionHelp, SIGNAL(triggered()), q_ptr, SLOT(onHelp()));
     QObject::connect(q_ptr->ui->actionAbout, SIGNAL(triggered()), q_ptr, SLOT(onAbout()));
@@ -106,6 +127,11 @@ void MainWindowPrivate::updateUIButton()
     }
     m_isStart ? q_ptr->ui->pushBut_StartCheck->setStyleSheet(m_pButDisStyleSheet) :
                 q_ptr->ui->pushBut_StartCheck->setStyleSheet(m_pButEnStyleSheet);
+}
+
+void MainWindowPrivate::setSetting()
+{
+    m_settingDialog->show();
 }
 
 void MainWindowPrivate::onSelectDirPath()
@@ -218,6 +244,11 @@ void MainWindow::onDelFile()
 void MainWindow::onDelAllDupFiles()
 {
 
+}
+
+void MainWindow::onSetting()
+{
+    d_ptr->setSetting();
 }
 
 void MainWindow::onHelp()

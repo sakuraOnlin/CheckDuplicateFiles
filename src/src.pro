@@ -16,12 +16,14 @@ SOURCES += \
     core/widgetUtil.cpp \
     main/listwidget.cpp \
     core/computemodule.cpp \
-    main/about.cpp
+    main/about.cpp \
+    main/setting.cpp
 
 FORMS += \
     main/mainwindow.ui \
     main/listwidget.ui \
-    main/about.ui
+    main/about.ui \
+    main/setting.ui
 
 HEADERS += \
     main/mainwindow.h \
@@ -31,7 +33,8 @@ HEADERS += \
     core/widgetUtil.h \
     main/listwidget.h \
     core/computemodule.h \
-    main/about.h
+    main/about.h \
+    main/setting.h
 
 TRANSLATIONS += res/translator/translator_cn.ts
 

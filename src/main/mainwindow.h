@@ -29,6 +29,7 @@ private slots:
     void onExit();
     void onDelFile();
     void onDelAllDupFiles();
+    void onSetting();
     void onHelp();
     void onAbout();
     void onCheckBox(int state);

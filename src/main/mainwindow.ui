@@ -190,6 +190,12 @@ QPushButton#pushBut_DelFile:disabled{ border-image:  url(:/img/image/delFile_dis
       </item>
       <item>
        <widget class="QGroupBox" name="groupBox">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>68</height>
+         </size>
+        </property>
         <property name="title">
          <string>Calculation options</string>
         </property>
@@ -296,6 +302,7 @@ QPushButton#pushBut_DelFile:disabled{ border-image:  url(:/img/image/delFile_dis
      <string>File</string>
     </property>
     <addaction name="actionSelect_Dir_Path"/>
+    <addaction name="actionSetting"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
@@ -343,6 +350,15 @@ QPushButton#pushBut_DelFile:disabled{ border-image:  url(:/img/image/delFile_dis
   <action name="actionHelp">
    <property name="text">
     <string>help</string>
+   </property>
+  </action>
+  <action name="actionSetting">
+   <property name="icon">
+    <iconset resource="../res/resource.qrc">
+     <normaloff>:/img/image/GUISettings.png</normaloff>:/img/image/GUISettings.png</iconset>
+   </property>
+   <property name="text">
+    <string>Setting</string>
    </property>
   </action>
  </widget>

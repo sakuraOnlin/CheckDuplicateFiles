@@ -51,6 +51,16 @@ bool BackstageWork::getOperatingStatus()
     return m_operatingStatus;
 }
 
+bool BackstageWork::setCheckThreadNum(int num)
+{
+    return m_computeModule.setCheckThreadNum(num);
+}
+
+int BackstageWork::getCheckThreadNum()
+{
+    return m_computeModule.getCheckThreadNum();
+}
+
 void BackstageWork::onStart(int checkType)
 {
     m_filePathList->clear();
@@ -167,7 +177,6 @@ void BackstageWork::init()
     qRegisterMetaType<QVector<int> >("QVector<int>");
     m_listWidget = nullptr;
     m_dirPath = QString("..");
-    m_fileFilters.append(QString("*.*"));
     m_filePathList = nullptr;
     m_fileItemHash = nullptr;
     m_operatingStatus = false;

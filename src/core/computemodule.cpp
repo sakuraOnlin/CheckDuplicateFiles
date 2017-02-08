@@ -44,6 +44,21 @@ void ComputeWork::createCheck(util::CheckType checkType)
     }
 }
 
+bool ComputeWork::setCheckThreadNum(int num)
+{
+    if(m_operatingStatus)
+        return false;
+    if(num > 4)
+        return false;
+    m_computeThreadMaxNum = num;
+    return true;
+}
+
+int ComputeWork::getCheckThreadNum()
+{
+    return m_computeThreadMaxNum;
+}
+
 void ComputeWork::onWork()
 {
     m_computeIndex = -1;
@@ -98,6 +113,16 @@ void ComputeModule::setFilePathList(QStringList *filePathList)
 int ComputeModule::getComputeProgress()
 {
     return m_computeWork->getComputeProgress();
+}
+
+bool ComputeModule::setCheckThreadNum(int num)
+{
+    return m_computeWork->setCheckThreadNum(num);
+}
+
+int ComputeModule::getCheckThreadNum()
+{
+    return m_computeWork->getCheckThreadNum();
 }
 
 void ComputeModule::onStart(int checkType)

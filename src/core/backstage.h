@@ -27,6 +27,8 @@ public:
     void setFilePath(QStringList *filePathList);
     void setFileItem(QHash<QString, QListWidgetItem*> *fileItemHash, QSize &iconSize);
     bool getOperatingStatus();
+    bool setCheckThreadNum(int num);
+    int getCheckThreadNum();
 
 signals:
     void signalFileStatistics(WidgetUtil::Progress progress);

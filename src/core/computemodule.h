@@ -18,6 +18,8 @@ public:
     void setFilePathList(QStringList *filePathList);
     int getComputeProgress();
     void createCheck(util::CheckType checkType);
+    bool setCheckThreadNum(int num);
+    int getCheckThreadNum();
 
 public slots:
     void onWork();
@@ -45,6 +47,8 @@ public:
 
     void setFilePathList(QStringList *filePathList);
     int getComputeProgress();
+    bool setCheckThreadNum(int num);
+    int getCheckThreadNum();
 
 signals:
     void signalFinalResult(util::ComputeResult result);
