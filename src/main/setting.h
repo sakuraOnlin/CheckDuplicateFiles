@@ -16,11 +16,13 @@ class Setting : public QDialog
 public:
     explicit Setting(QWidget *parent = 0);
     ~Setting();
+
+    void setCheckType(bool isRunning);
     void setCheckThreadNum(int *num);
     void setFileFilters(QStringList *fileFilters);
 
 signals:
-    void signalDataChange(bool);
+    void signalDataChange();
 
 private slots:
     void onPButOK();

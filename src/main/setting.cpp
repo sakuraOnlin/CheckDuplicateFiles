@@ -10,6 +10,8 @@ class SettingPrivate
 public:
     SettingPrivate(Setting *publicSetting)
         :q_ptr(publicSetting),
+          m_isRunning(false),
+          m_isChange(false),
           m_threadNum(nullptr),
           m_fileFilters(nullptr)
     {
@@ -17,6 +19,7 @@ public:
     }
 
     inline void init();
+    void setCheckType(bool isRun);
     void setThreadNum(int *num);
     void setFileFilters(QStringList *fileFilters);
     void onPButOK();
@@ -24,6 +27,8 @@ public:
     void onListWidgetClic(int row);
     void onHotSolidThreadNum(int index);
 
+    bool m_isRunning;
+    bool m_isChange;
     QString m_soliderThreadNum;
     int *m_threadNum;
     QStringList *m_fileFilters;
@@ -49,12 +54,24 @@ void SettingPrivate::init()
     }
 }
 
+void SettingPrivate::setCheckType(bool isRun)
+{
+    m_isRunning = isRun;
+    QLabel *label = q_ptr->ui->labelCheckType;
+    m_isRunning ? label->setText(QObject::tr("It is not allowed to modify "
+                                             "the above settings when checking files"))
+                : label->setText(QString());
+    m_isRunning ? q_ptr->ui->pButOK->setEnabled(false) :
+                  q_ptr->ui->pButOK->setEnabled(true);
+}
+
 void SettingPrivate::setThreadNum(int *num)
 {
     if(nullptr == num)
         return;
     m_threadNum = num;
     onHotSolidThreadNum(*num);
+    q_ptr->ui->horSlidThreadNum->setValue(*m_threadNum);
 }
 
 void SettingPrivate::setFileFilters(QStringList *fileFilters)
@@ -66,12 +83,19 @@ void SettingPrivate::setFileFilters(QStringList *fileFilters)
 
 void SettingPrivate::onPButOK()
 {
+    int selectThreadNum = q_ptr->ui->label_ThreadNum->text().right(1).toInt();
+    if(selectThreadNum != *m_threadNum)
+    {
+        *m_threadNum = selectThreadNum;
+        m_isChange = true;
+    }
+
     q_ptr->hide();
 }
 
 void SettingPrivate::onPButCancel()
 {
-
+    q_ptr->hide();
 }
 
 void SettingPrivate::onListWidgetClic(int row)
@@ -101,6 +125,11 @@ Setting::~Setting()
     delete ui;
 }
 
+void Setting::setCheckType(bool isRunning)
+{
+    d_ptr->setCheckType(isRunning);
+}
+
 void Setting::setCheckThreadNum(int *num)
 {
     d_ptr->setThreadNum(num);
@@ -114,6 +143,8 @@ void Setting::setFileFilters(QStringList *fileFilters)
 void Setting::onPButOK()
 {
     d_ptr->onPButOK();
+    if(d_ptr->m_isChange)
+        emit signalDataChange();
 }
 
 void Setting::onPButCancel()

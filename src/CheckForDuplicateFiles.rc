@@ -66,7 +66,7 @@ BEGIN
     BEGIN
         BLOCK "080404b0"
         BEGIN
-            VALUE "FileDescription", "通过计算文件指纹，可查找重复文件。"
+            VALUE "FileDescription", "文件指纹效验"
             VALUE "FileVersion", "0.1.19.1"
             VALUE "InternalName", "CheckFile.exe"
             VALUE "LegalCopyright", "Copyright (C) 2017"

@@ -7,20 +7,86 @@
     <x>0</x>
     <y>0</y>
     <width>650</width>
-    <height>370</height>
+    <height>400</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>650</width>
+    <height>400</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QDialog#Setting { background-color: rgb(247,250,253); }
-QListWidget#listWidget { background-color: rgb(247,250,253); }
-QStackedWidget#stackedWidget { background-color: rgb(255,255,255); }
-QWidget#pageSetThreadNum { background-color: rgb(255,255,255); }
-QWidget#pageSetFileFilters { background-color: rgb(255,255,255); }
-QFrame#frame_pBug { background-color: rgb(255,255,255); }
-Line { background-color: rgb(235,235,236); }</string>
+   <string notr="true">QDialog#Setting , #listWidget
+{
+	background-color: rgb(247,250,253);
+}
+QStackedWidget#stackedWidget ,#pageSetThreadNum, #pageSetFileFilters, #frame_pBug
+{
+	background-color: rgb(255,255,255);
+}
+Line
+{
+	background-color: rgb(235,235,236);
+}
+QLabel#labelCheckType , #label_Warring
+{
+	color: rgb(255, 0, 0);
+}
+
+QSlider {
+    padding: 2px;
+    height: 40px;
+}
+QSlider::groove:horizontal 
+{
+    subcontrol-origin: content;
+    background: rgb(76, 76, 76);
+    height: 20px;
+	border-radius: 5px;
+}
+QSlider::handle:horizontal 
+{
+    background-color: rgb(50, 50, 50);
+    width: 30px;
+    border-radius: 15px;
+    margin: -5px 0;
+}
+QSlider::sub-page:horizontal
+{
+    background: #999;
+    margin: 5px;
+    border-radius: 5px;
+}
+QSlider::add-page:horizontal
+{
+    background: #666;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+QScrollBar::vertical {
+    width: 8px;
+	border-color: rgb(217,217,217);
+}
+
+QScrollBar::handle:vertical {
+    min-height: 8px;
+    border-width: 4px 0px 4px 0px;
+    border-image:url(:/img/image/ScrollBar/vertical-handle.png) 17 0 17 0 repeat repeat;
+}
+
+QScrollBar::sub-line:vertical {
+    width: 0px;
+    height: 0px;
+}
+QScrollBar::add-line:vertical {
+    width: 0px;
+    height: 0px;
+}</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <property name="leftMargin">
@@ -114,6 +180,9 @@ Line { background-color: rgb(235,235,236); }</string>
        </item>
        <item>
         <widget class="QStackedWidget" name="stackedWidget">
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
          <widget class="QWidget" name="pageSetThreadNum">
           <widget class="QLabel" name="label">
            <property name="geometry">
@@ -121,7 +190,7 @@ Line { background-color: rgb(235,235,236); }</string>
              <x>20</x>
              <y>40</y>
              <width>131</width>
-             <height>31</height>
+             <height>20</height>
             </rect>
            </property>
            <property name="text">
@@ -131,11 +200,14 @@ Line { background-color: rgb(235,235,236); }</string>
           <widget class="QSlider" name="horSlidThreadNum">
            <property name="geometry">
             <rect>
-             <x>20</x>
-             <y>80</y>
-             <width>391</width>
-             <height>21</height>
+             <x>10</x>
+             <y>70</y>
+             <width>441</width>
+             <height>51</height>
             </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true"/>
            </property>
            <property name="minimum">
             <number>1</number>
@@ -147,7 +219,7 @@ Line { background-color: rgb(235,235,236); }</string>
             <number>1</number>
            </property>
            <property name="value">
-            <number>3</number>
+            <number>1</number>
            </property>
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -168,64 +240,109 @@ Line { background-color: rgb(235,235,236); }</string>
           </widget>
          </widget>
          <widget class="QWidget" name="pageSetFileFilters">
-          <widget class="QLineEdit" name="lineEdit">
-           <property name="geometry">
-            <rect>
-             <x>20</x>
-             <y>30</y>
-             <width>291</width>
-             <height>20</height>
-            </rect>
-           </property>
-           <property name="placeholderText">
-            <string>Join a custom file format</string>
-           </property>
-          </widget>
-          <widget class="QPushButton" name="pushButton">
-           <property name="geometry">
-            <rect>
-             <x>320</x>
-             <y>30</y>
-             <width>80</width>
-             <height>20</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>PushButton</string>
-           </property>
-          </widget>
-          <widget class="QScrollArea" name="scrollArea">
-           <property name="geometry">
-            <rect>
-             <x>10</x>
-             <y>70</y>
-             <width>441</width>
-             <height>231</height>
-            </rect>
-           </property>
-           <property name="frameShape">
-            <enum>QFrame::NoFrame</enum>
-           </property>
-           <property name="widgetResizable">
-            <bool>true</bool>
-           </property>
-           <widget class="QWidget" name="scrollAreaWidgetContents">
-            <property name="geometry">
-             <rect>
-              <x>0</x>
-              <y>0</y>
-              <width>427</width>
-              <height>500</height>
-             </rect>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>500</height>
-             </size>
-            </property>
-           </widget>
-          </widget>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>1505</height>
+           </size>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_3">
+           <item row="0" column="0">
+            <layout class="QVBoxLayout" name="verticalLayout_5" stretch="1,9">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <item>
+              <spacer name="verticalSpacer_2">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_3">
+               <property name="spacing">
+                <number>10</number>
+               </property>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_4">
+                 <item>
+                  <widget class="QLineEdit" name="lineEdit">
+                   <property name="placeholderText">
+                    <string>Find or join a custom file format</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="pushButton">
+                   <property name="text">
+                    <string>Add</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="pushButton_2">
+                   <property name="text">
+                    <string>Remove</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_Warring">
+                 <property name="text">
+                  <string>Please directly enter the file format, such as ReadMe.md , then enter md .</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QListWidget" name="listWidget_2">
+                 <item>
+                  <property name="text">
+                   <string>All Files ( *.* )</string>
+                  </property>
+                  <property name="checkState">
+                   <enum>Unchecked</enum>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>txt</string>
+                  </property>
+                  <property name="checkState">
+                   <enum>Unchecked</enum>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>doc</string>
+                  </property>
+                  <property name="checkState">
+                   <enum>Unchecked</enum>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>exe</string>
+                  </property>
+                  <property name="checkState">
+                   <enum>Unchecked</enum>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </item>
+          </layout>
          </widget>
         </widget>
        </item>
@@ -271,7 +388,7 @@ Line { background-color: rgb(235,235,236); }</string>
            <number>0</number>
           </property>
           <item row="0" column="0">
-           <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="9,1">
+           <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="9,0,1">
             <item>
              <spacer name="horizontalSpacer">
               <property name="orientation">
@@ -284,6 +401,16 @@ Line { background-color: rgb(235,235,236); }</string>
                </size>
               </property>
              </spacer>
+            </item>
+            <item>
+             <widget class="QLabel" name="labelCheckType">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
             </item>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_2">

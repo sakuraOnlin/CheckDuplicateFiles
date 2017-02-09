@@ -41,5 +41,6 @@
         <file>image/Setting.png</file>
         <file>image/settinghold.png</file>
         <file>image/Setting_new.png</file>
+        <file>image/ScrollBar/vertical-handle.png</file>
     </qresource>
 </RCC>

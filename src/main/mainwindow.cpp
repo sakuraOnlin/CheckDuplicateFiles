@@ -22,6 +22,7 @@ public:
     void onSelectDirPath();
     void onStartCheck();
     void onFileStatistics(WidgetUtil::Progress progress);
+    void onSettingDataChange();
     void onCheckBox(int state);
 
     int m_checkThreadNum;
@@ -115,6 +116,8 @@ void MainWindowPrivate::init()
                      q_ptr, SLOT(onCheckBox(int)) );
     QObject::connect(q_ptr->ui->checkBox_CRC32, SIGNAL(stateChanged(int)),
                      q_ptr, SLOT(onCheckBox(int)) );
+    QObject::connect(m_settingDialog, SIGNAL(signalDataChange()), q_ptr,
+                     SLOT(onSettingDataChange()) );
 }
 
 void MainWindowPrivate::updateUIButton()
@@ -164,11 +167,13 @@ void MainWindowPrivate::onStartCheck()
     {
         m_isStart = false;
         q_ptr->ui->listWidget->onStop();
+        m_settingDialog->setCheckType(false);
     }
     else
     {
         m_isStart = true;
         q_ptr->ui->listWidget->onStart(m_checkBoxState);
+        m_settingDialog->setCheckType(true);
     }
     updateUIButton();
 }
@@ -182,6 +187,11 @@ void MainWindowPrivate::onFileStatistics(WidgetUtil::Progress progress)
                 .arg(fileTotal).arg(ComputeProgress)  );
     m_calculationProgress->setMaximum(progress.FileStatistics);
     m_calculationProgress->setValue(progress.ComputeProgress);
+}
+
+void MainWindowPrivate::onSettingDataChange()
+{
+    q_ptr->ui->listWidget->setCheckThreadNum(m_checkThreadNum);
 }
 
 void MainWindowPrivate::onCheckBox(int)
@@ -269,4 +279,9 @@ void MainWindow::onCheckBox(int state)
 void MainWindow::onFileStatistics(WidgetUtil::Progress progress)
 {
     d_ptr->onFileStatistics(progress);
+}
+
+void MainWindow::onSettingDataChange()
+{
+    d_ptr->onSettingDataChange();
 }
