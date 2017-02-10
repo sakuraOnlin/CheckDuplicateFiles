@@ -73,7 +73,13 @@ QPushButton#pushBut_DelFile:disabled{ border-image:  url(:/img/image/delFile_dis
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_ShowDIrPath">
+         <widget class="LineEditButtons" name="lineEdit_ShowDIrPath">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>24</height>
+           </size>
+          </property>
           <property name="placeholderText">
            <string>After selecting a folder, you can start checking the file</string>
           </property>
@@ -367,6 +373,11 @@ QPushButton#pushBut_DelFile:disabled{ border-image:  url(:/img/image/delFile_dis
   </action>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>LineEditButtons</class>
+   <extends>QLineEdit</extends>
+   <header>main/lineeditbuttons.h</header>
+  </customwidget>
   <customwidget>
    <class>ListWidget</class>
    <extends>QWidget</extends>

@@ -273,7 +273,13 @@ QScrollBar::add-line:vertical {
                <item>
                 <layout class="QHBoxLayout" name="horizontalLayout_4">
                  <item>
-                  <widget class="QLineEdit" name="lineEdit">
+                  <widget class="LineEditButtons" name="lineEdit">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>28</height>
+                    </size>
+                   </property>
                    <property name="placeholderText">
                     <string>Find or join a custom file format</string>
                    </property>
@@ -456,6 +462,13 @@ QScrollBar::add-line:vertical {
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>LineEditButtons</class>
+   <extends>QLineEdit</extends>
+   <header>main/lineeditbuttons.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../res/resource.qrc"/>
  </resources>

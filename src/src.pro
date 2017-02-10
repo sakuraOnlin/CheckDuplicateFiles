@@ -17,7 +17,8 @@ SOURCES += \
     main/listwidget.cpp \
     core/computemodule.cpp \
     main/about.cpp \
-    main/setting.cpp
+    main/setting.cpp \
+    main/lineeditbuttons.cpp
 
 FORMS += \
     main/mainwindow.ui \
@@ -34,7 +35,8 @@ HEADERS += \
     main/listwidget.h \
     core/computemodule.h \
     main/about.h \
-    main/setting.h
+    main/setting.h \
+    main/lineeditbuttons.h
 
 TRANSLATIONS += res/translator/translator_cn.ts
 

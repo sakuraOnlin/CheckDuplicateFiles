@@ -52,6 +52,7 @@ void SettingPrivate::init()
         QListWidgetItem *item = q_ptr->ui->listWidget->item(i);
         item->setSizeHint(QSize(item->sizeHint().width(), 40 ));
     }
+
 }
 
 void SettingPrivate::setCheckType(bool isRun)

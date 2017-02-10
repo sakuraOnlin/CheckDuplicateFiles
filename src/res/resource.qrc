@@ -42,5 +42,6 @@
         <file>image/settinghold.png</file>
         <file>image/Setting_new.png</file>
         <file>image/ScrollBar/vertical-handle.png</file>
+        <file>image/lineeditDelete.png</file>
     </qresource>
 </RCC>
