@@ -35,8 +35,8 @@ bool LineEditButtons::eventFilter(QObject *watched, QEvent *event)
 
 void LineEditButtons::resizeEvent(QResizeEvent *event)
 {
-    m_labelClear->move(width() - m_labelClear->width(),
-                       height() /2 - m_labelClear->height());
+    m_labelClear->move(width() - m_labelClear->width() - 2,
+                       height() /2 - 10);
     return QLineEdit::resizeEvent(event);
 }
 
