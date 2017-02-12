@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QListWidget>
+#include "core/widgetUtil.h"
 
 namespace Ui {
 class Setting;
@@ -18,17 +19,22 @@ public:
     ~Setting();
 
     void setCheckType(bool isRunning);
-    void setCheckThreadNum(int *num);
-    void setFileFilters(QStringList *fileFilters);
+    void setInitData(QList<WidgetUtil::FiltersType> fileTilters,
+                     int threadNum);
+
+    int getThreadNum();
+    QList<WidgetUtil::FiltersType> getFileFilters();
 
 signals:
-    void signalDataChange();
+    void signalDataChange(bool);    //true : data change
 
 private slots:
     void onPButOK();
     void onPButCancel();
     void onListWidgetClick(int row);
     void onHorSolidThreadNum(int index);
+    void onAddFilters();
+    void onDelFilters();
 
 private:
     Ui::Setting *ui;

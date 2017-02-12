@@ -43,5 +43,9 @@
         <file>image/Setting_new.png</file>
         <file>image/ScrollBar/vertical-handle.png</file>
         <file>image/lineeditDelete.png</file>
+        <file>image/addFIleFilteer.png</file>
+        <file>image/addFIleFilteer_disabled.png</file>
+        <file>image/addFIleFilteer_highlight.png</file>
+        <file>image/addFIleFilteer_pushed.png</file>
     </qresource>
 </RCC>

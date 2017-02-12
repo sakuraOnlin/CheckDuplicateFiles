@@ -29,7 +29,7 @@ public:
         Warring
     };
 
-    struct ComputeResult
+    typedef struct ComputeResult
     {
         ResultMessageType   resultMessageType;
         CheckType           checkHashType;
@@ -38,14 +38,14 @@ public:
         QString             resultStr;
         QString             filePath;
         QString             checkTypeName;
-    };
+    }CheckResult;
 
-    struct factoryCreateResult
+    typedef struct factoryCreateResult
     {
         Compute             *creatorComputr;
         CheckType           checkHashType;
         QString             creatorErrStr;
-    };
+    }FactoryResult;
 
     util();
 };

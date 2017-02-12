@@ -2,7 +2,6 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = CheckForDuplicateFiles
 TEMPLATE = app
 
 DEFINES += _DEBUG
@@ -18,7 +17,8 @@ SOURCES += \
     core/computemodule.cpp \
     main/about.cpp \
     main/setting.cpp \
-    main/lineeditbuttons.cpp
+    main/lineeditbuttons.cpp \
+    core/configurefile.cpp
 
 FORMS += \
     main/mainwindow.ui \
@@ -36,7 +36,8 @@ HEADERS += \
     core/computemodule.h \
     main/about.h \
     main/setting.h \
-    main/lineeditbuttons.h
+    main/lineeditbuttons.h \
+    core/configurefile.h
 
 TRANSLATIONS += res/translator/translator_cn.ts
 
@@ -51,3 +52,4 @@ else:unix: LIBS += -L$$OUT_PWD/../CheckFile/ -lCheckFile
 
 INCLUDEPATH += $$PWD/../CheckFile
 DEPENDPATH += $$PWD/../CheckFile
+TARGET = CheckDuplicateFiles

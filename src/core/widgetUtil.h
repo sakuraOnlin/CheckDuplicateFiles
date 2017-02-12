@@ -20,11 +20,17 @@ public:
         ItemSelectRole
     };
 
-    struct Progress
+    typedef struct Progress
     {
         int FileStatistics;
         int ComputeProgress;
-    };
+    }Progress;
+
+    typedef struct FiltersType
+    {
+        bool checked;
+        QString filtess;
+    }FiltersType;
 };
 
 #endif // WIDGETUTIL_H

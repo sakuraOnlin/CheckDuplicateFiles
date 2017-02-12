@@ -24,8 +24,6 @@ private:
     inline unsigned long reflect(unsigned long ref, char ch);
 
 private:
-    bool m_isStart;
-    uint32_t state;
     unsigned long m_crc32Str;
     unsigned long crc32_table[256];
 

@@ -5,6 +5,7 @@
 #include <QProgressBar>
 #include "mainwindow.h"
 #include "setting.h"
+#include "core/configurefile.h"
 #include "ui_mainwindow.h"
 #include "util/util.h"
 
@@ -22,17 +23,23 @@ public:
     void onSelectDirPath();
     void onStartCheck();
     void onFileStatistics(WidgetUtil::Progress progress);
-    void onSettingDataChange();
+    void onSettingDataChange(bool);
+    void onCleatLineEdit();
     void onCheckBox(int state);
+    inline void setThreadNum();
+    inline void setFileFilter();
 
-    int m_checkThreadNum;
     QString m_dirPath;
     QString m_pButEnStyleSheet;
     QString m_pButDisStyleSheet;
+    QStringList m_fileFilters;
+    QList<WidgetUtil::FiltersType> m_filterCheck;
     Setting *m_settingDialog;
     QList<QPushButton*> m_pButAddressList;
     QLabel *m_fileTotalLabel;
     QProgressBar *m_calculationProgress;
+    ConfigureFile *m_configureFile;
+    int m_checkThreadNum;
     int m_checkBoxState;
     bool m_isStart;
 };
@@ -41,9 +48,9 @@ public:
 MainWindowPrivate::MainWindowPrivate(MainWindow *publicMsinWindow)
     :q_ptr(publicMsinWindow),
       m_dirPath(QString()),
-      m_settingDialog(new Setting(publicMsinWindow)),
       m_fileTotalLabel(new QLabel),
       m_calculationProgress(new QProgressBar),
+      m_configureFile(new ConfigureFile),
       m_checkBoxState(util::MD5 | util::SHA1 | util::CRC32),
       m_isStart(false)
 {
@@ -52,7 +59,9 @@ MainWindowPrivate::MainWindowPrivate(MainWindow *publicMsinWindow)
 
 MainWindowPrivate::~MainWindowPrivate()
 {
-    delete m_settingDialog;
+    m_configureFile->setThreadNum(m_checkThreadNum);
+    m_configureFile->setFileFilters(m_filterCheck);
+    delete m_configureFile;
 }
 
 void MainWindowPrivate::init()
@@ -68,11 +77,10 @@ void MainWindowPrivate::init()
     m_calculationProgress->setAlignment(Qt::AlignCenter);
     m_calculationProgress->setMaximumWidth(150);
     q_ptr->ui->statusbar->addPermanentWidget(m_calculationProgress);
-    m_settingDialog->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
-    m_settingDialog->setWindowModality(Qt::WindowModal);
-    m_checkThreadNum = q_ptr->ui->listWidget->getCheckThreadNum();
-    m_settingDialog->setCheckThreadNum(&m_checkThreadNum);
-    q_ptr->ui->listWidget->setFileFilters(QStringList("*.*"));
+    m_checkThreadNum = m_configureFile->getThreadNum();
+    m_filterCheck = m_configureFile->getFileFilters();
+    setThreadNum();
+    setFileFilter();
 
     q_ptr->ui->pushBut_SelectDir->setEnabled(true);
     q_ptr->ui->lineEdit_ShowDIrPath->setEnabled(true);
@@ -99,6 +107,7 @@ void MainWindowPrivate::init()
                           "QPushButton#pushBut_StartCheck:disabled{ border-image: url(:/img/image/stop_disabled.png); }";
     q_ptr->ui->pushBut_StartCheck->setStyleSheet(m_pButEnStyleSheet);
 
+    QObject::connect(q_ptr->ui->lineEdit_ShowDIrPath, SIGNAL(signalCleanText()),q_ptr, SLOT(onCleatLineEdit()) );
     QObject::connect(q_ptr->ui->pushBut_SelectDir, SIGNAL(clicked()), q_ptr, SLOT(onSelectDirPath()) );
     QObject::connect(q_ptr->ui->pushBut_StartCheck, SIGNAL(clicked()), q_ptr, SLOT(onStartCheck()));
     QObject::connect(q_ptr->ui->actionSelect_Dir_Path, SIGNAL(triggered()), q_ptr, SLOT(onSelectDirPath()));
@@ -116,8 +125,6 @@ void MainWindowPrivate::init()
                      q_ptr, SLOT(onCheckBox(int)) );
     QObject::connect(q_ptr->ui->checkBox_CRC32, SIGNAL(stateChanged(int)),
                      q_ptr, SLOT(onCheckBox(int)) );
-    QObject::connect(m_settingDialog, SIGNAL(signalDataChange()), q_ptr,
-                     SLOT(onSettingDataChange()) );
 }
 
 void MainWindowPrivate::updateUIButton()
@@ -134,6 +141,12 @@ void MainWindowPrivate::updateUIButton()
 
 void MainWindowPrivate::setSetting()
 {
+    m_settingDialog = new Setting(q_ptr);
+    m_settingDialog->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
+    m_settingDialog->setWindowModality(Qt::WindowModal);
+    m_settingDialog->setInitData(m_filterCheck,m_checkThreadNum);
+    QObject::connect(m_settingDialog, SIGNAL(signalDataChange(bool)), q_ptr,
+                     SLOT(onSettingDataChange(bool)) );
     m_settingDialog->show();
 }
 
@@ -167,13 +180,13 @@ void MainWindowPrivate::onStartCheck()
     {
         m_isStart = false;
         q_ptr->ui->listWidget->onStop();
-        m_settingDialog->setCheckType(false);
+        q_ptr->ui->actionSetting->setEnabled(true);
     }
     else
     {
         m_isStart = true;
         q_ptr->ui->listWidget->onStart(m_checkBoxState);
-        m_settingDialog->setCheckType(true);
+        q_ptr->ui->actionSetting->setEnabled(false);
     }
     updateUIButton();
 }
@@ -189,9 +202,23 @@ void MainWindowPrivate::onFileStatistics(WidgetUtil::Progress progress)
     m_calculationProgress->setValue(progress.ComputeProgress);
 }
 
-void MainWindowPrivate::onSettingDataChange()
+void MainWindowPrivate::onSettingDataChange(bool change)
 {
-    q_ptr->ui->listWidget->setCheckThreadNum(m_checkThreadNum);
+    if(change)
+    {
+        m_checkThreadNum = m_settingDialog->getThreadNum();
+        m_filterCheck = m_settingDialog->getFileFilters();
+        setThreadNum();
+        setFileFilter();
+    }
+
+    m_settingDialog->hide();
+    delete  m_settingDialog;
+}
+
+void MainWindowPrivate::onCleatLineEdit()
+{
+    q_ptr->ui->pushBut_StartCheck->setEnabled(false);
 }
 
 void MainWindowPrivate::onCheckBox(int)
@@ -215,6 +242,22 @@ void MainWindowPrivate::onCheckBox(int)
         m_checkBoxState = (value->isChecked()) ? (m_checkBoxState | util::CRC32) :
                                                 (m_checkBoxState ^ util::CRC32) ;
     }
+}
+
+void MainWindowPrivate::setThreadNum()
+{
+    q_ptr->ui->listWidget->setCheckThreadNum(m_checkThreadNum);
+}
+
+void MainWindowPrivate::setFileFilter()
+{
+    QStringList fileFilter;
+    for(int i = 0 ; i < m_filterCheck.length(); i++)
+    {
+        if(m_filterCheck.at(i).checked)
+            fileFilter.append(m_filterCheck.at(i).filtess);
+    }
+    q_ptr->ui->listWidget->setFileFilters(fileFilter);
 }
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -281,7 +324,12 @@ void MainWindow::onFileStatistics(WidgetUtil::Progress progress)
     d_ptr->onFileStatistics(progress);
 }
 
-void MainWindow::onSettingDataChange()
+void MainWindow::onSettingDataChange(bool click)
 {
-    d_ptr->onSettingDataChange();
+    d_ptr->onSettingDataChange(click);
+}
+
+void MainWindow::onCleatLineEdit()
+{
+    d_ptr->onCleatLineEdit();
 }

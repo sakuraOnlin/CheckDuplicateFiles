@@ -34,7 +34,8 @@ private slots:
     void onAbout();
     void onCheckBox(int state);
     void onFileStatistics(WidgetUtil::Progress progress);
-    void onSettingDataChange();
+    void onSettingDataChange(bool click);
+    void onCleatLineEdit();
 
 private:
     Ui::MainWindow *ui;

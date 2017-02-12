@@ -68,25 +68,67 @@ QSlider::add-page:horizontal
     border-radius: 5px;
 }
 
-QScrollBar::vertical {
+QScrollBar::vertical 
+{
     width: 8px;
 	border-color: rgb(217,217,217);
 }
 
-QScrollBar::handle:vertical {
+QScrollBar::handle:vertical 
+{
     min-height: 8px;
     border-width: 4px 0px 4px 0px;
     border-image:url(:/img/image/ScrollBar/vertical-handle.png) 17 0 17 0 repeat repeat;
 }
 
-QScrollBar::sub-line:vertical {
+QScrollBar::sub-line:vertical 
+{
     width: 0px;
     height: 0px;
 }
-QScrollBar::add-line:vertical {
+QScrollBar::add-line:vertical
+ {
     width: 0px;
     height: 0px;
-}</string>
+}
+
+QPushButton#pButDelFilters
+{
+	background-color:rgba(255,255,255,0);
+	border-image: url(:/img/image/delFile.png);
+}
+QPushButton#pButDelFilters:hover
+{
+	border-image: url(:/img/image/delFile_highlight.png);
+}
+QPushButton#pButDelFilters:pressed
+{
+	border-image: url(:/img/image/delFile_pushed.png);
+}
+QPushButton#pButDelFilters:disabled
+{
+	border-image:  url(:/img/image/delFile_disabled.png);
+}
+
+QPushButton#pButAddFilters
+{
+	background-color:rgba(255,255,255,0);
+	border-image: url(:/img/image/addFIleFilteer.png);
+}
+QPushButton#pButAddFilters:hover
+{
+	border-image: url(:/img/image/addFIleFilteer_highlight.png); 
+}
+QPushButton#pButAddFilters:pressed
+{
+	border-image: url(:/img/image/addFIleFilteer_pushed.png); 
+}
+QPushButton#pButAddFilters:disabled
+{
+	border-image:  url(:/img/image/addFIleFilteer_disabled.png);
+}
+
+</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <property name="leftMargin">
@@ -187,7 +229,7 @@ QScrollBar::add-line:vertical {
           <widget class="QLabel" name="label">
            <property name="geometry">
             <rect>
-             <x>20</x>
+             <x>10</x>
              <y>40</y>
              <width>131</width>
              <height>20</height>
@@ -286,16 +328,34 @@ QScrollBar::add-line:vertical {
                   </widget>
                  </item>
                  <item>
-                  <widget class="QPushButton" name="pushButton">
+                  <widget class="QPushButton" name="pButAddFilters">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>24</height>
+                    </size>
+                   </property>
+                   <property name="toolTip">
+                    <string>Add the file format in the edit box</string>
+                   </property>
                    <property name="text">
-                    <string>Add</string>
+                    <string/>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QPushButton" name="pushButton_2">
+                  <widget class="QPushButton" name="pButDelFilters">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>24</height>
+                    </size>
+                   </property>
+                   <property name="toolTip">
+                    <string>Delete the file format selected in the list box</string>
+                   </property>
                    <property name="text">
-                    <string>Remove</string>
+                    <string/>
                    </property>
                   </widget>
                  </item>
@@ -309,40 +369,7 @@ QScrollBar::add-line:vertical {
                 </widget>
                </item>
                <item>
-                <widget class="QListWidget" name="listWidget_2">
-                 <item>
-                  <property name="text">
-                   <string>All Files ( *.* )</string>
-                  </property>
-                  <property name="checkState">
-                   <enum>Unchecked</enum>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>txt</string>
-                  </property>
-                  <property name="checkState">
-                   <enum>Unchecked</enum>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>doc</string>
-                  </property>
-                  <property name="checkState">
-                   <enum>Unchecked</enum>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>exe</string>
-                  </property>
-                  <property name="checkState">
-                   <enum>Unchecked</enum>
-                  </property>
-                 </item>
-                </widget>
+                <widget class="QListWidget" name="listWidgetFileFilters"/>
                </item>
               </layout>
              </item>

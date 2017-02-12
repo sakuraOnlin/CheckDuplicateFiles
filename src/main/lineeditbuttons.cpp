@@ -24,10 +24,13 @@ bool LineEditButtons::eventFilter(QObject *watched, QEvent *event)
             return true;
         if(mouse->buttons() & Qt::LeftButton)
         {
-            clear();
-            emit signalCleanText();
-            m_labelClear->hide();
-            return true;
+            if(QLineEdit::isEnabled())
+            {
+                clear();
+                emit signalCleanText();
+                m_labelClear->hide();
+                return true;
+            }
         }
     }
     return QObject::eventFilter(watched, event);
