@@ -89,6 +89,7 @@ void SettingPrivate::onAddFilters()
     if(filters.isEmpty())
         return;
     addItem(filters);
+    q_ptr->ui->lineEdit->clear();
 }
 
 void SettingPrivate::onDelFilters()

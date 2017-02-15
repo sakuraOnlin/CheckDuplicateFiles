@@ -62,7 +62,7 @@ void LineEditButtons::init()
     m_labelClear->setMaximumSize(30,20);
     m_labelClear->installEventFilter(this);
     m_labelClear->hide();
-    setTextMargins(0,0,31,0);
+    setTextMargins(3,0,31,0);
 
     connect(this, SIGNAL(textChanged(QString)), this, SLOT(onTextUpdata(QString)) );
 }
