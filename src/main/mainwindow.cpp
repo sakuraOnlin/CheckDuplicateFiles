@@ -5,6 +5,7 @@
 #include <QProgressBar>
 #include "mainwindow.h"
 #include "setting.h"
+#include "about.h"
 #include "core/configurefile.h"
 #include "ui_mainwindow.h"
 #include "util/util.h"
@@ -26,8 +27,10 @@ public:
     void onSettingDataChange(bool);
     void onCleatLineEdit();
     void onCheckBox(int state);
+    void about();
     inline void setThreadNum();
     inline void setFileFilter();
+
 
     QString m_dirPath;
     QString m_pButEnStyleSheet;
@@ -39,6 +42,7 @@ public:
     QLabel *m_fileTotalLabel;
     QProgressBar *m_calculationProgress;
     ConfigureFile *m_configureFile;
+    About *m_about;
     int m_checkThreadNum;
     int m_checkBoxState;
     bool m_isStart;
@@ -244,6 +248,14 @@ void MainWindowPrivate::onCheckBox(int)
     }
 }
 
+void MainWindowPrivate::about()
+{
+    m_about = new About(q_ptr);
+    m_about->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
+    m_about->setWindowModality(Qt::WindowModal);
+    m_about->show();
+}
+
 void MainWindowPrivate::setThreadNum()
 {
     q_ptr->ui->listWidget->setCheckThreadNum(m_checkThreadNum);
@@ -254,8 +266,11 @@ void MainWindowPrivate::setFileFilter()
     QStringList fileFilter;
     for(int i = 0 ; i < m_filterCheck.length(); i++)
     {
-        if(m_filterCheck.at(i).checked)
-            fileFilter.append(m_filterCheck.at(i).filtess);
+        if(fileFilter.indexOf(m_filterCheck.at(i).filtess) < 0)
+        {
+            if(m_filterCheck.at(i).checked)
+                fileFilter.append(m_filterCheck.at(i).filtess);
+        }
     }
     q_ptr->ui->listWidget->setFileFilters(fileFilter);
 }
@@ -311,7 +326,7 @@ void MainWindow::onHelp()
 
 void MainWindow::onAbout()
 {
-
+    d_ptr->about();
 }
 
 void MainWindow::onCheckBox(int state)

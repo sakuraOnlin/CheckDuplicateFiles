@@ -231,7 +231,7 @@ QPushButton#pButAddFilters:disabled
             <rect>
              <x>10</x>
              <y>40</y>
-             <width>131</width>
+             <width>431</width>
              <height>20</height>
             </rect>
            </property>
@@ -270,9 +270,9 @@ QPushButton#pButAddFilters:disabled
           <widget class="QLabel" name="label_ThreadNum">
            <property name="geometry">
             <rect>
-             <x>20</x>
+             <x>10</x>
              <y>120</y>
-             <width>101</width>
+             <width>441</width>
              <height>21</height>
             </rect>
            </property>
@@ -331,7 +331,13 @@ QPushButton#pButAddFilters:disabled
                   <widget class="QPushButton" name="pButAddFilters">
                    <property name="minimumSize">
                     <size>
-                     <width>0</width>
+                     <width>24</width>
+                     <height>24</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>24</width>
                      <height>24</height>
                     </size>
                    </property>
@@ -347,7 +353,13 @@ QPushButton#pButAddFilters:disabled
                   <widget class="QPushButton" name="pButDelFilters">
                    <property name="minimumSize">
                     <size>
-                     <width>0</width>
+                     <width>24</width>
+                     <height>24</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>24</width>
                      <height>24</height>
                     </size>
                    </property>
@@ -364,7 +376,7 @@ QPushButton#pButAddFilters:disabled
                <item>
                 <widget class="QLabel" name="label_Warring">
                  <property name="text">
-                  <string>Please directly enter the file format, such as ReadMe.md , then enter md .</string>
+                  <string>Enter the file format, such as ReadMe.md, enter * .md</string>
                  </property>
                 </widget>
                </item>

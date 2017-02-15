@@ -7,6 +7,7 @@ LineEditButtons::LineEditButtons(QWidget *parent)
     : QLineEdit(parent)
 {
     init();
+    setMinimumHeight(24);
 }
 
 LineEditButtons::~LineEditButtons()
@@ -39,7 +40,7 @@ bool LineEditButtons::eventFilter(QObject *watched, QEvent *event)
 void LineEditButtons::resizeEvent(QResizeEvent *event)
 {
     m_labelClear->move(width() - m_labelClear->width() - 2,
-                       height() /2 - 10);
+                       height() /2 - m_labelClear->height()/2);
     return QLineEdit::resizeEvent(event);
 }
 
@@ -59,7 +60,8 @@ void LineEditButtons::init()
     QPixmap delLineeditPixmap(":/img/image/lineeditDelete.png");
     m_labelClear = new QLabel(this);
     m_labelClear->setPixmap(delLineeditPixmap);
-    m_labelClear->setMaximumSize(30,20);
+    m_labelClear->setMinimumSize(20, 20);
+    m_labelClear->setMaximumSize(30, 20);
     m_labelClear->installEventFilter(this);
     m_labelClear->hide();
     setTextMargins(3,0,31,0);
