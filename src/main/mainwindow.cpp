@@ -122,7 +122,7 @@ void MainWindowPrivate::init()
     q_ptr->ui->pushBut_StartCheck->setStyleSheet(m_pButEnStyleSheet);
 
     QObject::connect(q_ptr->ui->lineEdit_ShowDIrPath, SIGNAL(signalCleanText()),
-                     q_ptr, SLOT(onCleatLineEdit()) );
+                     q_ptr, SLOT(onClearLineEdit()) );
     QObject::connect(q_ptr->ui->pushBut_SelectDir, SIGNAL(clicked()),
                      q_ptr, SLOT(onSelectDirPath()) );
     QObject::connect(q_ptr->ui->pushBut_StartCheck, SIGNAL(clicked()),

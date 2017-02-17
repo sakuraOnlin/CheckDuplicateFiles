@@ -64,11 +64,21 @@ void FindRepeatWork::onFindAllRepeat()
         if(m_fileIDHash.count(text) > 1)
         {
             QList<QListWidgetItem*> repeatItemList(m_fileIDHash.values(text));
+            QListWidgetItem *item = repeatItemList.at(0);
+            int itemRow = 0;
+            if(item == nullptr)
+                itemRow = 0;
+            else
+                itemRow = m_listWidget->row(item);
+            int rowIndex = 0;
             foreach (QListWidgetItem *item, repeatItemList)
             {
                 if(values.indexOf(item) >= 0)
                     continue;
                 setItemBackGroundData(item, true);
+                m_listWidget->takeItem(m_listWidget->row(item));
+                int insertRow = itemRow + rowIndex;
+                m_listWidget->insertItem(insertRow, item);
                 values.append(item);
             }
         }

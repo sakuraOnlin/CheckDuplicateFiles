@@ -42,7 +42,6 @@ QList<WidgetUtil::FiltersType> ConfigureFile::getFileFilters()
 {
     QString value(m_setting->value("File/Filters").toString());
     QStringList translationStr(value.split('|', QString::SkipEmptyParts));
-    qDebug() << "translationStr " << translationStr;
     QList<WidgetUtil::FiltersType> filterList;
     foreach (QString value, translationStr)
     {
