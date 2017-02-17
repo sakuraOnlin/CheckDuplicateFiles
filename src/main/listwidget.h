@@ -34,6 +34,10 @@ public slots:
     void onClickItem(QListWidgetItem *item);
     void onOpenFileDir();
     void onDelFile();
+    void onFindAllRepeat();
+    void onFindText(QString text);
+    void onFindNextText();
+    void onCLearRepeat();
 
 private slots:
     void onOpenFileDir(QString filePath);

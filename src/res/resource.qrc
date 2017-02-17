@@ -47,5 +47,14 @@
         <file>image/addFIleFilteer_disabled.png</file>
         <file>image/addFIleFilteer_highlight.png</file>
         <file>image/addFIleFilteer_pushed.png</file>
+        <file>image/Next.png</file>
+        <file>image/Next_disabled.png</file>
+        <file>image/Next_highlight.png</file>
+        <file>image/Next_pushed.png</file>
+        <file>image/clear.png</file>
+        <file>image/SearchAllRepeat.png</file>
+        <file>image/SearchAllRepeat_disabled.png</file>
+        <file>image/SearchAllRepeat_highlight.png</file>
+        <file>image/SearchAllRepeat_pushed.png</file>
     </qresource>
 </RCC>

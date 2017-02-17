@@ -35,7 +35,11 @@ private slots:
     void onCheckBox(int state);
     void onFileStatistics(WidgetUtil::Progress progress);
     void onSettingDataChange(bool click);
-    void onCleatLineEdit();
+    void onClearLineEdit();
+    void onFindAllRepeat();
+    void onFindText();
+    void onFindNestText();
+    void onClearFindRepeat();
 
 private:
     Ui::MainWindow *ui;

@@ -12,6 +12,7 @@
 #include "core/threadselectfiles.h"
 #include "CheckFile.h"
 #include "core/computemodule.h"
+#include "core/findrepeat.h"
 
 class BackstageWork : public QObject
 {
@@ -30,6 +31,7 @@ public:
     bool setCheckThreadNum(int num);
     int getCheckThreadNum();
 
+
 signals:
     void signalFileStatistics(WidgetUtil::Progress progress);
 
@@ -37,6 +39,10 @@ public slots:
     void onStart(int checkType);
     void onStop();
     void onStopCheckFile(QString filePath);
+    void onFindAllRepeat();
+    void onFindText(QString text);
+    void onFindNextText();
+    void onClearFindRepeat();
 
 private slots:
     void onListWidgetAddItem(QStringList filePathList);
@@ -58,6 +64,7 @@ private:
     bool m_operatingStatus;
     ThreadSelectFiles m_selectFiles;
     ComputeModule m_computeModule;
+    FindRepeat m_findRepeat;
     QTimer m_time;
 
 };
@@ -68,7 +75,7 @@ class Backstage : public QObject
 public:
     explicit Backstage(QObject *parent = 0);
     ~Backstage();
-    BackstageWork *getBackstagwWork();
+    BackstageWork *getBackstagWork();
 
 private:
     QThread m_thread;

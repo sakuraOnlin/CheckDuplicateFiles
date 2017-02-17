@@ -28,6 +28,10 @@ public:
     void onCleatLineEdit();
     void onCheckBox(int state);
     void about();
+    void onFindAllRepeat();
+    void onFindText();
+    void onFindNextText();
+    void onClearRepeat();
     inline void setThreadNum();
     inline void setFileFilter();
 
@@ -38,7 +42,7 @@ public:
     QStringList m_fileFilters;
     QList<WidgetUtil::FiltersType> m_filterCheck;
     Setting *m_settingDialog;
-    QList<QPushButton*> m_pButAddressList;
+    QList<QWidget*> m_pButAddressList;
     QLabel *m_fileTotalLabel;
     QProgressBar *m_calculationProgress;
     ConfigureFile *m_configureFile;
@@ -88,15 +92,21 @@ void MainWindowPrivate::init()
 
     q_ptr->ui->pushBut_SelectDir->setEnabled(true);
     q_ptr->ui->lineEdit_ShowDIrPath->setEnabled(true);
-    q_ptr->ui->pushBut_FindDuplicateFiles->setEnabled(false);
+    q_ptr->ui->lineEdit_FindText->setEnabled(false);
     q_ptr->ui->pushBut_DelFile->setEnabled(false);
-    q_ptr->ui->pushBut_DelAllFiles->setEnabled(false);
+    q_ptr->ui->pushBut_FindAll->setEnabled(false);
+    q_ptr->ui->pushBut_FindText->setEnabled(false);
+    q_ptr->ui->pushBut_FindNextText->setEnabled(false);
+    q_ptr->ui->pushBut_ClearRepeat->setEnabled(false);
 
-
+    m_pButAddressList.append(q_ptr->ui->lineEdit_ShowDIrPath);
+    m_pButAddressList.append(q_ptr->ui->lineEdit_FindText);
     m_pButAddressList.append(q_ptr->ui->pushBut_SelectDir);
-    m_pButAddressList.append(q_ptr->ui->pushBut_FindDuplicateFiles);
     m_pButAddressList.append(q_ptr->ui->pushBut_DelFile);
-    m_pButAddressList.append(q_ptr->ui->pushBut_DelAllFiles);
+    m_pButAddressList.append(q_ptr->ui->pushBut_FindAll);
+    m_pButAddressList.append(q_ptr->ui->pushBut_FindText);
+    m_pButAddressList.append(q_ptr->ui->pushBut_FindNextText);
+    m_pButAddressList.append(q_ptr->ui->pushBut_ClearRepeat);
 
     m_pButEnStyleSheet = " QPushButton#pushBut_StartCheck"
                          "{ background-color:rgba(255,255,255,0); border-image: url(:/img/image/start.png); }"
@@ -111,16 +121,24 @@ void MainWindowPrivate::init()
                           "QPushButton#pushBut_StartCheck:disabled{ border-image: url(:/img/image/stop_disabled.png); }";
     q_ptr->ui->pushBut_StartCheck->setStyleSheet(m_pButEnStyleSheet);
 
-    QObject::connect(q_ptr->ui->lineEdit_ShowDIrPath, SIGNAL(signalCleanText()),q_ptr, SLOT(onCleatLineEdit()) );
-    QObject::connect(q_ptr->ui->pushBut_SelectDir, SIGNAL(clicked()), q_ptr, SLOT(onSelectDirPath()) );
-    QObject::connect(q_ptr->ui->pushBut_StartCheck, SIGNAL(clicked()), q_ptr, SLOT(onStartCheck()));
-    QObject::connect(q_ptr->ui->actionSelect_Dir_Path, SIGNAL(triggered()), q_ptr, SLOT(onSelectDirPath()));
-    QObject::connect(q_ptr->ui->actionSetting, SIGNAL(triggered()), q_ptr, SLOT(onSetting()));
-    QObject::connect(q_ptr->ui->actionExit, SIGNAL(triggered()), q_ptr, SLOT(onExit()));
-    QObject::connect(q_ptr->ui->actionHelp, SIGNAL(triggered()), q_ptr, SLOT(onHelp()));
-    QObject::connect(q_ptr->ui->actionAbout, SIGNAL(triggered()), q_ptr, SLOT(onAbout()));
-    QObject::connect(q_ptr->ui->pushBut_DelFile, SIGNAL(clicked()), q_ptr, SLOT(onDelFile()));
-    QObject::connect(q_ptr->ui->pushBut_DelAllFiles, SIGNAL(clicked()), q_ptr, SLOT(onDelFile()));
+    QObject::connect(q_ptr->ui->lineEdit_ShowDIrPath, SIGNAL(signalCleanText()),
+                     q_ptr, SLOT(onCleatLineEdit()) );
+    QObject::connect(q_ptr->ui->pushBut_SelectDir, SIGNAL(clicked()),
+                     q_ptr, SLOT(onSelectDirPath()) );
+    QObject::connect(q_ptr->ui->pushBut_StartCheck, SIGNAL(clicked()),
+                     q_ptr, SLOT(onStartCheck()));
+    QObject::connect(q_ptr->ui->actionSelect_Dir_Path, SIGNAL(triggered()),
+                     q_ptr, SLOT(onSelectDirPath()));
+    QObject::connect(q_ptr->ui->actionSetting, SIGNAL(triggered()),
+                     q_ptr, SLOT(onSetting()));
+    QObject::connect(q_ptr->ui->actionExit, SIGNAL(triggered()),
+                     q_ptr, SLOT(onExit()));
+    QObject::connect(q_ptr->ui->actionHelp, SIGNAL(triggered()),
+                     q_ptr, SLOT(onHelp()));
+    QObject::connect(q_ptr->ui->actionAbout, SIGNAL(triggered()),
+                     q_ptr, SLOT(onAbout()));
+    QObject::connect(q_ptr->ui->pushBut_DelFile, SIGNAL(clicked()),
+                     q_ptr, SLOT(onDelFile()));
     QObject::connect(q_ptr->ui->listWidget, SIGNAL(signalFileStatistics(WidgetUtil::Progress)),
                      q_ptr, SLOT(onFileStatistics(WidgetUtil::Progress)));
     QObject::connect(q_ptr->ui->checkBox_MD5, SIGNAL(stateChanged(int)),
@@ -129,13 +147,22 @@ void MainWindowPrivate::init()
                      q_ptr, SLOT(onCheckBox(int)) );
     QObject::connect(q_ptr->ui->checkBox_CRC32, SIGNAL(stateChanged(int)),
                      q_ptr, SLOT(onCheckBox(int)) );
+    QObject::connect(q_ptr->ui->pushBut_FindAll, SIGNAL(clicked()),
+                     q_ptr, SLOT(onFindAllRepeat()));
+    QObject::connect(q_ptr->ui->pushBut_FindText, SIGNAL(clicked()),
+                     q_ptr, SLOT(onFindText()));
+    QObject::connect(q_ptr->ui->pushBut_FindNextText, SIGNAL(clicked()),
+                     q_ptr, SLOT(onFindNestText()));
+    QObject::connect(q_ptr->ui->pushBut_ClearRepeat, SIGNAL(clicked()),
+                     q_ptr, SLOT(onClearFindRepeat()));
+    QObject::connect(q_ptr->ui->lineEdit_FindText, SIGNAL(signalCleanText()),
+                     q_ptr, SLOT(onClearFindRepeat()));
 }
 
 void MainWindowPrivate::updateUIButton()
 {
-    q_ptr->ui->lineEdit_ShowDIrPath->setEnabled(!m_isStart);
     q_ptr->ui->actionSelect_Dir_Path->setEnabled(!m_isStart);
-    foreach (QPushButton *value, m_pButAddressList)
+    foreach (QWidget *value, m_pButAddressList)
     {
         value->setEnabled(!value->isEnabled());
     }
@@ -256,6 +283,27 @@ void MainWindowPrivate::about()
     m_about->show();
 }
 
+void MainWindowPrivate::onFindAllRepeat()
+{
+    q_ptr->ui->listWidget->onFindAllRepeat();
+}
+
+void MainWindowPrivate::onFindText()
+{
+    QString text(q_ptr->ui->lineEdit_FindText->text());
+    q_ptr->ui->listWidget->onFindText(text);
+}
+
+void MainWindowPrivate::onFindNextText()
+{
+    q_ptr->ui->listWidget->onFindNextText();
+}
+
+void MainWindowPrivate::onClearRepeat()
+{
+    q_ptr->ui->listWidget->onCLearRepeat();
+}
+
 void MainWindowPrivate::setThreadNum()
 {
     q_ptr->ui->listWidget->setCheckThreadNum(m_checkThreadNum);
@@ -344,7 +392,27 @@ void MainWindow::onSettingDataChange(bool click)
     d_ptr->onSettingDataChange(click);
 }
 
-void MainWindow::onCleatLineEdit()
+void MainWindow::onClearLineEdit()
 {
     d_ptr->onCleatLineEdit();
+}
+
+void MainWindow::onFindAllRepeat()
+{
+    d_ptr->onFindAllRepeat();
+}
+
+void MainWindow::onFindText()
+{
+    d_ptr->onFindText();
+}
+
+void MainWindow::onFindNestText()
+{
+    d_ptr->onFindNextText();
+}
+
+void MainWindow::onClearFindRepeat()
+{
+    d_ptr->onClearRepeat();
 }

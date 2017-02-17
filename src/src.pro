@@ -18,7 +18,8 @@ SOURCES += \
     main/about.cpp \
     main/setting.cpp \
     main/lineeditbuttons.cpp \
-    core/configurefile.cpp
+    core/configurefile.cpp \
+    core/findrepeat.cpp
 
 FORMS += \
     main/mainwindow.ui \
@@ -37,7 +38,8 @@ HEADERS += \
     main/about.h \
     main/setting.h \
     main/lineeditbuttons.h \
-    core/configurefile.h
+    core/configurefile.h \
+    core/findrepeat.h
 
 TRANSLATIONS += res/translator/translator_cn.ts
 

@@ -22,6 +22,7 @@ BackstageWork::~BackstageWork()
 void BackstageWork::setListWidget(QListWidget *listWidget)
 {
     m_listWidget = listWidget;
+    m_findRepeat.setListWidget(m_listWidget);
 }
 
 void BackstageWork::setDirPath(QString dirPath)
@@ -44,6 +45,7 @@ void BackstageWork::setFileItem(QHash<QString, QListWidgetItem *> *fileItemHash,
 {
     m_fileItemHash = fileItemHash;
     m_iconSize = iconSize;
+    m_findRepeat.setFileItem(m_fileItemHash);
 }
 
 bool BackstageWork::getOperatingStatus()
@@ -71,6 +73,7 @@ void BackstageWork::onStart(int checkType)
     m_selectFiles.onStartSelectFiles();
     m_computeModule.setFilePathList(m_filePathList);
     m_computeModule.onStart(checkType);
+    m_findRepeat.onStart();
     m_time.start(30);
 }
 
@@ -79,12 +82,33 @@ void BackstageWork::onStop()
     m_operatingStatus = false;
     m_selectFiles.onStopSelectFiles();
     m_computeModule.onStop();
+    m_findRepeat.onStop();
     m_time.stop();
 }
 
 void BackstageWork::onStopCheckFile(QString filePath)
 {
     m_computeModule.onStopCheckFile(filePath);
+}
+
+void BackstageWork::onFindAllRepeat()
+{
+    m_findRepeat.onFindAllRepeat();
+}
+
+void BackstageWork::onFindText(QString text)
+{
+    m_findRepeat.onFindText(text);
+}
+
+void BackstageWork::onFindNextText()
+{
+    m_findRepeat.onFindNextText();
+}
+
+void BackstageWork::onClearFindRepeat()
+{
+    m_findRepeat.onRestoreBackground();
 }
 
 void BackstageWork::onListWidgetAddItem(QStringList filePathList)
@@ -94,7 +118,8 @@ void BackstageWork::onListWidgetAddItem(QStringList filePathList)
 
     foreach (QString filePath, filePathList)
     {
-        QListWidgetItem *item = m_fileItemHash->value(filePath);
+        QListWidgetItem *item = nullptr;
+        m_fileItemHash->contains(filePath) ? item = m_fileItemHash->value(filePath): item = nullptr;
         if(nullptr == item)
         {
             QFileInfo fileInfo(filePath);
@@ -110,6 +135,7 @@ void BackstageWork::onListWidgetAddItem(QStringList filePathList)
             item->setData(WidgetUtil::FileTimeRole, fileInfo.lastModified().
                           toString("yyyy-MM-dd hh:mm:ss"));
             item->setData(WidgetUtil::CheckTypeRole, util::NoCheck);
+//            item->setData(Qt::BackgroundColorRole, QColor(125, 174, 255, 254));
             m_listWidget->addItem(item);
             m_filePathList->append(filePath);
             m_fileItemHash->insert(filePath, item);
@@ -122,7 +148,8 @@ void BackstageWork::onItemSetData(util::ComputeResult result)
     util::CheckType checkHashType = result.checkHashType;
     QString filePath = result.filePath;
 
-    QListWidgetItem *item = m_fileItemHash->value(filePath);
+    QListWidgetItem *item = nullptr;
+    m_fileItemHash->contains(filePath) ? item = m_fileItemHash->value(filePath): item = nullptr;
 
     if(nullptr == item)
         return;
@@ -149,7 +176,8 @@ void BackstageWork::onItemSetData(util::ComputeResult result)
 
 void BackstageWork::onItemComputeErr(QString filePath, QString errStr)
 {
-    QListWidgetItem *item = m_fileItemHash->value(filePath);
+    QListWidgetItem *item = nullptr;
+    m_fileItemHash->contains(filePath) ? item = m_fileItemHash->value(filePath): item = nullptr;
     if(nullptr == item)
         return;
     item->setData(WidgetUtil::CheckResultRole,errStr);
@@ -158,10 +186,12 @@ void BackstageWork::onItemComputeErr(QString filePath, QString errStr)
 
 void BackstageWork::onItemCalculationComplete(QString filePath)
 {
-    QListWidgetItem *item = m_fileItemHash->value(filePath);
+    QListWidgetItem *item = nullptr;
+    m_fileItemHash->contains(filePath) ? item = m_fileItemHash->value(filePath): item = nullptr;
     if(nullptr == item)
         return;
     item->setData(WidgetUtil::CheckTypeRole, util::CheckOver);
+    m_findRepeat.onAddResultID(item);
 }
 
 void BackstageWork::onTimeSengProgress()
@@ -206,7 +236,7 @@ Backstage::~Backstage()
     m_backstageWork = nullptr;
 }
 
-BackstageWork *Backstage::getBackstagwWork()
+BackstageWork *Backstage::getBackstagWork()
 {
     return m_backstageWork;
 }

@@ -44,20 +44,30 @@ QPushButton#pushBut_SelectDir
 QPushButton#pushBut_SelectDir:hover{ border-image: url(:/img/image/add_highlight.png); }
 QPushButton#pushBut_SelectDir:pressed{ border-image:url(:/img/image/add_pushed.png); }
 QPushButton#pushBut_SelectDir:disabled{ border-image: url(:/img/image/add_disabled.png); }
-QPushButton#pushBut_FindDuplicateFiles
+QPushButton#pushBut_FindText
 { background-color:rgba(255,255,255,0); border-image: url(:/img/image/SearchFiles.png); }
-QPushButton#pushBut_FindDuplicateFiles:hover{ border-image: url(:/img/image/SearchFiles_highlight.png); }
-QPushButton#pushBut_FindDuplicateFiles:pressed{ border-image: url(:/img/image/SearchFiles_pushed.png); }
-QPushButton#pushBut_FindDuplicateFiles:disabled{ border-image: url(:/img/image/SearchFiles_disabled.png); }
+QPushButton#pushBut_FindText:hover{ border-image: url(:/img/image/SearchFiles_highlight.png); }
+QPushButton#pushBut_FindText:pressed{ border-image: url(:/img/image/SearchFiles_pushed.png); }
+QPushButton#pushBut_FindText:disabled{ border-image: url(:/img/image/SearchFiles_disabled.png); }
 QPushButton#pushBut_DelFile
 { background-color:rgba(255,255,255,0); border-image: url(:/img/image/delFile.png); }
 QPushButton#pushBut_DelFile:hover{ border-image: url(:/img/image/delFile_highlight.png); }
 QPushButton#pushBut_DelFile:pressed{ border-image: url(:/img/image/delFile_pushed.png); }
 QPushButton#pushBut_DelFile:disabled{ border-image:  url(:/img/image/delFile_disabled.png); }
 
+QPushButton#pushBut_FindNextText
+{ background-color:rgba(255,255,255,0); border-image: url(:/img/image/Next.png); }
+QPushButton#pushBut_FindNextText:hover{ border-image: url(:/img/image/Next_highlight.png); }
+QPushButton#pushBut_FindNextText:pressed{ border-image: url(:/img/image/Next_pushed.png); }
+QPushButton#pushBut_FindNextText:disabled{ border-image:  url(:/img/image/Next_disabled.png); }
 
-
-</string>
+QPushButton#pushBut_ClearRepeat
+{ background-color:rgba(255,255,255,0); border-image: url(:/img/image/clear.png); }
+QPushButton#pushBut_FindAll
+{ background-color:rgba(255,255,255,0); border-image: url(:/img/image/SearchAllRepeat.png); }
+QPushButton#pushBut_FindAll:hover{ border-image: url(:/img/image/SearchAllRepeat_highlight.png); }
+QPushButton#pushBut_FindAll:pressed{ border-image: url(:/img/image/SearchAllRepeat_pushed.png); }
+QPushButton#pushBut_FindAll:disabled{ border-image:  url(:/img/image/SearchAllRepeat_disabled.png); }</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_3">
@@ -129,94 +139,6 @@ QPushButton#pushBut_DelFile:disabled{ border-image:  url(:/img/image/delFile_dis
           </property>
           <property name="text">
            <string extracomment="Start Check"/>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>24</width>
-            <height>24</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushBut_FindDuplicateFiles">
-          <property name="minimumSize">
-           <size>
-            <width>24</width>
-            <height>24</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>24</width>
-            <height>24</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Find Duplicate Files</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>24</width>
-            <height>24</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushBut_DelFile">
-          <property name="minimumSize">
-           <size>
-            <width>24</width>
-            <height>24</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>24</width>
-            <height>24</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Del a file</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>24</width>
-            <height>24</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushBut_DelAllFiles">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>24</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>24</width>
-            <height>24</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Del All Files</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="icon">
-           <iconset resource="../res/resource.qrc">
-            <normaloff>:/img/image/DelAllFiles.png</normaloff>:/img/image/DelAllFiles.png</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -372,7 +294,7 @@ QPushButton#pushBut_DelFile:disabled{ border-image:  url(:/img/image/delFile_dis
               <string>Query the string in the input box from the following results</string>
              </property>
              <property name="text">
-              <string>f</string>
+              <string/>
              </property>
             </widget>
            </item>
@@ -394,12 +316,12 @@ QPushButton#pushBut_DelFile:disabled{ border-image:  url(:/img/image/delFile_dis
               <string>Find the next one</string>
              </property>
              <property name="text">
-              <string>f</string>
+              <string/>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_FindAll">
+            <widget class="QPushButton" name="pushBut_FindAll">
              <property name="minimumSize">
               <size>
                <width>24</width>
@@ -417,6 +339,57 @@ QPushButton#pushBut_DelFile:disabled{ border-image:  url(:/img/image/delFile_dis
              </property>
              <property name="text">
               <string>A</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushBut_ClearRepeat">
+             <property name="minimumSize">
+              <size>
+               <width>24</width>
+               <height>24</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>24</width>
+               <height>24</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="../res/resource.qrc">
+               <normaloff>:/img/image/clear.png</normaloff>:/img/image/clear.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushBut_DelFile">
+             <property name="minimumSize">
+              <size>
+               <width>24</width>
+               <height>24</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>24</width>
+               <height>24</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>Del a file</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>24</width>
+               <height>24</height>
+              </size>
              </property>
             </widget>
            </item>
@@ -438,7 +411,7 @@ QPushButton#pushBut_DelFile:disabled{ border-image:  url(:/img/image/delFile_dis
      <x>0</x>
      <y>0</y>
      <width>826</width>
-     <height>28</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

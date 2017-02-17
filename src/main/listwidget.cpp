@@ -38,6 +38,10 @@ public:
     void onDelFile();
     void onOpenFileDir(QString filePath);
     void onDelFile(QString filePath);
+    void onFindAllRepeat();
+    void onFindText(QString text);
+    void onFindNextText();
+    void onCLearRepeat();
 
     ItemListDelegate m_dselegate;
     QListWidgetItem *m_selectItem;
@@ -51,7 +55,7 @@ void ListWidgetPrivate::init()
 {
     qRegisterMetaType<WidgetUtil::Progress>("WidgetUtil::Progress");
     QSize IconSize(QSize(32,32));
-    BackstageWork *backstageWork = m_backstage.getBackstagwWork();
+    BackstageWork *backstageWork = m_backstage.getBackstagWork();
     backstageWork->setListWidget(q_ptr->ui->listWidget);
     backstageWork->setFilePath(&m_filePathList);
     backstageWork->setFileItem(&m_fileItemHash, IconSize);
@@ -77,12 +81,12 @@ void ListWidgetPrivate::onStart(int checkType)
     m_fileItemHash.clear();
     m_filePathList.clear();
     m_selectItem = nullptr;
-    m_backstage.getBackstagwWork()->onStart(checkType);
+    m_backstage.getBackstagWork()->onStart(checkType);
 }
 
 void ListWidgetPrivate::onStop()
 {
-    m_backstage.getBackstagwWork()->onStop();
+    m_backstage.getBackstagWork()->onStop();
 }
 
 void ListWidgetPrivate::onClickItem(QListWidgetItem *item)
@@ -155,6 +159,26 @@ void ListWidgetPrivate::onDelFile(QString filePath)
     m_selectItem = nullptr;
 }
 
+void ListWidgetPrivate::onFindAllRepeat()
+{
+    m_backstage.getBackstagWork()->onFindAllRepeat();
+}
+
+void ListWidgetPrivate::onFindText(QString text)
+{
+    m_backstage.getBackstagWork()->onFindText(text);
+}
+
+void ListWidgetPrivate::onFindNextText()
+{
+    m_backstage.getBackstagWork()->onFindNextText();
+}
+
+void ListWidgetPrivate::onCLearRepeat()
+{
+    m_backstage.getBackstagWork()->onClearFindRepeat();
+}
+
 ListWidget::ListWidget(QWidget *parent)
     :QWidget(parent),
     ui(new Ui::ListWidget)
@@ -171,35 +195,35 @@ ListWidget::~ListWidget()
 
 bool ListWidget::setFileFilters(QStringList filters)
 {
-    if(d_ptr->m_backstage.getBackstagwWork()->getOperatingStatus())
+    if(d_ptr->m_backstage.getBackstagWork()->getOperatingStatus())
         return false;
 
-    d_ptr->m_backstage.getBackstagwWork()->setFileFilters(filters);
+    d_ptr->m_backstage.getBackstagWork()->setFileFilters(filters);
     return true;
 }
 
 bool ListWidget::setDirPath(QString dirPath)
 {
-    if(d_ptr->m_backstage.getBackstagwWork()->getOperatingStatus())
+    if(d_ptr->m_backstage.getBackstagWork()->getOperatingStatus())
         return false;
 
-    d_ptr->m_backstage.getBackstagwWork()->setDirPath(dirPath);
+    d_ptr->m_backstage.getBackstagWork()->setDirPath(dirPath);
     return true;
 }
 
 bool ListWidget::operatingStatus()
 {
-    return d_ptr->m_backstage.getBackstagwWork()->getOperatingStatus();
+    return d_ptr->m_backstage.getBackstagWork()->getOperatingStatus();
 }
 
 bool ListWidget::setCheckThreadNum(int num)
 {
-    return d_ptr->m_backstage.getBackstagwWork()->setCheckThreadNum(num);
+    return d_ptr->m_backstage.getBackstagWork()->setCheckThreadNum(num);
 }
 
 int ListWidget::getCheckThreadNum()
 {
-    return d_ptr->m_backstage.getBackstagwWork()->getCheckThreadNum();
+    return d_ptr->m_backstage.getBackstagWork()->getCheckThreadNum();
 }
 
 void ListWidget::onStart(int checkType)
@@ -225,6 +249,26 @@ void ListWidget::onOpenFileDir()
 void ListWidget::onDelFile()
 {
     d_ptr->onDelFile();
+}
+
+void ListWidget::onFindAllRepeat()
+{
+    d_ptr->onFindAllRepeat();
+}
+
+void ListWidget::onFindText(QString text)
+{
+    d_ptr->onFindText(text);
+}
+
+void ListWidget::onFindNextText()
+{
+    d_ptr->onFindNextText();
+}
+
+void ListWidget::onCLearRepeat()
+{
+    d_ptr->onCLearRepeat();
 }
 
 void ListWidget::onOpenFileDir(QString filePath)
