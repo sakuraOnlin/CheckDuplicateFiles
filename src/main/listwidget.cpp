@@ -2,7 +2,6 @@
 #include <QDateTime>
 #include <QVariant>
 #include <QString>
-#include <QFile>
 #include <QDesktopServices>
 #include <QUrl>
 #include <QFileInfo>
@@ -25,8 +24,7 @@ class ListWidgetPrivate
 
 public:
     ListWidgetPrivate(ListWidget *publicListWidget)
-        :q_ptr(publicListWidget),
-          m_selectItem(nullptr)
+        :q_ptr(publicListWidget)
     {
         init();
     }
@@ -44,18 +42,16 @@ public:
     void onCLearRepeat();
 
     ItemListDelegate m_dselegate;
-    QListWidgetItem *m_selectItem;
     QHash<QString, QListWidgetItem*> m_fileItemHash;
     QStringList m_filePathList;
-    Backstage m_backstage;
-    QFile m_removeFile;
+//    Backstage m_backstage;
 };
 
 void ListWidgetPrivate::init()
 {
     qRegisterMetaType<WidgetUtil::Progress>("WidgetUtil::Progress");
     QSize IconSize(QSize(32,32));
-    BackstageWork *backstageWork = m_backstage.getBackstagWork();
+    BackstageWork *backstageWork = Backstage::getInstance().getBackstagWork();
     backstageWork->setListWidget(q_ptr->ui->listWidget);
     backstageWork->setFilePath(&m_filePathList);
     backstageWork->setFileItem(&m_fileItemHash, IconSize);
@@ -80,30 +76,17 @@ void ListWidgetPrivate::onStart(int checkType)
     q_ptr->ui->listWidget->clear();
     m_fileItemHash.clear();
     m_filePathList.clear();
-    m_selectItem = nullptr;
-    m_backstage.getBackstagWork()->onStart(checkType);
+    Backstage::getInstance().getBackstagWork()->onStart(checkType);
 }
 
 void ListWidgetPrivate::onStop()
 {
-    m_backstage.getBackstagWork()->onStop();
+    Backstage::getInstance().getBackstagWork()->onStop();
 }
 
 void ListWidgetPrivate::onClickItem(QListWidgetItem *item)
 {
-    if(nullptr == item )
-        return;
-    int width = item->sizeHint().width();
-    if(nullptr == m_selectItem)
-        m_selectItem = item;
-    else
-    {
-        m_selectItem->setSizeHint(QSize(width, 70));
-        m_selectItem->setData(WidgetUtil::ItemSelectRole, false);
-    }
-    m_selectItem = item;
-    item->setSizeHint(QSize(item->sizeHint().width(), 140));
-    item->setData(WidgetUtil::ItemSelectRole, true);
+    Backstage::getInstance().getBackstagWork()->onClickItem(item);
 }
 
 void ListWidgetPrivate::onOpenFileDir()
@@ -137,14 +120,12 @@ void ListWidgetPrivate::onOpenFileDir(QString filePath)
     QFileInfo fileinfo(filePath);
     QString validFolderPath;
 
-#ifdef Q_OS_LINUX
-    validFolderPath = fileinfo.absolutePath();
-#endif
 
 #ifdef Q_OS_WIN
     if(fileinfo.isSymLink())
         validFolderPath = fileinfo.symLinkTarget();
     else
+#else
         validFolderPath = fileinfo.absolutePath();
 #endif
     QDesktopServices::openUrl(QUrl::fromLocalFile(validFolderPath));
@@ -152,31 +133,28 @@ void ListWidgetPrivate::onOpenFileDir(QString filePath)
 
 void ListWidgetPrivate::onDelFile(QString filePath)
 {
-    m_filePathList.removeAt(m_filePathList.indexOf(filePath));
-    m_removeFile.remove(filePath);
-    m_fileItemHash.take(filePath);
+    Backstage::getInstance().getBackstagWork()->onDelFile(filePath);
     q_ptr->ui->listWidget->takeItem(q_ptr->ui->listWidget->currentRow());
-    m_selectItem = nullptr;
 }
 
 void ListWidgetPrivate::onFindAllRepeat()
 {
-    m_backstage.getBackstagWork()->onFindAllRepeat();
+    Backstage::getInstance().getBackstagWork()->onFindAllRepeat();
 }
 
 void ListWidgetPrivate::onFindText(QString text)
 {
-    m_backstage.getBackstagWork()->onFindText(text);
+    Backstage::getInstance().getBackstagWork()->onFindText(text);
 }
 
 void ListWidgetPrivate::onFindNextText()
 {
-    m_backstage.getBackstagWork()->onFindNextText();
+    Backstage::getInstance().getBackstagWork()->onFindNextText();
 }
 
 void ListWidgetPrivate::onCLearRepeat()
 {
-    m_backstage.getBackstagWork()->onClearFindRepeat();
+    Backstage::getInstance().getBackstagWork()->onClearFindRepeat();
 }
 
 ListWidget::ListWidget(QWidget *parent)
@@ -195,35 +173,35 @@ ListWidget::~ListWidget()
 
 bool ListWidget::setFileFilters(QStringList filters)
 {
-    if(d_ptr->m_backstage.getBackstagWork()->getOperatingStatus())
+    if(Backstage::getInstance().getBackstagWork()->getOperatingStatus())
         return false;
 
-    d_ptr->m_backstage.getBackstagWork()->setFileFilters(filters);
+    Backstage::getInstance().getBackstagWork()->setFileFilters(filters);
     return true;
 }
 
 bool ListWidget::setDirPath(QString dirPath)
 {
-    if(d_ptr->m_backstage.getBackstagWork()->getOperatingStatus())
+    if(Backstage::getInstance().getBackstagWork()->getOperatingStatus())
         return false;
 
-    d_ptr->m_backstage.getBackstagWork()->setDirPath(dirPath);
+    Backstage::getInstance().getBackstagWork()->setDirPath(dirPath);
     return true;
 }
 
 bool ListWidget::operatingStatus()
 {
-    return d_ptr->m_backstage.getBackstagWork()->getOperatingStatus();
+    return Backstage::getInstance().getBackstagWork()->getOperatingStatus();
 }
 
 bool ListWidget::setCheckThreadNum(int num)
 {
-    return d_ptr->m_backstage.getBackstagWork()->setCheckThreadNum(num);
+    return Backstage::getInstance().getBackstagWork()->setCheckThreadNum(num);
 }
 
 int ListWidget::getCheckThreadNum()
 {
-    return d_ptr->m_backstage.getBackstagWork()->getCheckThreadNum();
+    return Backstage::getInstance().getBackstagWork()->getCheckThreadNum();
 }
 
 void ListWidget::onStart(int checkType)

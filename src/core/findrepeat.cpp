@@ -2,6 +2,7 @@
 #include <QDebug>
 
 #include "findrepeat.h"
+#include "core/backstage.h"
 #include "core/widgetUtil.h"
 #include "util/util.h"
 
@@ -127,7 +128,9 @@ void FindRepeatWork::onFindNextText()
     if(m_findNextIndex >= m_repeatList.length())
         m_findNextIndex = 0;
 
-    m_listWidget->setCurrentItem(m_repeatList.at(m_findNextIndex));
+    QListWidgetItem* item = m_repeatList.at(m_findNextIndex);
+    m_listWidget->setCurrentItem(item);
+    Backstage::getInstance().getBackstagWork()->onClickItem(item);
 }
 
 void FindRepeatWork::onDelFile(QString filePath)
@@ -168,7 +171,7 @@ void FindRepeatWork::onClear()
 
 void FindRepeatWork::setItemBackGroundData(QListWidgetItem *item, bool setBackground)
 {
-    setBackground? item->setData(Qt::BackgroundColorRole, QColor(Qt::red)):
+    setBackground? item->setData(Qt::BackgroundColorRole, QColor(QColor(255,167,167))):
                    item->setData(Qt::BackgroundColorRole, QColor(255,255,255,0));
 }
 

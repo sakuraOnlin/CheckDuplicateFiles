@@ -6,10 +6,14 @@
 #include <QDateTime>
 #include <QVector>
 
+QMutex Backstage::mutex;
+QScopedPointer<Backstage> Backstage::instance;
+
 Q_DECLARE_METATYPE(util::ComputeResult)
 
 BackstageWork::BackstageWork(QObject *parnet)
-    :QObject(parnet)
+    :QObject(parnet),
+    m_selectItem(nullptr)
 {
     init();
 }
@@ -65,6 +69,7 @@ int BackstageWork::getCheckThreadNum()
 
 void BackstageWork::onStart(int checkType)
 {
+    m_selectItem = nullptr;
     m_filePathList->clear();
     m_fileItemHash->clear();
     m_operatingStatus = true;
@@ -84,6 +89,14 @@ void BackstageWork::onStop()
     m_computeModule.onStop();
     m_findRepeat.onStop();
     m_time.stop();
+}
+
+void BackstageWork::onDelFile(QString filePath)
+{
+    m_filePathList->removeAt(m_filePathList->indexOf(filePath));
+    m_removeFile.remove(filePath);
+    m_fileItemHash->take(filePath);
+    m_selectItem = nullptr;
 }
 
 void BackstageWork::onStopCheckFile(QString filePath)
@@ -109,6 +122,23 @@ void BackstageWork::onFindNextText()
 void BackstageWork::onClearFindRepeat()
 {
     m_findRepeat.onRestoreBackground();
+}
+
+void BackstageWork::onClickItem(QListWidgetItem *item)
+{
+    if(nullptr == item )
+        return;
+    int width = item->sizeHint().width();
+    if(nullptr == m_selectItem)
+        m_selectItem = item;
+    else
+    {
+        m_selectItem->setSizeHint(QSize(width, 70));
+        m_selectItem->setData(WidgetUtil::ItemSelectRole, false);
+    }
+    m_selectItem = item;
+    item->setSizeHint(QSize(item->sizeHint().width(), 140));
+    item->setData(WidgetUtil::ItemSelectRole, true);
 }
 
 void BackstageWork::onListWidgetAddItem(QStringList filePathList)
@@ -236,7 +266,22 @@ Backstage::~Backstage()
     m_backstageWork = nullptr;
 }
 
-BackstageWork *Backstage::getBackstagWork()
+Backstage &Backstage::getInstance()
+{
+    if(instance.isNull())
+    {
+        mutex.lock();
+        if(instance.isNull())
+        {
+            instance.reset(new Backstage());
+        }
+        mutex.unlock();
+    }
+    return *instance.data();
+}
+
+
+BackstageWork *Backstage::getBackstagWork() const
 {
     return m_backstageWork;
 }

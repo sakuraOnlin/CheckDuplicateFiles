@@ -6,6 +6,8 @@
 #include <QThread>
 #include <QListWidget>
 #include <QListWidgetItem>
+#include <QFile>
+#include <QMutex>
 
 #include "util/util.h"
 #include "core/widgetUtil.h"
@@ -38,11 +40,13 @@ signals:
 public slots:
     void onStart(int checkType);
     void onStop();
+    void onDelFile(QString filePath);
     void onStopCheckFile(QString filePath);
     void onFindAllRepeat();
     void onFindText(QString text);
     void onFindNextText();
     void onClearFindRepeat();
+    void onClickItem(QListWidgetItem *item);
 
 private slots:
     void onListWidgetAddItem(QStringList filePathList);
@@ -55,17 +59,19 @@ private:
     void init();
 
 private:
-    QListWidget *m_listWidget;
+    QFile m_removeFile;
     QString m_dirPath;
     QStringList m_fileFilters;
-    QStringList *m_filePathList;
-    QHash<QString, QListWidgetItem*> *m_fileItemHash;
     QSize m_iconSize;
     bool m_operatingStatus;
     ThreadSelectFiles m_selectFiles;
     ComputeModule m_computeModule;
     FindRepeat m_findRepeat;
     QTimer m_time;
+    QListWidget *m_listWidget;
+    QStringList *m_filePathList;
+    QListWidgetItem *m_selectItem;
+    QHash<QString, QListWidgetItem*> *m_fileItemHash;
 
 };
 
@@ -73,11 +79,18 @@ class Backstage : public QObject
 {
     Q_OBJECT
 public:
-    explicit Backstage(QObject *parent = 0);
-    ~Backstage();
-    BackstageWork *getBackstagWork();
+    static Backstage &getInstance();
+    BackstageWork *getBackstagWork() const;
 
 private:
+    explicit Backstage(QObject *parent = 0);
+    ~Backstage();
+
+    static QScopedPointer<Backstage> instance;
+    static QMutex mutex;
+    friend class QScopedPointer<Backstage>;
+    friend struct QScopedPointerDeleter<Backstage>;
+
     QThread m_thread;
     BackstageWork *m_backstageWork;
 
