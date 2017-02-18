@@ -42,17 +42,17 @@ void ThreadReadFile::onDoWork(QString filePath)
         return;
     }
 
+    util::CheckType getType = compute->getType();
+    QString typeName(compute->getTypeName());
     QFile file(filePath);
     if(!file.open(QIODevice::ReadOnly))
     {
         emitResult(util::CheckError, m_result.checkHashType, filePath,
-                   fileSize, fileProgress, compute->getTypeName(), tr("File open errors!"));
+                   fileSize, fileProgress, typeName, tr("File open errors!"));
         return;
     }
     fileSize = file.size();
     loadFileData = automaticDivision(fileSize);
-    util::CheckType getType = compute->getType();
-    QString typeName(compute->getTypeName());
 
     m_isWork = true;
     //start read file data to Compute Hash

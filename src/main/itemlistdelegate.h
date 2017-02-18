@@ -28,6 +28,9 @@ protected:
                      const QStyleOptionViewItem &option, const QModelIndex &index);
 
 private:
+    inline QString calculateFileSize(qint64 fileSize)const;
+
+private:
     QPoint m_pixmapPoint;
     QSize m_pixmapSize;
     QSize m_pButtSize;

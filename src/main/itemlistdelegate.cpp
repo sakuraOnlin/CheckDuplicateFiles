@@ -43,7 +43,7 @@ void ItemListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
     QFontMetrics fontMetrics(font);
     QString fileName(index.data(WidgetUtil::FileName).toString());
     QString filePath(index.data(WidgetUtil::FilePathRole).toString());
-    QString fileSize(index.data(WidgetUtil::FileSizeRole).toString());
+    QString fileSize(calculateFileSize(index.data(WidgetUtil::FileSizeRole).toLongLong()));
     QString fileTime(index.data(WidgetUtil::FileTimeRole).toString());
     QPixmap fileIco(index.data(WidgetUtil::FileIcoRole).value<QPixmap>());
     bool isSelected = index.data(WidgetUtil::ItemSelectRole).toBool();
@@ -80,7 +80,7 @@ void ItemListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
                         m_labelIntervaSize.height() * contentStartingPoint++,
                         m_labelSize.width(), m_labelSize.height());
     QRect fileSizeRect(labelDatumPositioningX + m_labelIntervaSize.width(),
-                       fileSizeLabelRect.y(), m_labelSize.width(), m_labelSize.height());
+                       fileSizeLabelRect.y(), m_labelSize.width() * 2, m_labelSize.height());
     QRect fileTimeLabelRect(fileSizeRect.x() + m_labelIntervaSize.width(), fileSizeRect.y(),
                             m_labelSize.width(), m_labelSize.height());
     QRect fileTimeRect(fileTimeLabelRect.x() + m_labelIntervaSize.width(), fileSizeRect.y(),
@@ -128,8 +128,6 @@ void ItemListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
 
     painter->save();
     //TODO: 按钮显示状态的处理，包括按下和悬浮状态的处理，需要一个bool值来表示
-    qApp->style()->drawControl(QStyle::CE_PushButton, &pButtOpenFile, painter);
-    qApp->style()->drawControl(QStyle::CE_PushButton, &pButtDelFile, painter);
     qApp->style()->drawItemPixmap(painter, fileIcoRect,
                                 Qt::AlignLeft | Qt::AlignTop, fileIco);
     qApp->style()->drawItemText(painter, fileNameLabelRect,Qt::AlignLeft,
@@ -151,6 +149,8 @@ void ItemListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
 
     if(isSelected)
     {
+        qApp->style()->drawControl(QStyle::CE_PushButton, &pButtOpenFile, painter);
+        qApp->style()->drawControl(QStyle::CE_PushButton, &pButtDelFile, painter);
         if(resultRectList.length() <= 0)
         {
             int contentStartingPoint = 3;
@@ -278,4 +278,37 @@ bool ItemListDelegate::editorEvent(QEvent *event, QAbstractItemModel *model,
     }
 
     return QStyledItemDelegate::editorEvent(event, model, option, index);
+}
+
+QString ItemListDelegate::calculateFileSize(qint64 fileSize) const
+{
+    QString fileSizeStr("%1 %2");
+    double baseNum;
+#ifdef Q_OS_WIN
+    baseNum = 1024.0;
+#elif Q_OS_LINUX
+    baseNum = 1000.0;
+#endif
+    double kb = baseNum;
+    double mb = kb * baseNum;
+    double gb = mb * baseNum;
+
+    if (fileSize >= gb)
+    {
+        double size = fileSize / gb;
+        fileSizeStr = fileSizeStr.arg(QString::number(size,'g',3)).arg("Gb");
+    }
+    else if (fileSize >= mb)
+    {
+        double size = fileSize / mb;
+        fileSizeStr = fileSizeStr.arg(QString::number(size,'g',3)).arg("Mb");
+    }
+    else if (fileSize >= kb)
+    {
+        double size = fileSize / kb;
+        fileSizeStr = fileSizeStr.arg(QString::number(size,'g',3)).arg("Kb");
+    }
+    else
+        fileSizeStr = fileSizeStr.arg(QString::number(fileSize,'g',3)).arg("Kb");
+    return fileSizeStr;
 }
