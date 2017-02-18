@@ -124,13 +124,13 @@ void FindRepeatWork::onFindNextText()
     if(m_repeatList.length() == 0)
         return;
 
-    m_findNextIndex++;
     if(m_findNextIndex >= m_repeatList.length())
         m_findNextIndex = 0;
 
     QListWidgetItem* item = m_repeatList.at(m_findNextIndex);
     m_listWidget->setCurrentItem(item);
     Backstage::getInstance().getBackstagWork()->onClickItem(item);
+    m_findNextIndex++;
 }
 
 void FindRepeatWork::onDelFile(QString filePath)
