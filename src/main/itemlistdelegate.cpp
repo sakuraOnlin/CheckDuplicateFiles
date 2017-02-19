@@ -27,6 +27,14 @@ ItemListDelegate::ItemListDelegate(QObject *parent)
       m_fileSizeLabelText(tr("FileSize:")),
       m_fileTimeLabelText(tr("FileTime:"))
 {
+#ifdef Q_OS_WIN
+    m_baseDouNum = 1024.0;
+#else
+    m_baseDouNum = 1000.0;
+#endif
+    m_kb = m_baseDouNum;
+    m_mb = m_kb * m_baseDouNum;
+    m_gb = m_mb * m_baseDouNum;
     m_labelSize = QSize(70, 18);
     m_textAlignment = Qt::AlignLeft | Qt::AlignVCenter;
     m_interval = 5;
@@ -187,13 +195,26 @@ void ItemListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
                     QStyleOptionProgressBar progressBarOption;
                     progressBarOption.initFrom(option.widget);
                     progressBarOption.rect = resultRectList[i].second;
-                    progressBarOption.minimum = 0;
-                    progressBarOption.maximum = result.fileSize;
                     progressBarOption.textAlignment = Qt::AlignCenter;
-                    progressBarOption.progress = result.computeProgress;
-                    progressBarOption.text = QString("%1 / %2")
-                           .arg(QString::number(result.computeProgress))
-                           .arg(QString::number(result.fileSize));
+                    progressBarOption.minimum = 0;
+                    bool fileSizeMaxBool = false;
+                    if(result.fileSize >= m_mb)
+                    {
+                        double size = double(result.fileSize) / m_mb;
+                        progressBarOption.maximum = int(size);
+                        double progres = double(result.computeProgress) / m_mb ;
+                        progressBarOption.progress = int(progres);
+                        fileSizeMaxBool = true;
+                    }
+                    else
+                    {
+                        progressBarOption.maximum = int(result.fileSize);
+                        progressBarOption.progress = int(result.computeProgress);
+                    }
+                    progressBarOption.text = QString("%1 / %2 %3")
+                           .arg(QString::number(progressBarOption.progress))
+                           .arg(QString::number(progressBarOption.maximum))
+                           .arg(fileSizeMaxBool?"Mb" : "bit");
                     progressBarOption.textVisible = true;
                     QProgressBar progressBar;
                     QApplication::style()->drawControl(QStyle::CE_ProgressBar,
@@ -293,30 +314,19 @@ bool ItemListDelegate::editorEvent(QEvent *event, QAbstractItemModel *model,
 QString ItemListDelegate::calculateFileSize(qint64 fileSize) const
 {
     QString fileSizeStr("%1 %2");
-    double baseNum;
-#ifdef Q_OS_WIN
-    baseNum = 1024.0;
-#endif
-#ifdef  Q_OS_LINUX
-    baseNum = 1000.0;
-#endif
-    double kb = baseNum;
-    double mb = kb * baseNum;
-    double gb = mb * baseNum;
-
-    if (fileSize >= gb)
+    if (fileSize >= m_gb)
     {
-        double size = fileSize / gb;
+        double size = fileSize / m_gb;
         fileSizeStr = fileSizeStr.arg(QString::number(size,'g',3)).arg("Gb");
     }
-    else if (fileSize >= mb)
+    else if (fileSize >= m_mb)
     {
-        double size = fileSize / mb;
+        double size = fileSize / m_mb;
         fileSizeStr = fileSizeStr.arg(QString::number(size,'g',3)).arg("Mb");
     }
-    else if (fileSize >= kb)
+    else if (fileSize >= m_kb)
     {
-        double size = fileSize / kb;
+        double size = fileSize / m_kb;
         fileSizeStr = fileSizeStr.arg(QString::number(size,'g',3)).arg("Kb");
     }
     else

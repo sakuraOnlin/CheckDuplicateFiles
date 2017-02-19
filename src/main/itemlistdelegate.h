@@ -32,6 +32,10 @@ private:
     inline QString cutString(QString text, QRect rect) const;
 
 private:
+    double m_baseDouNum;
+    double m_kb;
+    double m_mb;
+    double m_gb;
     QPoint m_pixmapPoint;
     QSize m_pixmapSize;
     QSize m_pButtSize;
