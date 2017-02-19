@@ -25,24 +25,67 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>BackstageWork</name>
+    <message>
+        <location filename="../../core/backstage.cpp" line="167"/>
+        <source>FileName:</source>
+        <translation>文  件  名：</translation>
+    </message>
+    <message>
+        <location filename="../../core/backstage.cpp" line="168"/>
+        <source>FilePath:</source>
+        <translation>文件路径：</translation>
+    </message>
+    <message>
+        <location filename="../../core/backstage.cpp" line="169"/>
+        <source>FileSize:</source>
+        <translation>文件大小：</translation>
+    </message>
+    <message>
+        <location filename="../../core/backstage.cpp" line="170"/>
+        <source>FileTime:</source>
+        <translation>时       间：</translation>
+    </message>
+</context>
+<context>
     <name>ItemListDelegate</name>
     <message>
-        <location filename="../../main/itemlistdelegate.cpp" line="113"/>
+        <location filename="../../main/itemlistdelegate.cpp" line="124"/>
         <source>Open File Dir</source>
         <translation>打开文件夹</translation>
     </message>
     <message>
-        <location filename="../../main/itemlistdelegate.cpp" line="118"/>
+        <location filename="../../main/itemlistdelegate.cpp" line="129"/>
         <source>Del File</source>
         <translation>删除文件</translation>
     </message>
     <message>
-        <location filename="../../main/itemlistdelegate.cpp" line="161"/>
+        <location filename="../../main/itemlistdelegate.cpp" line="25"/>
+        <source>FileName:</source>
+        <translation>文  件  名：</translation>
+    </message>
+    <message>
+        <location filename="../../main/itemlistdelegate.cpp" line="26"/>
+        <source>FilePath:</source>
+        <translation>文件路径：</translation>
+    </message>
+    <message>
+        <location filename="../../main/itemlistdelegate.cpp" line="27"/>
+        <source>FileSize:</source>
+        <translation>文件大小：</translation>
+    </message>
+    <message>
+        <location filename="../../main/itemlistdelegate.cpp" line="28"/>
+        <source>FileTime:</source>
+        <translation>时       间：</translation>
+    </message>
+    <message>
+        <location filename="../../main/itemlistdelegate.cpp" line="172"/>
         <source>Not yet started</source>
         <translation>未开始检查</translation>
     </message>
     <message>
-        <location filename="../../main/itemlistdelegate.cpp" line="203"/>
+        <location filename="../../main/itemlistdelegate.cpp" line="214"/>
         <source>Check for errors! Cause of error:</source>
         <translation></translation>
     </message>
@@ -55,161 +98,168 @@ p, li { white-space: pre-wrap; }
         <translation>重复文件检查</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="71"/>
+        <location filename="../../main/mainwindow.ui" line="81"/>
         <source>Dir Path:</source>
         <translation>文件夹路径：</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="84"/>
+        <location filename="../../main/mainwindow.ui" line="94"/>
         <source>After selecting a folder, you can start checking the file</source>
         <translation>选择文件夹后，您可以开始检查文件</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="103"/>
+        <location filename="../../main/mainwindow.ui" line="113"/>
         <source>Select Dir</source>
         <translation>选择文件夹…</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="128"/>
+        <location filename="../../main/mainwindow.ui" line="138"/>
         <source>Start Check</source>
         <translation>开始检查</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="156"/>
         <source>Find Duplicate Files</source>
-        <translation>查找重复的文件</translation>
+        <translation type="vanished">查找重复的文件</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="184"/>
+        <location filename="../../main/mainwindow.ui" line="386"/>
         <source>Del a file</source>
         <translation>删除选定的文件</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="212"/>
         <source>Del All Files</source>
-        <translation>删除所有重复的文件</translation>
+        <translation type="vanished">删除所有重复的文件</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="240"/>
+        <location filename="../../main/mainwindow.ui" line="162"/>
         <source>Calculation options</source>
         <translation>计算选项</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="257"/>
-        <location filename="../../main/mainwindow.ui" line="260"/>
+        <location filename="../../main/mainwindow.ui" line="179"/>
+        <location filename="../../main/mainwindow.ui" line="182"/>
         <source>Version</source>
         <translation>版本</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="270"/>
-        <location filename="../../main/mainwindow.ui" line="273"/>
+        <location filename="../../main/mainwindow.ui" line="192"/>
+        <location filename="../../main/mainwindow.ui" line="195"/>
         <source>Modify Time</source>
         <translation>修改时间</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="283"/>
-        <location filename="../../main/mainwindow.ui" line="286"/>
+        <location filename="../../main/mainwindow.ui" line="205"/>
+        <location filename="../../main/mainwindow.ui" line="208"/>
         <source>Check MD5</source>
         <translation>MD5</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="296"/>
-        <location filename="../../main/mainwindow.ui" line="299"/>
+        <location filename="../../main/mainwindow.ui" line="218"/>
+        <location filename="../../main/mainwindow.ui" line="221"/>
         <source>Check SHA1</source>
         <translation>SHA1</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="309"/>
-        <location filename="../../main/mainwindow.ui" line="312"/>
+        <location filename="../../main/mainwindow.ui" line="231"/>
+        <location filename="../../main/mainwindow.ui" line="234"/>
         <source>Check CRC32</source>
         <translation>CRC32</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="333"/>
+        <location filename="../../main/mainwindow.ui" line="255"/>
         <source>Find repeat</source>
         <translation>查找重复</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="353"/>
+        <location filename="../../main/mainwindow.ui" line="275"/>
         <source>Enter the string to find the duplicate or right find all duplicate button</source>
         <translation>输入字符串来查找重复或右边的查找全部重复按钮</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="372"/>
+        <location filename="../../main/mainwindow.ui" line="294"/>
         <source>Query the string in the input box from the following results</source>
         <translation>从下面的结果中查询输入框中的字符串</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="375"/>
-        <location filename="../../main/mainwindow.ui" line="397"/>
-        <source>f</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../main/mainwindow.ui" line="394"/>
+        <location filename="../../main/mainwindow.ui" line="316"/>
         <source>Find the next one</source>
         <translation>查找下一个</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="416"/>
+        <location filename="../../main/mainwindow.ui" line="338"/>
         <source>Find all duplicate</source>
         <translation>查找所有重复</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="419"/>
+        <location filename="../../main/mainwindow.ui" line="341"/>
         <source>A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="446"/>
+        <location filename="../../main/mainwindow.ui" line="360"/>
+        <source>Clear the found duplicate items</source>
+        <translation>清除列表中的所有重复项</translation>
+    </message>
+    <message>
+        <location filename="../../main/mainwindow.ui" line="422"/>
         <source>File</source>
         <translation>文件夹</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="454"/>
-        <location filename="../../main/mainwindow.ui" line="496"/>
+        <location filename="../../main/mainwindow.ui" line="431"/>
+        <location filename="../../main/mainwindow.ui" line="473"/>
         <source>help</source>
         <translation>帮助</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="469"/>
+        <location filename="../../main/mainwindow.ui" line="446"/>
         <source>Select Dir Path</source>
         <translation>选择文件夹…</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="472"/>
+        <location filename="../../main/mainwindow.ui" line="449"/>
         <source>Select Dir Path_tooltip</source>
         <translation>选择需要检查是否有重复文件的文件夹</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="475"/>
+        <location filename="../../main/mainwindow.ui" line="452"/>
         <source>Ctrl+F</source>
         <translation>选择需要检查是否有重复文件的文件夹</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="480"/>
+        <location filename="../../main/mainwindow.ui" line="457"/>
         <source>Exit</source>
         <translation>退出程序</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="483"/>
+        <location filename="../../main/mainwindow.ui" line="460"/>
         <source>Exit_tooltip</source>
         <translation>退出当前程序</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="486"/>
+        <location filename="../../main/mainwindow.ui" line="463"/>
         <source>Ctrl+Q</source>
         <translation>退出程序</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="491"/>
+        <location filename="../../main/mainwindow.ui" line="468"/>
         <source>about</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="505"/>
+        <location filename="../../main/mainwindow.ui" line="482"/>
         <source>Setting</source>
         <translation>设置</translation>
+    </message>
+    <message>
+        <location filename="../../main/mainwindow.ui" line="487"/>
+        <source>Export result</source>
+        <translation>导出结果</translation>
+    </message>
+    <message>
+        <location filename="../../main/mainwindow.ui" line="490"/>
+        <source>Ctrl+E</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Select Directory</source>
@@ -236,26 +286,36 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">停止检查</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.cpp" line="74"/>
-        <location filename="../../main/mainwindow.cpp" line="203"/>
+        <location filename="../../main/mainwindow.cpp" line="85"/>
+        <location filename="../../main/mainwindow.cpp" line="248"/>
         <source>File Total : %1 , Calculation progress : %2</source>
         <translation>文件总数： %1 ，效验总数： %2 </translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.cpp" line="160"/>
+        <location filename="../../main/mainwindow.cpp" line="205"/>
         <source>Select Directory</source>
         <translation>选择文件夹</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.cpp" line="169"/>
+        <location filename="../../main/mainwindow.cpp" line="214"/>
         <source>Error!</source>
         <translation>错误!</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.cpp" line="170"/>
+        <location filename="../../main/mainwindow.cpp" line="215"/>
         <source>Please select a valid directory!
 </source>
         <translation>请选择有效的文件夹!</translation>
+    </message>
+    <message>
+        <location filename="../../main/mainwindow.cpp" line="328"/>
+        <source>Save File</source>
+        <translation>保存文件</translation>
+    </message>
+    <message>
+        <location filename="../../main/mainwindow.cpp" line="329"/>
+        <source>ALL (*.*)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Please select a valid directory!.
@@ -281,6 +341,18 @@ p, li { white-space: pre-wrap; }
         <location filename="../../main/setting.cpp" line="101"/>
         <source>List must have a file format!</source>
         <translation>格式列表中必须有一个选中的文件格式！</translation>
+    </message>
+    <message>
+        <location filename="../../main/listwidget.cpp" line="144"/>
+        <source>Delete Files</source>
+        <translation>删除文件</translation>
+    </message>
+    <message>
+        <location filename="../../main/listwidget.cpp" line="145"/>
+        <source>Are you sure you want to delete the file? 
+Note: This delete file can not be undone!</source>
+        <translation>你确定要删除文件？
+注意：本次删除文件无法撤销！</translation>
     </message>
 </context>
 <context>

@@ -414,7 +414,7 @@ QPushButton#pushBut_FindAll:disabled{ border-image:  url(:/img/image/SearchAllRe
      <x>0</x>
      <y>0</y>
      <width>826</width>
-     <height>22</height>
+     <height>28</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -423,6 +423,7 @@ QPushButton#pushBut_FindAll:disabled{ border-image:  url(:/img/image/SearchAllRe
     </property>
     <addaction name="actionSelect_Dir_Path"/>
     <addaction name="actionSetting"/>
+    <addaction name="actionExportResult"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
@@ -479,6 +480,14 @@ QPushButton#pushBut_FindAll:disabled{ border-image:  url(:/img/image/SearchAllRe
    </property>
    <property name="text">
     <string>Setting</string>
+   </property>
+  </action>
+  <action name="actionExportResult">
+   <property name="text">
+    <string>Export result</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+E</string>
    </property>
   </action>
  </widget>

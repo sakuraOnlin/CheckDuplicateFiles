@@ -37,7 +37,8 @@ public slots:
     void onFindAllRepeat();
     void onFindText(QString text);
     void onFindNextText();
-    void onCLearRepeat();
+    void onClearRepeat();
+    void onExportResult(QString filePath);
 
 private slots:
     void onOpenFileDir(QString filePath);

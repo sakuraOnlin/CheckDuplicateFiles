@@ -20,8 +20,15 @@ ItemListDelegate::ItemListDelegate(QObject *parent)
       m_pixmapPoint(QPoint(5,5)),
       m_pixmapSize(QSize(32, 32)),
       m_pButtSize(QSize(80, 22)),
-      m_labelSize(QSize(50, 17))
+      m_font(qApp->font()),
+      m_fontMetrics(m_font),
+      m_fileNameLabelText(tr("FileName:")),
+      m_filePathLabelText(tr("FilePath:")),
+      m_fileSizeLabelText(tr("FileSize:")),
+      m_fileTimeLabelText(tr("FileTime:"))
 {
+    m_labelSize = QSize(70, 18);
+    m_textAlignment = Qt::AlignLeft | Qt::AlignVCenter;
     m_interval = 5;
     m_labelIntervaSize.setWidth(m_labelSize.width() + m_interval );
     m_labelIntervaSize.setHeight(m_labelSize.height() + m_interval );
@@ -36,11 +43,14 @@ ItemListDelegate::~ItemListDelegate()
 void ItemListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
                              const QModelIndex &index) const
 {
-    QStyledItemDelegate::paint(painter, option, index);
+    QStyleOptionViewItem itemOption(option);
+    if (itemOption.state & QStyle::State_HasFocus)
+    {
+    itemOption.state = itemOption.state ^ QStyle::State_HasFocus;
+    }
+    QStyledItemDelegate::paint(painter, itemOption, index);
 
     //Data
-    QFont font(qApp->font());
-    QFontMetrics fontMetrics(font);
     QString fileName(index.data(WidgetUtil::FileName).toString());
     QString filePath(index.data(WidgetUtil::FilePathRole).toString());
     QString fileSize(calculateFileSize(index.data(WidgetUtil::FileSizeRole).toLongLong()));
@@ -80,13 +90,14 @@ void ItemListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
                         m_labelIntervaSize.height() * contentStartingPoint++,
                         m_labelSize.width(), m_labelSize.height());
     QRect fileSizeRect(labelDatumPositioningX + m_labelIntervaSize.width(),
-                       fileSizeLabelRect.y(), m_labelSize.width() * 2, m_labelSize.height());
+                       fileSizeLabelRect.y(), m_labelSize.width(), m_labelSize.height());
     QRect fileTimeLabelRect(fileSizeRect.x() + m_labelIntervaSize.width(), fileSizeRect.y(),
-                            m_labelSize.width(), m_labelSize.height());
+                        m_labelSize.width(), m_labelSize.height());
     QRect fileTimeRect(fileTimeLabelRect.x() + m_labelIntervaSize.width(), fileSizeRect.y(),
-                       fontMetrics.size(Qt::TextSingleLine,fileTime).width(),
+                       m_fontMetrics.size(Qt::TextSingleLine,fileTime).width(),
                        m_labelSize.height());
 
+    filePath = cutString(filePath, filePathRect);
     QList<QPair<QRect, QRect> > resultRectList;
     if(isSelected)
     {
@@ -127,24 +138,24 @@ void ItemListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
     }
 
     painter->save();
-    //TODO: 按钮显示状态的处理，包括按下和悬浮状态的处理，需要一个bool值来表示
+    painter->setFont(m_font);
     qApp->style()->drawItemPixmap(painter, fileIcoRect,
-                                Qt::AlignLeft | Qt::AlignTop, fileIco);
-    qApp->style()->drawItemText(painter, fileNameLabelRect,Qt::AlignLeft,
-                                option.palette, true, "FileName:");
-    qApp->style()->drawItemText(painter, fileNameRect ,Qt::AlignLeft,
+                                Qt::AlignCenter, fileIco);
+    qApp->style()->drawItemText(painter, fileNameLabelRect, m_textAlignment,
+                                option.palette, true, m_fileNameLabelText);
+    qApp->style()->drawItemText(painter, fileNameRect , m_textAlignment,
                                 option.palette, true, fileName);
-    qApp->style()->drawItemText(painter, filePathLabelRect,Qt::AlignLeft,
-                                option.palette, true, "FilePath:");
-    qApp->style()->drawItemText(painter, filePathRect ,Qt::AlignLeft,
+    qApp->style()->drawItemText(painter, filePathLabelRect, m_textAlignment,
+                                option.palette, true, m_filePathLabelText);
+    qApp->style()->drawItemText(painter, filePathRect , m_textAlignment,
                                 option.palette, true, filePath);
-    qApp->style()->drawItemText(painter, fileSizeLabelRect,Qt::AlignLeft,
-                                option.palette, true, "FileSize:");
-    qApp->style()->drawItemText(painter, fileSizeRect ,Qt::AlignLeft,
+    qApp->style()->drawItemText(painter, fileSizeLabelRect, m_textAlignment,
+                                option.palette, true, m_fileSizeLabelText);
+    qApp->style()->drawItemText(painter, fileSizeRect , m_textAlignment,
                                 option.palette, true, fileSize);
-    qApp->style()->drawItemText(painter, fileTimeLabelRect,Qt::AlignLeft,
-                                option.palette, true, "FileTime:");
-    qApp->style()->drawItemText(painter, fileTimeRect ,Qt::AlignLeft,
+    qApp->style()->drawItemText(painter, fileTimeLabelRect, m_textAlignment,
+                                option.palette, true, m_fileTimeLabelText);
+    qApp->style()->drawItemText(painter, fileTimeRect , m_textAlignment,
                                 option.palette, true, fileTime);
 
     if(isSelected)
@@ -157,7 +168,7 @@ void ItemListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
             QRect resultRect(labelDatumPositioningX + m_labelIntervaSize.width(),
                              labelDatumPositioningY + m_labelIntervaSize.height() *
                              contentStartingPoint, contentLengthX, m_labelSize.height());
-            qApp->style()->drawItemText(painter, resultRect ,Qt::AlignLeft,
+            qApp->style()->drawItemText(painter, resultRect , Qt::AlignLeft,
                                         option.palette, true, tr("Not yet started"));
         }
         else
@@ -167,7 +178,7 @@ void ItemListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
             for(int i = 0 ; i < resultRectList.length(); i++ )
             {
                 util::ComputeResult result = resultList[i];
-                qApp->style()->drawItemText(painter, resultRectList[i].first ,Qt::AlignLeft,
+                qApp->style()->drawItemText(painter, resultRectList[i].first , Qt::AlignLeft,
                                             option.palette, true,
                                             result.checkTypeName);
                 switch (messageType) {
@@ -191,14 +202,14 @@ void ItemListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
                 }
                 case util::CheckOver:
                 {
-                    qApp->style()->drawItemText(painter, resultRectList[i].second ,Qt::AlignLeft,
+                    qApp->style()->drawItemText(painter, resultRectList[i].second, Qt::AlignLeft,
                                                 option.palette, true, result.resultStr);
                     break;
                 }
                 case util::CheckError:
                 {
                     // 检查错误！错误原因:
-                    qApp->style()->drawItemText(painter, resultRectList[i].second ,Qt::AlignLeft,
+                    qApp->style()->drawItemText(painter, resultRectList[i].second, Qt::AlignLeft,
                                                 option.palette, true,
                                                 tr("Check for errors! Cause of error:"));
                     break;
@@ -253,7 +264,6 @@ bool ItemListDelegate::editorEvent(QEvent *event, QAbstractItemModel *model,
     else
         m_mouseType.first = false;
 
-    //TODO:按钮事件的处理
     if (event->type() == QEvent::MouseButtonPress)
     {
         if (mouseInButtonArea)
@@ -286,7 +296,8 @@ QString ItemListDelegate::calculateFileSize(qint64 fileSize) const
     double baseNum;
 #ifdef Q_OS_WIN
     baseNum = 1024.0;
-#elif Q_OS_LINUX
+#endif
+#ifdef  Q_OS_LINUX
     baseNum = 1000.0;
 #endif
     double kb = baseNum;
@@ -311,4 +322,19 @@ QString ItemListDelegate::calculateFileSize(qint64 fileSize) const
     else
         fileSizeStr = fileSizeStr.arg(QString::number(fileSize,'g',3)).arg("Kb");
     return fileSizeStr;
+}
+
+QString ItemListDelegate::cutString(QString text, QRect rect) const
+{
+    QString point("......");
+    QString cutString(text);
+    int average = text.length() / 2;
+    while (m_fontMetrics.size(Qt::TextSingleLine,cutString).width() > rect.width())
+    {
+        if(cutString.length() <= 20)
+            break;
+        cutString = cutString.remove(average, point.length() + 1);
+        cutString = cutString.insert(average,point);
+    }
+    return  cutString;
 }

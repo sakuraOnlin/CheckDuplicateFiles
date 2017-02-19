@@ -47,6 +47,7 @@ public slots:
     void onFindNextText();
     void onClearFindRepeat();
     void onClickItem(QListWidgetItem *item);
+    void onExportResult(QString filePath);
 
 private slots:
     void onListWidgetAddItem(QStringList filePathList);

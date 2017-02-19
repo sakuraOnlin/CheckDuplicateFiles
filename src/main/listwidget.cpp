@@ -5,6 +5,7 @@
 #include <QDesktopServices>
 #include <QUrl>
 #include <QFileInfo>
+#include <QMessageBox>
 
 #ifdef _DEBUG
 #include <QDebug>
@@ -28,6 +29,8 @@ public:
     {
         init();
     }
+    ~ListWidgetPrivate();
+
     void init();
     void onStart(int checkType);
     void onStop();
@@ -39,13 +42,18 @@ public:
     void onFindAllRepeat();
     void onFindText(QString text);
     void onFindNextText();
-    void onCLearRepeat();
+    void onClearRepeat();
+    void onExportResult(QString filePath);
 
     ItemListDelegate m_dselegate;
     QHash<QString, QListWidgetItem*> m_fileItemHash;
     QStringList m_filePathList;
-//    Backstage m_backstage;
 };
+
+ListWidgetPrivate::~ListWidgetPrivate()
+{
+    onStop();
+}
 
 void ListWidgetPrivate::init()
 {
@@ -125,14 +133,21 @@ void ListWidgetPrivate::onOpenFileDir(QString filePath)
     if(fileinfo.isSymLink())
         validFolderPath = fileinfo.symLinkTarget();
     else
-#else
-        validFolderPath = fileinfo.absolutePath();
 #endif
+    validFolderPath = fileinfo.absolutePath();
     QDesktopServices::openUrl(QUrl::fromLocalFile(validFolderPath));
 }
 
 void ListWidgetPrivate::onDelFile(QString filePath)
 {
+    int ret = QMessageBox::warning(q_ptr, QObject::tr("Delete Files"),
+                                     QObject::tr("Are you sure you want to delete the file? \n"
+                                                 "Note: This delete file can not be undone!"),
+                                     QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
+
+    if(ret != QMessageBox::Yes)
+        return;
+
     Backstage::getInstance().getBackstagWork()->onDelFile(filePath);
     q_ptr->ui->listWidget->takeItem(q_ptr->ui->listWidget->currentRow());
 }
@@ -152,9 +167,14 @@ void ListWidgetPrivate::onFindNextText()
     Backstage::getInstance().getBackstagWork()->onFindNextText();
 }
 
-void ListWidgetPrivate::onCLearRepeat()
+void ListWidgetPrivate::onClearRepeat()
 {
     Backstage::getInstance().getBackstagWork()->onClearFindRepeat();
+}
+
+void ListWidgetPrivate::onExportResult(QString filePath)
+{
+    Backstage::getInstance().getBackstagWork()->onExportResult(filePath);
 }
 
 ListWidget::ListWidget(QWidget *parent)
@@ -221,7 +241,7 @@ void ListWidget::onClickItem(QListWidgetItem *item)
 
 void ListWidget::onOpenFileDir()
 {
-    d_ptr->onDelFile();
+    d_ptr->onOpenFileDir();
 }
 
 void ListWidget::onDelFile()
@@ -244,9 +264,14 @@ void ListWidget::onFindNextText()
     d_ptr->onFindNextText();
 }
 
-void ListWidget::onCLearRepeat()
+void ListWidget::onClearRepeat()
 {
-    d_ptr->onCLearRepeat();
+    d_ptr->onClearRepeat();
+}
+
+void ListWidget::onExportResult(QString filePath)
+{
+    d_ptr->onExportResult(filePath);
 }
 
 void ListWidget::onOpenFileDir(QString filePath)

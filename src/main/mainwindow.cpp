@@ -32,6 +32,7 @@ public:
     void onFindText();
     void onFindNextText();
     void onClearRepeat();
+    void onExportResult();
     inline void setThreadNum();
     inline void setFileFilter();
 
@@ -67,6 +68,12 @@ MainWindowPrivate::MainWindowPrivate(MainWindow *publicMsinWindow)
 
 MainWindowPrivate::~MainWindowPrivate()
 {
+    if(m_isStart)
+    {
+        m_isStart = false;
+        q_ptr->ui->listWidget->onStop();
+        q_ptr->ui->actionSetting->setEnabled(true);
+    }
     m_configureFile->setThreadNum(m_checkThreadNum);
     m_configureFile->setFileFilters(m_filterCheck);
     delete m_configureFile;
@@ -98,6 +105,15 @@ void MainWindowPrivate::init()
     q_ptr->ui->pushBut_FindText->setEnabled(false);
     q_ptr->ui->pushBut_FindNextText->setEnabled(false);
     q_ptr->ui->pushBut_ClearRepeat->setEnabled(false);
+    q_ptr->ui->checkBox_ModifyTime->setEnabled(false);
+
+#ifdef Q_OS_WIN
+    q_ptr->ui->checkBox_Version->setChecked(true);
+    q_ptr->ui->checkBox_Version->setEnabled(true);
+#else
+    q_ptr->ui->checkBox_Version->setChecked(false);
+    q_ptr->ui->checkBox_Version->setEnabled(false);
+#endif
 
     m_pButAddressList.append(q_ptr->ui->lineEdit_ShowDIrPath);
     m_pButAddressList.append(q_ptr->ui->lineEdit_FindText);
@@ -157,6 +173,8 @@ void MainWindowPrivate::init()
                      q_ptr, SLOT(onClearFindRepeat()));
     QObject::connect(q_ptr->ui->lineEdit_FindText, SIGNAL(signalCleanText()),
                      q_ptr, SLOT(onClearFindRepeat()));
+    QObject::connect(q_ptr->ui->actionExportResult,  SIGNAL(triggered()),
+                     q_ptr, SLOT(onExportResult()));
 }
 
 void MainWindowPrivate::updateUIButton()
@@ -301,7 +319,16 @@ void MainWindowPrivate::onFindNextText()
 
 void MainWindowPrivate::onClearRepeat()
 {
-    q_ptr->ui->listWidget->onCLearRepeat();
+    q_ptr->ui->listWidget->onClearRepeat();
+}
+
+void MainWindowPrivate::onExportResult()
+{
+    QString dirPath("");
+    dirPath = QFileDialog::getSaveFileName(q_ptr, QObject::tr("Save File"),
+                                 m_dirPath, QObject::tr("ALL (*.*)"));
+    if(dirPath.isEmpty()) return;
+    q_ptr->ui->listWidget->onExportResult(dirPath);
 }
 
 void MainWindowPrivate::setThreadNum()
@@ -415,4 +442,9 @@ void MainWindow::onFindNestText()
 void MainWindow::onClearFindRepeat()
 {
     d_ptr->onClearRepeat();
+}
+
+void MainWindow::onExportResult()
+{
+    d_ptr->onExportResult();
 }

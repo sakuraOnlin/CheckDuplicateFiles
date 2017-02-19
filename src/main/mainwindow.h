@@ -40,6 +40,7 @@ private slots:
     void onFindText();
     void onFindNestText();
     void onClearFindRepeat();
+    void onExportResult();
 
 private:
     Ui::MainWindow *ui;

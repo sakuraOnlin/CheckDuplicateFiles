@@ -73,6 +73,8 @@ void ComputeWork::onWork()
         {
             if(!m_checkFilelist[i].second)
             {
+                if((m_computeIndex + 1) > m_filePaths->length())
+                    break;
                 QString file(m_filePaths->value(m_computeIndex + 1));
                 if(file.isEmpty())
                     break;

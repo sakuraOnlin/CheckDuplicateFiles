@@ -159,7 +159,7 @@ Wrong address :</source>
 <context>
     <name>ThreadReadFile</name>
     <message>
-        <location filename="../../threadreadfile.cpp" line="49"/>
+        <location filename="../../threadreadfile.cpp" line="51"/>
         <source>File open errors!</source>
         <translation>文件打开错误！导致无法检查当前文件指纹！</translation>
     </message>

@@ -141,6 +141,47 @@ void BackstageWork::onClickItem(QListWidgetItem *item)
     item->setData(WidgetUtil::ItemSelectRole, true);
 }
 
+void BackstageWork::onExportResult(QString filePath)
+{
+    if(filePath.isEmpty())
+        return;
+    QFile file(filePath);
+#ifdef Q_OS_WIN
+    if(!file.open(QIODevice::WriteOnly |QIODevice::Text | QIODevice::Truncate))
+#else
+    if(!file.open(QIODevice::WriteOnly | QIODevice::Truncate))
+#endif
+    {
+        return;
+    }
+    QTextStream textStream(&file);
+    textStream.setCodec("UTF-8");
+
+    //write banquan
+    int count = m_listWidget->count();
+    for(int i = 0 ; i < count ; i++)
+    {
+        QListWidgetItem *item = m_listWidget->item(i);
+        QString fileName(item->data(WidgetUtil::FileName).toString());
+        QString filePath(item->data(WidgetUtil::FilePathRole).toString());
+        QString fileSize(QString::number(item->data(WidgetUtil::FileSizeRole).toLongLong()));
+        QString fileTime(item->data(WidgetUtil::FileTimeRole).toString());
+        QList<util::ComputeResult> resultList = item->data(
+                    WidgetUtil::CheckResultRole).value<QList<util::ComputeResult> >();
+        textStream << tr("FileName:") << fileName << endl;
+        textStream << tr("FilePath:") << filePath << endl;
+        textStream << tr("FileSize:") << fileSize << endl;
+        textStream << tr("FileTime:") << fileTime << endl;
+        for(int y = 0 ; y < resultList.length(); y++)
+        {
+            QString wrText(resultList.value(y).checkTypeName + " = " +
+                           resultList.value(y).resultStr);
+            textStream << wrText << endl;
+        }
+        textStream << endl;
+    }
+}
+
 void BackstageWork::onListWidgetAddItem(QStringList filePathList)
 {
     if(filePathList.length() == 0)
@@ -165,7 +206,7 @@ void BackstageWork::onListWidgetAddItem(QStringList filePathList)
             item->setData(WidgetUtil::FileTimeRole, fileInfo.lastModified().
                           toString("yyyy-MM-dd hh:mm:ss"));
             item->setData(WidgetUtil::CheckTypeRole, util::NoCheck);
-//            item->setData(Qt::BackgroundColorRole, QColor(125, 174, 255, 254));
+            item->setToolTip(filePath);
             m_listWidget->addItem(item);
             m_filePathList->append(filePath);
             m_fileItemHash->insert(filePath, item);

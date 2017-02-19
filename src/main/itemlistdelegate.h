@@ -29,6 +29,7 @@ protected:
 
 private:
     inline QString calculateFileSize(qint64 fileSize)const;
+    inline QString cutString(QString text, QRect rect) const;
 
 private:
     QPoint m_pixmapPoint;
@@ -36,6 +37,13 @@ private:
     QSize m_pButtSize;
     QSize m_labelSize;
     QSize m_labelIntervaSize;
+    QFont m_font;
+    QFontMetrics m_fontMetrics;
+    QString m_fileNameLabelText;
+    QString m_filePathLabelText;
+    QString m_fileSizeLabelText;
+    QString m_fileTimeLabelText;
+    Qt::Alignment m_textAlignment;
     int m_interval;
     QPair<bool, bool> m_mouseType;  // mouseHour, mouse click
     QPoint m_mousePoint;
