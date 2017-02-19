@@ -107,14 +107,6 @@ void MainWindowPrivate::init()
     q_ptr->ui->pushBut_ClearRepeat->setEnabled(false);
     q_ptr->ui->checkBox_ModifyTime->setEnabled(false);
 
-#ifdef Q_OS_WIN
-    q_ptr->ui->checkBox_Version->setChecked(true);
-    q_ptr->ui->checkBox_Version->setEnabled(true);
-#else
-    q_ptr->ui->checkBox_Version->setChecked(false);
-    q_ptr->ui->checkBox_Version->setEnabled(false);
-#endif
-
     m_pButAddressList.append(q_ptr->ui->lineEdit_ShowDIrPath);
     m_pButAddressList.append(q_ptr->ui->lineEdit_FindText);
     m_pButAddressList.append(q_ptr->ui->pushBut_SelectDir);

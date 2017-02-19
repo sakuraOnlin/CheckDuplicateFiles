@@ -27,22 +27,22 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>BackstageWork</name>
     <message>
-        <location filename="../../core/backstage.cpp" line="167"/>
+        <location filename="../../core/backstage.cpp" line="171"/>
         <source>FileName:</source>
         <translation>文  件  名：</translation>
     </message>
     <message>
-        <location filename="../../core/backstage.cpp" line="168"/>
+        <location filename="../../core/backstage.cpp" line="172"/>
         <source>FilePath:</source>
         <translation>文件路径：</translation>
     </message>
     <message>
-        <location filename="../../core/backstage.cpp" line="169"/>
+        <location filename="../../core/backstage.cpp" line="173"/>
         <source>FileSize:</source>
         <translation>文件大小：</translation>
     </message>
     <message>
-        <location filename="../../core/backstage.cpp" line="170"/>
+        <location filename="../../core/backstage.cpp" line="174"/>
         <source>FileTime:</source>
         <translation>时       间：</translation>
     </message>
@@ -50,12 +50,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ItemListDelegate</name>
     <message>
-        <location filename="../../main/itemlistdelegate.cpp" line="124"/>
+        <location filename="../../main/itemlistdelegate.cpp" line="132"/>
         <source>Open File Dir</source>
         <translation>打开文件夹</translation>
     </message>
     <message>
-        <location filename="../../main/itemlistdelegate.cpp" line="129"/>
+        <location filename="../../main/itemlistdelegate.cpp" line="137"/>
         <source>Del File</source>
         <translation>删除文件</translation>
     </message>
@@ -80,12 +80,12 @@ p, li { white-space: pre-wrap; }
         <translation>时       间：</translation>
     </message>
     <message>
-        <location filename="../../main/itemlistdelegate.cpp" line="172"/>
+        <location filename="../../main/itemlistdelegate.cpp" line="180"/>
         <source>Not yet started</source>
         <translation>未开始检查</translation>
     </message>
     <message>
-        <location filename="../../main/itemlistdelegate.cpp" line="214"/>
+        <location filename="../../main/itemlistdelegate.cpp" line="235"/>
         <source>Check for errors! Cause of error:</source>
         <translation></translation>
     </message>
@@ -191,11 +191,6 @@ p, li { white-space: pre-wrap; }
         <translation>查找所有重复</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.ui" line="341"/>
-        <source>A</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../main/mainwindow.ui" line="360"/>
         <source>Clear the found duplicate items</source>
         <translation>清除列表中的所有重复项</translation>
@@ -259,7 +254,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../../main/mainwindow.ui" line="490"/>
         <source>Ctrl+E</source>
-        <translation type="unfinished"></translation>
+        <translation>导出结果</translation>
     </message>
     <message>
         <source>Select Directory</source>
@@ -315,7 +310,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../../main/mainwindow.cpp" line="329"/>
         <source>ALL (*.*)</source>
-        <translation type="unfinished"></translation>
+        <translation>不限格式</translation>
     </message>
     <message>
         <source>Please select a valid directory!.
@@ -343,12 +338,12 @@ p, li { white-space: pre-wrap; }
         <translation>格式列表中必须有一个选中的文件格式！</translation>
     </message>
     <message>
-        <location filename="../../main/listwidget.cpp" line="144"/>
+        <location filename="../../main/listwidget.cpp" line="143"/>
         <source>Delete Files</source>
         <translation>删除文件</translation>
     </message>
     <message>
-        <location filename="../../main/listwidget.cpp" line="145"/>
+        <location filename="../../main/listwidget.cpp" line="144"/>
         <source>Are you sure you want to delete the file? 
 Note: This delete file can not be undone!</source>
         <translation>你确定要删除文件？
@@ -384,8 +379,8 @@ Note: This delete file can not be undone!</source>
     </message>
     <message>
         <location filename="../../main/setting.ui" line="326"/>
-        <source>Find or join a custom file format</source>
-        <translation></translation>
+        <source>Add a file format to the following list</source>
+        <translation>加入一个文件格式到下面列表中</translation>
     </message>
     <message>
         <location filename="../../main/setting.ui" line="345"/>

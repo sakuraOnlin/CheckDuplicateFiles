@@ -168,25 +168,6 @@ QPushButton#pushBut_FindAll:disabled{ border-image:  url(:/img/image/SearchAllRe
             <number>5</number>
            </property>
            <item>
-            <widget class="QCheckBox" name="checkBox_Version">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>25</height>
-              </size>
-             </property>
-             <property name="toolTip">
-              <string>Version</string>
-             </property>
-             <property name="text">
-              <string>Version</string>
-             </property>
-             <property name="checked">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
             <widget class="QCheckBox" name="checkBox_ModifyTime">
              <property name="toolTip">
               <string>Modify Time</string>
@@ -338,7 +319,7 @@ QPushButton#pushBut_FindAll:disabled{ border-image:  url(:/img/image/SearchAllRe
               <string>Find all duplicate</string>
              </property>
              <property name="text">
-              <string>A</string>
+              <string/>
              </property>
             </widget>
            </item>
@@ -414,7 +395,7 @@ QPushButton#pushBut_FindAll:disabled{ border-image:  url(:/img/image/SearchAllRe
      <x>0</x>
      <y>0</y>
      <width>826</width>
-     <height>28</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

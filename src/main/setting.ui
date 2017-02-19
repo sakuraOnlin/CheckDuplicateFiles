@@ -323,7 +323,7 @@ QPushButton#pButAddFilters:disabled
                     </size>
                    </property>
                    <property name="placeholderText">
-                    <string>Find or join a custom file format</string>
+                    <string>Add a file format to the following list</string>
                    </property>
                   </widget>
                  </item>
