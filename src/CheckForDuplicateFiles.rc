@@ -17,6 +17,7 @@
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
 LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -80,6 +81,22 @@ BEGIN
         VALUE "Translation", 0x804, 1200
     END
 END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON1               ICON                    "res\\image\\file_search.ico"
+
+IDI_ICON2               ICON                    "res\\image\\file_search_32.ico"
+
+IDI_ICON3               ICON                    "res\\image\\file_search_64.ico"
+
+IDI_ICON4               ICON                    "res\\image\\file_search_128.ico"
 
 #endif    // 中文(简体，中国) resources
 /////////////////////////////////////////////////////////////////////////////

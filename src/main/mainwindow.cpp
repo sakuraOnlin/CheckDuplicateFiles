@@ -5,7 +5,8 @@
 #include <QProgressBar>
 #include "mainwindow.h"
 #include "setting.h"
-#include "about.h"
+#include "main/about.h"
+#include "main/help.h"
 #include "core/configurefile.h"
 #include "ui_mainwindow.h"
 #include "util/util.h"
@@ -27,7 +28,8 @@ public:
     void onSettingDataChange(bool);
     void onCleatLineEdit();
     void onCheckBox(int state);
-    void about();
+    void onAbout();
+    void onHelp();
     void onFindAllRepeat();
     void onFindText();
     void onFindNextText();
@@ -48,6 +50,7 @@ public:
     QProgressBar *m_calculationProgress;
     ConfigureFile *m_configureFile;
     About *m_about;
+    Help *m_help;
     int m_checkThreadNum;
     int m_checkBoxState;
     bool m_isStart;
@@ -222,12 +225,14 @@ void MainWindowPrivate::onStartCheck()
         m_isStart = false;
         q_ptr->ui->listWidget->onStop();
         q_ptr->ui->actionSetting->setEnabled(true);
+        q_ptr->ui->statusbar->showMessage(QObject::tr("Stoping, please hold"), 1500);
     }
     else
     {
         m_isStart = true;
         q_ptr->ui->listWidget->onStart(m_checkBoxState);
         q_ptr->ui->actionSetting->setEnabled(false);
+        q_ptr->ui->statusbar->showMessage(QObject::tr("Starting, please hold"), 1500);
     }
     updateUIButton();
 }
@@ -285,12 +290,20 @@ void MainWindowPrivate::onCheckBox(int)
     }
 }
 
-void MainWindowPrivate::about()
+void MainWindowPrivate::onAbout()
 {
     m_about = new About(q_ptr);
     m_about->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
     m_about->setWindowModality(Qt::WindowModal);
     m_about->show();
+}
+
+void MainWindowPrivate::onHelp()
+{
+    m_help = new Help(q_ptr);
+    m_help->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
+    m_help->setWindowModality(Qt::WindowModal);
+    m_help->show();
 }
 
 void MainWindowPrivate::onFindAllRepeat()
@@ -388,12 +401,12 @@ void MainWindow::onSetting()
 
 void MainWindow::onHelp()
 {
-
+    d_ptr->onHelp();
 }
 
 void MainWindow::onAbout()
 {
-    d_ptr->about();
+    d_ptr->onAbout();
 }
 
 void MainWindow::onCheckBox(int state)

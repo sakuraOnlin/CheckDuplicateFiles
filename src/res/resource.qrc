@@ -57,4 +57,13 @@
         <file>image/SearchAllRepeat_highlight.png</file>
         <file>image/SearchAllRepeat_pushed.png</file>
     </qresource>
+    <qresource prefix="/help">
+        <file>image/help/MainData.png</file>
+        <file>image/help/MainDelFile.png</file>
+        <file>image/help/MainFIndRepeat.png</file>
+        <file>image/help/MainNoData.png</file>
+        <file>image/help/MainStopCheck.png</file>
+        <file>image/help/Setting_FileFilterList.png</file>
+        <file>image/help/Setting_ThreadNum.png</file>
+    </qresource>
 </RCC>

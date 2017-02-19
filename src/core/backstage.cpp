@@ -157,7 +157,14 @@ void BackstageWork::onExportResult(QString filePath)
     QTextStream textStream(&file);
     textStream.setCodec("UTF-8");
 
-    //write banquan
+    QString exportTime(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd"));
+    QString exportPath(tr("Export Fir :") + m_dirPath);
+    QString copyright(tr("By the \"small good version\" repeat the file "
+                         "check tool to output the results"));
+    textStream << exportTime << endl;
+    textStream << exportPath << endl;
+    textStream << copyright << endl;
+    textStream << endl;
     int count = m_listWidget->count();
     for(int i = 0 ; i < count ; i++)
     {

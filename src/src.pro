@@ -19,13 +19,15 @@ SOURCES += \
     main/setting.cpp \
     main/lineeditbuttons.cpp \
     core/configurefile.cpp \
-    core/findrepeat.cpp
+    core/findrepeat.cpp \
+    main/help.cpp
 
 FORMS += \
     main/mainwindow.ui \
     main/listwidget.ui \
     main/about.ui \
-    main/setting.ui
+    main/setting.ui \
+    main/help.ui
 
 HEADERS += \
     main/mainwindow.h \
@@ -39,7 +41,8 @@ HEADERS += \
     main/setting.h \
     main/lineeditbuttons.h \
     core/configurefile.h \
-    core/findrepeat.h
+    core/findrepeat.h \
+    main/help.h
 
 TRANSLATIONS += res/translator/translator_cn.ts
 
@@ -47,6 +50,7 @@ RESOURCES += \
     res/resource.qrc
 
 win32:RC_FILE = CheckForDuplicateFiles.rc
+win32:RC_ICONS = file_search.ico
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../CheckFile/release/ -lCheckFile
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../CheckFile/debug/ -lCheckFile
