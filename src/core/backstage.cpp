@@ -3,6 +3,8 @@
 
 #include <QFileIconProvider>
 #include <QFileInfo>
+#include <QFile>
+#include <QTextStream>
 #include <QDateTime>
 #include <QVector>
 

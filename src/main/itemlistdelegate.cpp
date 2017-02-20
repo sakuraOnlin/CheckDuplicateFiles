@@ -317,17 +317,17 @@ QString ItemListDelegate::calculateFileSize(qint64 fileSize) const
     if (fileSize >= m_gb)
     {
         double size = fileSize / m_gb;
-        fileSizeStr = fileSizeStr.arg(QString::number(size,'g',3)).arg("Gb");
+        fileSizeStr = fileSizeStr.arg(QString::number(size,'g',4)).arg("Gb");
     }
     else if (fileSize >= m_mb)
     {
         double size = fileSize / m_mb;
-        fileSizeStr = fileSizeStr.arg(QString::number(size,'g',3)).arg("Mb");
+        fileSizeStr = fileSizeStr.arg(QString::number(size,'g',4)).arg("Mb");
     }
     else if (fileSize >= m_kb)
     {
         double size = fileSize / m_kb;
-        fileSizeStr = fileSizeStr.arg(QString::number(size,'g',3)).arg("Kb");
+        fileSizeStr = fileSizeStr.arg(QString::number(size,'g',4)).arg("Kb");
     }
     else
         fileSizeStr = fileSizeStr.arg(QString::number(fileSize,'g',3)).arg("Kb");
