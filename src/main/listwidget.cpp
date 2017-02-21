@@ -76,6 +76,12 @@ void ListWidgetPrivate::init()
                      q_ptr, SLOT(onDelFile(QString)) );
     QObject::connect(&m_dselegate, SIGNAL(signalDelFile(QString)),
                      backstageWork, SLOT(onStopCheckFile(QString))  );
+    QObject::connect(backstageWork, &BackstageWork::signalFindDone,
+                     q_ptr, [&](int num){
+        QMessageBox::warning(q_ptr, QObject::tr("Find Result"),
+                     QObject::tr("Search results: %1").arg(QString::number(num)),
+                     QMessageBox::Ok);
+    });
 
 }
 

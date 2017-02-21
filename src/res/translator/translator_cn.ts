@@ -13,13 +13,14 @@
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:14pt;&quot;&gt;         这是一个用于大批量计算文件指纹的小程序，提供了基于 MD5、SHA1、CRC32文件指纹的校验。&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:14pt;&quot;&gt;         通过指定一个文件夹，可以批量计算指定文件夹下的指定文件格式的计算。&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation></translation>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;SimSun&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:14pt;&quot;&gt;    这是一个用于大批量计算文件指纹的小程序，提供了基于 MD5、SHA1、CRC32文件指纹的校验。&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:14pt;&quot;&gt;    通过指定一个文件夹，可以批量计算指定文件夹下的指定文件格式的效验计算。&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:14pt;&quot;&gt;    GitHub项目地址：https://github.com/sakuraOnlin/CheckDuplicateFiles&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../main/about.ui" line="52"/>
+        <location filename="../../main/about.ui" line="53"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
@@ -27,32 +28,32 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>BackstageWork</name>
     <message>
-        <location filename="../../core/backstage.cpp" line="161"/>
+        <location filename="../../core/backstage.cpp" line="163"/>
         <source>Export Fir :</source>
         <translation>检查目录：</translation>
     </message>
     <message>
-        <location filename="../../core/backstage.cpp" line="162"/>
+        <location filename="../../core/backstage.cpp" line="164"/>
         <source>By the &quot;small good version&quot; repeat the file check tool to output the results</source>
         <translation>由“小善专版”重复文件检查工具输出结果</translation>
     </message>
     <message>
-        <location filename="../../core/backstage.cpp" line="178"/>
+        <location filename="../../core/backstage.cpp" line="180"/>
         <source>FileName:</source>
         <translation>文  件  名：</translation>
     </message>
     <message>
-        <location filename="../../core/backstage.cpp" line="179"/>
+        <location filename="../../core/backstage.cpp" line="181"/>
         <source>FilePath:</source>
         <translation>文件路径：</translation>
     </message>
     <message>
-        <location filename="../../core/backstage.cpp" line="180"/>
+        <location filename="../../core/backstage.cpp" line="182"/>
         <source>FileSize:</source>
         <translation>文件大小：</translation>
     </message>
     <message>
-        <location filename="../../core/backstage.cpp" line="181"/>
+        <location filename="../../core/backstage.cpp" line="183"/>
         <source>FileTime:</source>
         <translation>时       间：</translation>
     </message>
@@ -113,7 +114,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;所有如果需要单独效验其他文件格式时，请取消 *.* 格式的选中。&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;img src=&quot;:/help/image/help/Setting_FileFilterList.png&quot; /&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../main/help.ui" line="93"/>
@@ -136,7 +137,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../../main/itemlistdelegate.cpp" line="25"/>
         <source>FileName:</source>
-        <translation>文  件  名：</translation>
+        <translation>文 件 名：</translation>
     </message>
     <message>
         <location filename="../../main/itemlistdelegate.cpp" line="26"/>
@@ -151,7 +152,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../../main/itemlistdelegate.cpp" line="28"/>
         <source>FileTime:</source>
-        <translation>时       间：</translation>
+        <translation>时    间：</translation>
     </message>
     <message>
         <location filename="../../main/itemlistdelegate.cpp" line="180"/>
@@ -375,22 +376,28 @@ p, li { white-space: pre-wrap; }
         <translation>请选择有效的文件夹!</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.cpp" line="228"/>
+        <location filename="../../main/mainwindow.cpp" line="225"/>
         <source>Stoping, please hold</source>
         <translation>停止中，请稍后</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.cpp" line="235"/>
+        <location filename="../../main/mainwindow.cpp" line="232"/>
         <source>Starting, please hold</source>
         <translation>启动中，请稍后</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.cpp" line="333"/>
+        <location filename="../../main/mainwindow.cpp" line="311"/>
+        <location filename="../../main/mainwindow.cpp" line="317"/>
+        <source>Finding... ,lease hold</source>
+        <translation>查找中……请稍后</translation>
+    </message>
+    <message>
+        <location filename="../../main/mainwindow.cpp" line="335"/>
         <source>Save File</source>
         <translation>保存文件</translation>
     </message>
     <message>
-        <location filename="../../main/mainwindow.cpp" line="334"/>
+        <location filename="../../main/mainwindow.cpp" line="336"/>
         <source>ALL (*.*)</source>
         <translation>不限格式 (*.*)</translation>
     </message>
@@ -420,12 +427,22 @@ p, li { white-space: pre-wrap; }
         <translation>格式列表中必须有一个选中的文件格式！</translation>
     </message>
     <message>
-        <location filename="../../main/listwidget.cpp" line="143"/>
+        <location filename="../../main/listwidget.cpp" line="81"/>
+        <source>Find Result</source>
+        <translation>查找结果</translation>
+    </message>
+    <message>
+        <location filename="../../main/listwidget.cpp" line="82"/>
+        <source>Search results: %1</source>
+        <translation>查找到：%1 个</translation>
+    </message>
+    <message>
+        <location filename="../../main/listwidget.cpp" line="149"/>
         <source>Delete Files</source>
         <translation>删除文件</translation>
     </message>
     <message>
-        <location filename="../../main/listwidget.cpp" line="144"/>
+        <location filename="../../main/listwidget.cpp" line="150"/>
         <source>Are you sure you want to delete the file? 
 Note: This delete file can not be undone!</source>
         <translation>你确定要删除文件？

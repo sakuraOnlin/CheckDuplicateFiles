@@ -298,6 +298,8 @@ void BackstageWork::init()
     QObject::connect(&m_computeModule, SIGNAL(signalCalculationComplete(QString)),
                      this, SLOT(onItemCalculationComplete(QString)));
     QObject::connect(&m_time, SIGNAL(timeout()), this, SLOT(onTimeSengProgress()) );
+    QObject::connect(&m_findRepeat, SIGNAL(signalFindDone(int)),
+                     this, SIGNAL(signalFindDone(int)) );
 }
 
 Backstage::Backstage(QObject *parent)

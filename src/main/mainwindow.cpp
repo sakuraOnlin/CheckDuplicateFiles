@@ -37,7 +37,7 @@ public:
     void onExportResult();
     inline void setThreadNum();
     inline void setFileFilter();
-
+    inline void showMessage(QString text, int timeNum = 1500);
 
     QString m_dirPath;
     QString m_pButEnStyleSheet;
@@ -222,17 +222,17 @@ void MainWindowPrivate::onStartCheck()
 {
     if(m_isStart)
     {
+        showMessage(QObject::tr("Stoping, please hold"));
         m_isStart = false;
         q_ptr->ui->listWidget->onStop();
         q_ptr->ui->actionSetting->setEnabled(true);
-        q_ptr->ui->statusbar->showMessage(QObject::tr("Stoping, please hold"), 1500);
     }
     else
     {
+        showMessage(QObject::tr("Starting, please hold"));
         m_isStart = true;
         q_ptr->ui->listWidget->onStart(m_checkBoxState);
         q_ptr->ui->actionSetting->setEnabled(false);
-        q_ptr->ui->statusbar->showMessage(QObject::tr("Starting, please hold"), 1500);
     }
     updateUIButton();
 }
@@ -308,11 +308,13 @@ void MainWindowPrivate::onHelp()
 
 void MainWindowPrivate::onFindAllRepeat()
 {
+    showMessage(QObject::tr("Finding... ,lease hold"));
     q_ptr->ui->listWidget->onFindAllRepeat();
 }
 
 void MainWindowPrivate::onFindText()
 {
+    showMessage(QObject::tr("Finding... ,lease hold"));
     QString text(q_ptr->ui->lineEdit_FindText->text());
     q_ptr->ui->listWidget->onFindText(text);
 }
@@ -353,6 +355,11 @@ void MainWindowPrivate::setFileFilter()
         }
     }
     q_ptr->ui->listWidget->setFileFilters(fileFilter);
+}
+
+void MainWindowPrivate::showMessage(QString text, int timeNum)
+{
+    q_ptr->ui->statusbar->showMessage(text, timeNum);
 }
 
 MainWindow::MainWindow(QWidget *parent) :

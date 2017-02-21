@@ -155,7 +155,7 @@ QPushButton#pushBut_FindAll:disabled{ border-image:  url(:/img/image/SearchAllRe
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>68</height>
+          <height>57</height>
          </size>
         </property>
         <property name="title">
@@ -229,7 +229,7 @@ QPushButton#pushBut_FindAll:disabled{ border-image:  url(:/img/image/SearchAllRe
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>70</height>
+          <height>67</height>
          </size>
         </property>
         <property name="title">

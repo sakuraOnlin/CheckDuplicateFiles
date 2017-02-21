@@ -36,6 +36,7 @@ public:
 
 signals:
     void signalFileStatistics(WidgetUtil::Progress progress);
+    void signalFindDone(int num);
 
 public slots:
     void onStart(int checkType);

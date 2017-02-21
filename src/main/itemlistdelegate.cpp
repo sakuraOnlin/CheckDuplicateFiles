@@ -35,7 +35,7 @@ ItemListDelegate::ItemListDelegate(QObject *parent)
     m_kb = m_baseDouNum;
     m_mb = m_kb * m_baseDouNum;
     m_gb = m_mb * m_baseDouNum;
-    m_labelSize = QSize(70, 18);
+    m_labelSize = QSize(55, 18);
     m_textAlignment = Qt::AlignLeft | Qt::AlignVCenter;
     m_interval = 5;
     m_labelIntervaSize.setWidth(m_labelSize.width() + m_interval );
