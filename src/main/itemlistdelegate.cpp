@@ -255,6 +255,8 @@ bool ItemListDelegate::editorEvent(QEvent *event, QAbstractItemModel *model,
                                    const QStyleOptionViewItem &option,
                                    const QModelIndex &index)
 {
+    if(!index.data(WidgetUtil::ItemSelectRole).toBool())
+        return QStyledItemDelegate::editorEvent(event, model, option, index);
     QMouseEvent* mouseEvent = nullptr;
     mouseEvent = dynamic_cast<QMouseEvent*>(event);
 
